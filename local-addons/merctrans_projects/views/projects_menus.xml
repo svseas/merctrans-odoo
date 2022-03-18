@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="merctrans_projects_action" model='ir.actions.act_window'>
+        <field name="name">MercTrans Project Lists</field>
+        <field name="res_model">merctrans.projects</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="merctrans_services_action" model='ir.actions.act_window'>
+        <field name="name">MercTrans Services Lists</field>
+        <field name="res_model">merctrans.services</field>
+        <field name="view_mode">tree,form</field>
+    
+    </record>
+    
+    <menuitem name="MercTrans Projects" id="project_base_menu"/>
+    <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0"/>
+    <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1"/> 
+
+    <record id="services_view_tree" model="ir.ui.view">
+      <field name="name">Services</field>
+      <field name="model">merctrans.services</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="services_names"/>
+        
+        </tree>
+      </field>
+    </record>
+
+
+<!-- project form view-->  
+    <record id="project_view_form" model="ir.ui.view">
+      <field name="name">Project Form</field>
+      <field name="model">merctrans.projects</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="project_manager"/>
+                <field name="job_id"/>
+                <field name="job_name"/>
+                <field name="job_instruction"/>
+                <field name="work_unit"/>
+                <field name="discount"/>
+                <field name="currency_id"/>
+                <field name="start_date"/>
+                <field name="due_date"/>
+              </group>
+              <group>
+                <field name="source_language"/>
+                <field name="target_language"/>
+                <field name="client" widget="many2many_tags"/>
+                <field name="services_ids" widget="many2many_tags"/> 
+                <field name="volume"/>
+                <field name="sale_rate_per_work_unit"/>
+                <field name="job_value"/>
+                <field name="project_status"/>
+                <field name="payment_status"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+  <!-- project tree view -->
+  <record id="project_view_tree" model="ir.ui.view">
+      <field name="name">Project Form</field>
+      <field name="model">merctrans.projects</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="job_id"/>
+          <field name="job_name"/>
+          <field name="project_manager"/>
+          <field name="work_unit"/>
+          <field name="source_language"/>
+          <field name="target_language"/>
+          <field name="client" widget="many2many_tags"/>
+          <field name="services_ids" widget="many2many_tags"/> 
+          <field name="volume"/>
+          <field name="sale_rate_per_work_unit"/>
+          <field name="currency_id"/>
+          <field name="discount"/>
+          <field name="job_value"/>
+          <field name="start_date"/>
+          <field name="due_date"/>
+          <field name="project_status"/>
+          <field name="payment_status"/>
+              
+        </tree>
+      </field>
+    </record>
+  
+  </data>
+  
+  
+
+
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="merctrans_projects.list">
+      <field name="name">merctrans_projects list</field>
+      <field name="model">merctrans_projects.merctrans_projects</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="merctrans_projects.action_window">
+      <field name="name">merctrans_projects window</field>
+      <field name="res_model">merctrans_projects.merctrans_projects</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="merctrans_projects.action_server">
+      <field name="name">merctrans_projects server</field>
+      <field name="model_id" ref="model_merctrans_projects_merctrans_projects"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="merctrans_projects" id="merctrans_projects.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="merctrans_projects.menu_1" parent="merctrans_projects.menu_root"/>
+    <menuitem name="Menu 2" id="merctrans_projects.menu_2" parent="merctrans_projects.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="merctrans_projects.menu_1_list" parent="merctrans_projects.menu_1"
+              action="merctrans_projects.action_window"/>
+    <menuitem name="Server to list" id="merctrans_projects" parent="merctrans_projects.menu_2"
+              action="merctrans_projects.action_server"/>
+-->
+  
+</odoo>
