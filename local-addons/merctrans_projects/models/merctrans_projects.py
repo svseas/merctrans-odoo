@@ -137,11 +137,25 @@ class MercTransInvoices(models.Model):
                 if job.currency_id != x.currency_id:
                     raise ValidationError('Job currency must be the same as invoice currency!')
     
-    # @api.onchange('invoice_status')
-    # def status_sync(self):
-    #     for record in self:
-    #         for x in record.invoice_details_ids:
-    #             if record.invoice_status == 'paid':
+    @api.model
+    def create(self,vals):
+        print("Invoices Create Vals ", vals)
+        return super(MercTransInvoices, self).create(vals)
+    
+    def write(self,vals):
+        print("Invoices Write Vals ", vals)
+        return super(MercTransInvoices, self).write(vals)
+
+
+    @api.onchange('invoice_status')
+    def sync_status(self):
+        project_obj = self.env['merctrans.projects']
+        for project in self.invoice_details_ids:
+                if self.invoice_status == 'paid':
+                    project.write({'payment_status':'paid'})
+                if self.invoice_status == 'invoiced':
+                    project.write({'payment_status':'invoiced'})
+
 
 
     

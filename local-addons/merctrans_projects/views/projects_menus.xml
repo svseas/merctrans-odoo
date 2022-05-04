@@ -73,6 +73,7 @@
                     <field name="sale_rate_per_work_unit"/>
                     <field name="discount"/>
                     <field name="job_value"/>
+                    <field name="payment_status"/>
                   </tree>
                 </field>
                 <field name="invoice_value"/>
