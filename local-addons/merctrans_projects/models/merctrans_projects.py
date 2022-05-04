@@ -12,11 +12,9 @@ class MercTransServices(models.Model):
     services_names = fields.Char('Services')
 
 
-
 class MercTransProjects(models.Model):
     _name = 'merctrans.projects'
     _description = 'MercTrans Projects'
-    # _inherit = 'merctrans.services'
     _rec_name = 'job_name'
 
 
@@ -67,7 +65,7 @@ class MercTransProjects(models.Model):
     discount = fields.Integer('Discount (%)')
     #add discount field 
     #fixed job 
-# currency = 
+
     work_unit = fields.Selection(string='Work Unit', selection = work_unit_list)
     volume = fields.Integer('Project Volume')
     currency_id = fields.Many2one('res.currency', string = 'Currency')
@@ -80,6 +78,16 @@ class MercTransProjects(models.Model):
     due_date = fields.Date(string='Due Date')
     project_status = fields.Selection(string='Project Status', selection = project_status_list)
     payment_status = fields.Selection(string='Payment Status', selection = payment_status_list) 
+
+    @api.model
+    def create(self,vals):
+        print("Project Create Vals ", vals)
+        return super(MercTransProjects, self).create(vals)
+    
+    def write(self,vals):
+        print("Project Write Vals ", vals)
+        return super(MercTransProjects, self).write(vals)
+
 
 
     @api.onchange('volume', 'rate_per_work_unit')
@@ -94,4 +102,50 @@ class MercTransProjects(models.Model):
     def date_constrains(self):
         for project in self:
             if project.due_date < project.start_date:
-                raise ValidationError('Due date must be greater than Start date!')
+                raise ValidationError('Due date must be greater than Start date!' )
+
+
+
+class MercTransInvoices(models.Model):
+    _name = 'merctrans.invoices'
+    _rec_name = 'invoice_name'
+    _description = 'MercTrans Invoices for Project Managers'
+   
+    status_list = [('invoiced', 'Invoiced'),
+    ('paid','Paid'),
+    ('unpaid','Unpaid')]
+    
+    invoice_id = fields.Integer('Invoice ID')
+    invoice_name = fields.Char ('Invoice name')
+    invoice_date = fields.Date(string='Invoice Date')
+    invoice_client = fields.Many2one('res.partner', string='Client', required='True')
+    invoice_details_ids = fields.Many2many('merctrans.projects', string='Invoice Lines')
+    currency_id = fields.Many2one('res.currency', string = 'Currency')
+    invoice_value = fields.Monetary("Invoice Value" ,compute = "_compute_invoice_value", currency_field='currency_id')
+    # invoice_details_ids = fields.Many2many('merctrans.invoices.lines', 'job_id', string="Invoice Lines")
+    invoice_status = fields.Selection(string="Invoice Status", selection = status_list)
+    
+    @api.depends('invoice_details_ids')
+    def _compute_invoice_value(self):
+        for item in self:
+            item.invoice_value = sum(x.job_value for x in item.invoice_details_ids)
+
+    @api.constrains('invoice_details_ids')
+    def currency_constrains(self):
+        for job in self:
+            for x in job.invoice_details_ids:
+                if job.currency_id != x.currency_id:
+                    raise ValidationError('Job currency must be the same as invoice currency!')
+    
+    # @api.onchange('invoice_status')
+    # def status_sync(self):
+    #     for record in self:
+    #         for x in record.invoice_details_ids:
+    #             if record.invoice_status == 'paid':
+
+
+    
+
+
+
+

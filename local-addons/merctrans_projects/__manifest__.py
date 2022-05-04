@@ -8,7 +8,7 @@
     'description': """
         To manage MercTrans Localization Projects 
     """,
-
+    'sequence': -100,
     'author': "The Merc",
     'website': "https://merctrans.vn",
 
@@ -19,13 +19,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/projects_menus.xml',
         'views/templates.xml',
+        'views/sale.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

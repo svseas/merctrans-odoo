@@ -14,10 +14,80 @@
     
     </record>
     
+    <record id="merctrans_invoices_action" model='ir.actions.act_window'>
+      <field name="name">Invoices</field>
+      <field name="res_model">merctrans.invoices</field>
+      <field name="view_mode">tree,form</field>
+    
+    </record>
+    
     <menuitem name="MercTrans Projects" id="project_base_menu"/>
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0"/>
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1"/> 
+    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2"/> 
 
+    
+
+<!-- Invoices Tree View -->
+    <record id="invoices_view_tree" model="ir.ui.view">
+      <field name="name">Invoices Tree</field>
+      <field name="model">merctrans.invoices</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="invoice_id"/>
+          <field name="invoice_name"/>
+          <field name="invoice_date"/>
+          <field name="invoice_client"/>
+          <field name="invoice_value"/>
+          <field name="currency_id"/>
+        </tree>
+
+
+      
+      
+      </field>
+    
+    </record>
+
+    <!-- Invoices form View -->
+
+    <record id="invoices_view_form" model="ir.ui.view">
+      <field name="name">Invoices Form</field>
+      <field name="model">merctrans.invoices</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="invoice_id"/>
+                <field name="invoice_name"/>
+                <field name="invoice_date"/>
+                <field name="invoice_client"/>
+                <field name="currency_id"/>
+                <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
+                <field name="invoice_details_ids" widget="many2many">
+                  <tree>
+                    <field name="job_id"/>
+                    <field name="job_name"/>
+                    <field name="volume"/>
+                    <field name="sale_rate_per_work_unit"/>
+                    <field name="discount"/>
+                    <field name="job_value"/>
+                  </tree>
+                </field>
+                <field name="invoice_value"/>
+                <field name="invoice_status"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+      
+    
+    <!-- Service view tree -->
+    
     <record id="services_view_tree" model="ir.ui.view">
       <field name="name">Services</field>
       <field name="model">merctrans.services</field>
