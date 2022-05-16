@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="merctrans_jobs_actions" model="ir.actions.act_window">
+    <field name="name">Merctrans Job List</field>
+    <field name="res_model">merctrans.jobs</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="Jobs" id="job_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="3" />
+
+  <!-- job form view -->
+  <record id="job_view_form" model="ir.ui.view">
+    <field name="name">Job Form</field>
+    <field name="model">merctrans.jobs</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="title" />
+            <field name="project_id" />
+            <field name="job_status" />
+            <field name="source_language" readonly='1' />
+            <field name="target_language" readonly='1' />
+            <field name="start_date" />
+            <field name="due_date" />
+            <!-- <field name="source_language" readonly="1"/> -->
+          </group>
+          <group>
+            <field name="pic" />
+            <field name="address" readonly='1' />
+            <field name="pic_email" readonly='1' />
+            <field name="currency_id"/>
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <!-- job view tree -->
+  <record id="job_view_tree" model="ir.ui.view">
+    <field name="name">Job Tree</field>
+    <field name="model">merctrans.jobs</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="title" />
+        <field name="project_id" />
+        <field name="pic" />
+        <field name="job_status" />
+        <field name="due_date" />
+        <field name="source_language" readonly='1' />
+        <field name="target_language" readonly='1' />
+        <field name="address" />
+        <field name="pic_email" />
+
+      </tree>
+    </field>
+
+  </record>
+  <!-- search view -->
+  <record id="merctrans_jobs_view_search" model="ir.ui.view">
+    <field name="name">Job Search</field>
+    <field name="model">merctrans.jobs</field>
+    <field name="arch" type="xml">
+      <search></search>
+    </field>
+
+  </record>
+</odoo>

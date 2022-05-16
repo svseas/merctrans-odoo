@@ -2,51 +2,48 @@
 <odoo>
   <data>
     <record id="merctrans_projects_action" model='ir.actions.act_window'>
-        <field name="name">MercTrans Project Lists</field>
-        <field name="res_model">merctrans.projects</field>
-        <field name="view_mode">tree,form</field>
+      <field name="name">MercTrans Project Lists</field>
+      <field name="res_model">merctrans.projects</field>
+      <field name="view_mode">tree,form</field>
     </record>
 
     <record id="merctrans_services_action" model='ir.actions.act_window'>
-        <field name="name">MercTrans Services Lists</field>
-        <field name="res_model">merctrans.services</field>
-        <field name="view_mode">tree,form</field>
-    
+      <field name="name">MercTrans Services Lists</field>
+      <field name="res_model">merctrans.services</field>
+      <field name="view_mode">tree,form</field>
+
     </record>
-    
+
     <record id="merctrans_invoices_action" model='ir.actions.act_window'>
       <field name="name">Invoices</field>
       <field name="res_model">merctrans.invoices</field>
       <field name="view_mode">tree,form</field>
-    
+
     </record>
-    
-    <menuitem name="MercTrans Projects" id="project_base_menu"/>
-    <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0"/>
-    <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1"/> 
-    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2"/> 
 
-    
+    <menuitem name="MercTrans Projects" id="project_base_menu" />
+    <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
+    <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
+    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
 
-<!-- Invoices Tree View -->
+
+    <!-- Invoices Tree View -->
     <record id="invoices_view_tree" model="ir.ui.view">
       <field name="name">Invoices Tree</field>
       <field name="model">merctrans.invoices</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="invoice_id"/>
-          <field name="invoice_name"/>
-          <field name="invoice_date"/>
-          <field name="invoice_client"/>
-          <field name="invoice_value"/>
-          <field name="currency_id"/>
+          <field name="invoice_id" />
+          <field name="invoice_name" />
+          <field name="invoice_date" />
+          <field name="invoice_client" />
+          <field name="invoice_value" />
+          <field name="currency_id" />
         </tree>
 
 
-      
-      
       </field>
-    
+
     </record>
 
     <!-- Invoices form View -->
@@ -59,49 +56,48 @@
           <sheet>
             <group>
               <group>
-                <field name="invoice_id"/>
-                <field name="invoice_name"/>
-                <field name="invoice_date"/>
-                <field name="invoice_client"/>
-                <field name="currency_id"/>
+                <field name="invoice_id" />
+                <field name="invoice_name" />
+                <field name="invoice_date" />
+                <field name="invoice_client" />
+                <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
                 <field name="invoice_details_ids" widget="many2many">
                   <tree>
-                    <field name="job_id"/>
-                    <field name="job_name"/>
-                    <field name="volume"/>
-                    <field name="sale_rate_per_work_unit"/>
-                    <field name="discount"/>
-                    <field name="job_value"/>
-                    <field name="payment_status"/>
+                    <field name="job_id" />
+                    <field name="job_name" />
+                    <field name="volume" />
+                    <field name="sale_rate_per_work_unit" />
+                    <field name="discount" />
+                    <field name="job_value" />
+                    <field name="payment_status" />
                   </tree>
                 </field>
-                <field name="invoice_value"/>
-                <field name="invoice_status"/>
+                <field name="invoice_value" />
+                <field name="invoice_status" />
               </group>
             </group>
           </sheet>
         </form>
       </field>
     </record>
-    
-      
-    
+
+
     <!-- Service view tree -->
-    
+
     <record id="services_view_tree" model="ir.ui.view">
       <field name="name">Services</field>
       <field name="model">merctrans.services</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="services_names"/>
-        
+          <field name="services_names" />
+
         </tree>
       </field>
     </record>
 
 
-<!-- project form view-->  
+    <!-- project form view-->
     <record id="project_view_form" model="ir.ui.view">
       <field name="name">Project Form</field>
       <field name="model">merctrans.projects</field>
@@ -110,26 +106,28 @@
           <sheet>
             <group>
               <group>
-                <field name="project_manager"/>
-                <field name="job_id"/>
-                <field name="job_name"/>
-                <field name="job_instruction"/>
-                <field name="work_unit"/>
-                <field name="discount"/>
-                <field name="currency_id"/>
-                <field name="start_date"/>
-                <field name="due_date"/>
+                <field name="project_manager" />
+                <field name="job_id" />
+                <field name="job_name" />
+                <field name="job_instruction" />
+                <field name="work_unit" />
+                <field name="discount" />
+                <field name="currency_id" />
+                <field name="start_date" />
+                <field name="due_date" />
+                <!-- <field name="child_jobs_id" /> -->
+
               </group>
               <group>
-                <field name="source_language"/>
-                <field name="target_language"/>
-                <field name="client" widget="many2many_tags"/>
-                <field name="services_ids" widget="many2many_tags"/> 
-                <field name="volume"/>
-                <field name="sale_rate_per_work_unit"/>
-                <field name="job_value"/>
-                <field name="project_status"/>
-                <field name="payment_status"/>
+                <field name="source_language" />
+                <field name="target_language" />
+                <field name="client" widget="many2many_tags" />
+                <field name="services_ids" widget="many2many_tags" />
+                <field name="volume" />
+                <field name="sale_rate_per_work_unit" />
+                <field name="job_value" />
+                <field name="project_status" />
+                <field name="payment_status" />
               </group>
             </group>
           </sheet>
@@ -137,41 +135,39 @@
       </field>
     </record>
 
-  <!-- project tree view -->
-  <record id="project_view_tree" model="ir.ui.view">
+    <!-- project tree view -->
+    <record id="project_view_tree" model="ir.ui.view">
       <field name="name">Project Form</field>
       <field name="model">merctrans.projects</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="job_id"/>
-          <field name="job_name"/>
-          <field name="project_manager"/>
-          <field name="work_unit"/>
-          <field name="source_language"/>
-          <field name="target_language"/>
-          <field name="client" widget="many2many_tags"/>
-          <field name="services_ids" widget="many2many_tags"/> 
-          <field name="volume"/>
-          <field name="sale_rate_per_work_unit"/>
-          <field name="currency_id"/>
-          <field name="discount"/>
-          <field name="job_value"/>
-          <field name="start_date"/>
-          <field name="due_date"/>
-          <field name="project_status"/>
-          <field name="payment_status"/>
-              
+          <field name="job_id" />
+          <field name="job_name" />
+          <field name="project_manager" />
+          <field name="work_unit" />
+          <field name="source_language" />
+          <field name="target_language" />
+          <field name="client" widget="many2many_tags" />
+          <field name="services_ids" widget="many2many_tags" />
+          <field name="volume" />
+          <field name="sale_rate_per_work_unit" />
+          <field name="currency_id" />
+          <field name="discount" />
+          <field name="job_value" />
+          <field name="start_date" />
+          <field name="due_date" />
+          <field name="project_status" />
+          <field name="payment_status" />
+
         </tree>
       </field>
     </record>
-  
+
   </data>
-  
-  
 
 
-    <!-- explicit list view definition -->
-<!--
+  <!-- explicit list view definition -->
+  <!--
     <record model="ir.ui.view" id="merctrans_projects.list">
       <field name="name">merctrans_projects list</field>
       <field name="model">merctrans_projects.merctrans_projects</field>
@@ -185,8 +181,8 @@
     </record>
 -->
 
-    <!-- actions opening views on models -->
-<!--
+  <!-- actions opening views on models -->
+  <!--
     <record model="ir.actions.act_window" id="merctrans_projects.action_window">
       <field name="name">merctrans_projects window</field>
       <field name="res_model">merctrans_projects.merctrans_projects</field>
@@ -194,8 +190,8 @@
     </record>
 -->
 
-    <!-- server action to the one above -->
-<!--
+  <!-- server action to the one above -->
+  <!--
     <record model="ir.actions.server" id="merctrans_projects.action_server">
       <field name="name">merctrans_projects server</field>
       <field name="model_id" ref="model_merctrans_projects_merctrans_projects"/>
@@ -210,21 +206,21 @@
     </record>
 -->
 
-    <!-- Top menu item -->
-<!--
+  <!-- Top menu item -->
+  <!--
     <menuitem name="merctrans_projects" id="merctrans_projects.menu_root"/>
 -->
-    <!-- menu categories -->
-<!--
+  <!-- menu categories -->
+  <!--
     <menuitem name="Menu 1" id="merctrans_projects.menu_1" parent="merctrans_projects.menu_root"/>
     <menuitem name="Menu 2" id="merctrans_projects.menu_2" parent="merctrans_projects.menu_root"/>
 -->
-    <!-- actions -->
-<!--
+  <!-- actions -->
+  <!--
     <menuitem name="List" id="merctrans_projects.menu_1_list" parent="merctrans_projects.menu_1"
               action="merctrans_projects.action_window"/>
     <menuitem name="Server to list" id="merctrans_projects" parent="merctrans_projects.menu_2"
               action="merctrans_projects.action_server"/>
 -->
-  
+
 </odoo>
