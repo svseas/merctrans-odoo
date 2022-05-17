@@ -29,11 +29,15 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/projects_menus.xml',
         'views/templates.xml',
+<<<<<<< HEAD
         'views/sale.xml',
         'views/jobs.xml'
+=======
+        # 'views/sale.xml'
+>>>>>>> fix stuff
     ],
     # only loaded in demonstration mode
     'demo': [
