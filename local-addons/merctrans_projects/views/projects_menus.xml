@@ -57,20 +57,12 @@
           <sheet>
             <group>
               <group>
-<<<<<<< HEAD
                 <field name="invoice_id" />
                 <field name="invoice_name" />
                 <field name="invoice_date" />
                 <field name="invoice_client" />
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
-=======
-                <field name="invoice_id"/>
-                <field name="invoice_name"/>
-                <field name="invoice_date"/>
-                <field name="invoice_client"/>
-                <field name="currency_id"/>
->>>>>>> fix stuff
                 <field name="invoice_details_ids" widget="many2many">
                   <tree>
                     <field name="job_id" />
@@ -90,30 +82,17 @@
         </form>
       </field>
     </record>
-<<<<<<< HEAD
 
 
     <!-- Service view tree -->
 
-=======
-    
-      
-    
-<!-- Service view tree -->
-    
->>>>>>> fix stuff
     <record id="services_view_tree" model="ir.ui.view">
       <field name="name">Services</field>
       <field name="model">merctrans.services</field>
       <field name="arch" type="xml">
         <tree>
-<<<<<<< HEAD
           <field name="services_names" />
 
-=======
-          <field name="services_names"/>
-          <field name="department"/>
->>>>>>> fix stuff
         </tree>
       </field>
     </record>

@@ -60,21 +60,13 @@ class MercTransProjects(models.Model):
                                        selection=language_list,
                                        default="Select a language")
     discount = fields.Integer('Discount (%)')
-<<<<<<< HEAD
     # add discount field
     # fixed job
-=======
-    
-    
-    #add discount field 
-    #fixed job 
->>>>>>> fix stuff
 
     work_unit = fields.Selection(string='Work Unit', selection=work_unit_list)
     volume = fields.Integer('Project Volume')
     currency_id = fields.Many2one('res.currency', string='Currency')
     sale_rate_per_work_unit = fields.Float('Sale rate per Work Unit')
-<<<<<<< HEAD
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
     job_value = fields.Monetary("Job Value",
                                 compute="_compute_job_value",
@@ -82,10 +74,6 @@ class MercTransProjects(models.Model):
                                 store=True,
                                 readonly=True)
 
-=======
-    job_value = fields.Monetary("Job Value", compute = "_compute_job_value", currency_field='currency_id', store=True, readonly=True)
-    
->>>>>>> fix stuff
     project_manager = fields.Many2one('res.users', string='Project Manager')
     start_date = fields.Date(string='Start Date')
     due_date = fields.Date(string='Due Date')
@@ -130,7 +118,6 @@ class MercTransInvoices(models.Model):
     invoice_id = fields.Integer('Invoice ID')
     invoice_name = fields.Char('Invoice name')
     invoice_date = fields.Date(string='Invoice Date')
-<<<<<<< HEAD
     invoice_client = fields.Many2one('res.partner',
                                      string='Client',
                                      required='True')
@@ -144,14 +131,6 @@ class MercTransInvoices(models.Model):
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list)
 
-=======
-    invoice_client = fields.Many2one('res.partner', string='Client', required='True')
-    invoice_details_ids = fields.Many2many('merctrans.projects', string='Invoice Lines')
-    currency_id = fields.Many2one('res.currency', string = 'Currency')
-    invoice_value = fields.Monetary("Invoice Value" ,compute = "_compute_invoice_value", currency_field='currency_id')
-    invoice_status = fields.Selection(string="Invoice Status", selection = status_list)
-    
->>>>>>> fix stuff
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
@@ -175,33 +154,11 @@ class MercTransInvoices(models.Model):
         print("Invoices Write Vals ", vals)
         return super(MercTransInvoices, self).write(vals)
 
-<<<<<<< HEAD
-=======
-    
-    #change project payment statuses based on invoice statuses
->>>>>>> fix stuff
     @api.onchange('invoice_status')
     def sync_status(self):
         
         for project in self.invoice_details_ids:
-<<<<<<< HEAD
             if self.invoice_status == 'paid':
                 project.write({'payment_status': 'paid'})
             if self.invoice_status == 'invoiced':
                 project.write({'payment_status': 'invoiced'})
-=======
-                if self.invoice_status == 'paid':
-                    project.write({'payment_status':'paid'})
-                if self.invoice_status == 'invoiced':
-                    project.write({'payment_status':'invoiced'})
-                if self.invoice_status == 'unpaid':
-                    project.write({'payment_status':'unpaid'})
-
-
-
-    
-
-
-
-
->>>>>>> fix stuff
