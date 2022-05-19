@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class MercTransServices(models.Model):
     _name = 'merctrans.services'
     _rec_name = 'services_names'
-    _description = 'Services Offered by MercTrans'
+    _description = 'Services offered by MercTrans'
 
     department_list = [('localization', 'Localization'),
                        ('marketing', 'Marketing'),
@@ -156,7 +156,7 @@ class MercTransInvoices(models.Model):
 
     @api.onchange('invoice_status')
     def sync_status(self):
-        project_obj = self.env['merctrans.projects']
+        
         for project in self.invoice_details_ids:
             if self.invoice_status == 'paid':
                 project.write({'payment_status': 'paid'})
