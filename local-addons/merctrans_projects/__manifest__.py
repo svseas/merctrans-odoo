@@ -31,6 +31,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
+        # 'security/ir.model.access.contributor.csv',
         'views/projects_menus.xml',
         'views/templates.xml',
         # 'views/sale.xml',

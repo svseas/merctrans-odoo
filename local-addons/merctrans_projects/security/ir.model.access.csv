@@ -1,7 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_merctrans_projects,access.merctrans.projects,model_merctrans_projects,merctrans_projects.group_merctrans_pm,1,1,1,1
-access_merctrans_invoices,access.merctrans.invoices,model_merctrans_invoices,merctrans_projects.group_merctrans_pm,1,1,1,1
-access_merctrans_services,access.merctrans.services,model_merctrans_services,merctrans_projects.group_merctrans_pm,1,1,1,1
-access_merctrans_jobs,access.merctrans.jobs,model_merctrans_jobs,merctrans_projects.group_merctrans_contributor,1,1,1,1
-
-
+access_merctrans_projects,access_merctrans_projects,model_merctrans_projects,base.group_user,1,0,0,0

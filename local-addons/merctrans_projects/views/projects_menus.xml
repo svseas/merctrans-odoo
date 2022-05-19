@@ -81,6 +81,7 @@
           </sheet>
         </form>
       </field>
+      <!-- <field name="group_merctrans_contributor" eval="[(3,ref('group_merctrans_contributor'))]" -->
     </record>
 
 
@@ -134,8 +135,10 @@
           </sheet>
         </form>
       </field>
+      
     </record>
 
+    
     <!-- project tree view -->
     <record id="project_view_tree" model="ir.ui.view">
       <field name="name">Project Form</field>
@@ -159,7 +162,7 @@
           <field name="due_date" />
           <field name="project_status" />
           <field name="payment_status" />
-
+          
         </tree>
       </field>
     </record>
