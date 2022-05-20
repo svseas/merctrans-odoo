@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+
+from odoo import api, fields, models
 
 
 class MerctransJobs(models.Model):
@@ -15,11 +16,16 @@ class MerctransJobs(models.Model):
     # Detail Job
 
     title = fields.Char('Job Title', default='Job Title')
-    pic = fields.Many2one('res.partner', 'PIC', required=True)
+    pic = fields.Many2one('res.users', 'PIC', required=True)
     address = fields.Char('Address',
                           store=True,
                           readonly=True,
                           compute='_get_street_pic')
+    pic_id = fields.Char('Id',
+                         store=True,
+                         readonly=True,
+                         compute='_get_id_pic')
+
     pic_email = fields.Char('Email',
                             store=True,
                             readonly=True,
@@ -67,10 +73,16 @@ class MerctransJobs(models.Model):
     @api.onchange('pic')
     @api.depends('pic')
     def _get_email_pic(self):
-        self.ensure_one()
         for project in self:
             print(project.pic.email)
             project.pic_email = project.pic.email
+
+    @api.onchange('pic')
+    @api.depends('pic')
+    def _get_id_pic(self):
+        for project in self:
+            print(project.pic.id)
+            project.pic_id = project.pic.id
 
     @api.onchange('project_id')
     @api.depends('project_id')

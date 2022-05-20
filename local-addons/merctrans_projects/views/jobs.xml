@@ -5,8 +5,8 @@
     <field name="res_model">merctrans.jobs</field>
     <field name="view_mode">tree,form</field>
   </record>
-
-  <menuitem name="Jobs" id="job_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="3" />
+  <!-- Cách để user chỉ nhìn được một menu-item -> Tách nó ra làm một Menu list riêng. Sau đó thêm tree, form view cho nó trên file Menu tổng. -> Tắt nó đi ở menu tổng. =)) Hide nó đi. Nó không hiện trong list menu tổng nữa. -->
+  <!-- <menuitem name="Merctrans Jobs" id="job_menu"  action="merctrans_jobs_actions"/> -->
 
   <!-- job form view -->
   <record id="job_view_form" model="ir.ui.view">
