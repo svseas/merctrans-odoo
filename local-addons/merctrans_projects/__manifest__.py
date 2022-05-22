@@ -29,9 +29,11 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        # Seicurity in order xml -> csv
         'security/security.xml',
-        # 'security/ir.model.access.contributor.csv',
+        'security/security_rules.xml',
+        'security/ir.model.access.csv',
+        # View <>
         'views/projects_menus.xml',
         'views/templates.xml',
         # 'views/sale.xml',

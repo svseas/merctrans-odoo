@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate='1'>
+  <record model="ir.rule" id="mectrans_jobs_user_rule">
+    <field name="name">Merctrans Job: see only user job</field>
+    <field name="model_id" ref="model_merctrans_jobs"/>
+    <field name="groups" eval="[(4, ref('merctrans_projects.group_merctrans_contributor'))]"/>
+    <field name="domain_force" >
+      [('pic_id','=',user.id)]
+    </field>
+  </record>
+</odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record model = "ir.module.category" id="base.module_category_merctransproject">
+    <record model = "ir.module.category" id="module_category_merctransproject">
         <field name="name">MercTrans Project Users</field>
         <field name="description">For MercTrans Users</field>
         <field name="sequence">45</field>
@@ -14,8 +14,8 @@
 
     <record id="group_merctrans_contributor" model="res.groups">
         <field name="name">Merctrans Contributors</field>
-        <field name="category_id" ref="module_categrory_merctransproject"/>
-        <field name="implied_ids" eval="[(4, ref('group_merctrans_pm'))]"/>
+        <field name="category_id" ref="base.module_category_merctransproject"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
     
