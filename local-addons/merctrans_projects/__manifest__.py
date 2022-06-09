@@ -34,10 +34,10 @@
         'security/security_rules.xml',
         'security/ir.model.access.csv',
         # View <>
+        'views/jobs.xml',
         'views/projects_menus.xml',
         'views/templates.xml',
         # 'views/sale.xml',
-        'views/jobs.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
