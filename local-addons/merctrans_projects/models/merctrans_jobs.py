@@ -25,7 +25,6 @@ class MerctransJobs(models.Model):
                          store=True,
                          readonly=True,
                          compute='_get_id_pic')
-
     pic_email = fields.Char('Email',
                             store=True,
                             readonly=True,
@@ -40,6 +39,10 @@ class MerctransJobs(models.Model):
                                   readonly=True,
                                   compute='_get_project_target')
     currency_id = fields.Many2one('res.currency', string='Currency')
+    valid_date = fields.Char('Valid Date',
+                             default="Choose Project",
+                             readonly=True,
+                             compute='_get_project_valid_date')
     start_date = fields.Date(string='Start Date')
     due_date = fields.Date(string='Due Date')
 
@@ -88,6 +91,15 @@ class MerctransJobs(models.Model):
     @api.depends('project_id')
     def _get_project_source(self):
         self.source_language = self.project_id.source_language
+
+    @api.onchange('project_id')
+    @api.depends('project_id')
+    def _get_project_valid_date(self):
+        for project in self:
+            if project.project_id.start_date:
+                project.valid_date = f"{project.project_id.start_date} >> {project.project_id.due_date}"
+            else:
+                project.valid_date = "Choose Project"
 
     @api.onchange('project_id')
     @api.depends('project_id')

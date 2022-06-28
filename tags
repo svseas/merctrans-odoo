@@ -9,6 +9,10 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/b4f0dfbd/
+2BCVbB9y7f8wisPqUL52mPxrYD9	.idea/workspace.xml	/^  <component name="ProjectId" id="2BCVbB9y7f8wisPqUL52mPxrYD9" \/>$/;"	i
+48aa5e45-b265-4e4f-b5e6-7676a3d0cd8b	.idea/workspace.xml	/^      <changelist id="48aa5e45-b265-4e4f-b5e6-7676a3d0cd8b" name="Changes" comment="" \/>$/;"	i
+48aa5e45-b265-4e4f-b5e6-7676a3d0cd8b	.idea/workspace.xml	/^    <list default="true" id="48aa5e45-b265-4e4f-b5e6-7676a3d0cd8b" name="Changes" comment="">$/;"	i
+Default	.idea/workspace.xml	/^    <task active="true" id="Default" summary="Default task">$/;"	i
 MercTransInvoices	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransInvoices(models.Model):$/;"	c
 MercTransProjects	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransProjects(models.Model):$/;"	c
 MercTransServices	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransServices(models.Model):$/;"	c
@@ -25,6 +29,7 @@ _get_email_pic	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    de
 _get_id_pic	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_id_pic(self):$/;"	m	class:MerctransJobs
 _get_project_source	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_project_source(self):$/;"	m	class:MerctransJobs
 _get_project_target	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_project_target(self):$/;"	m	class:MerctransJobs
+_get_project_valid_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_project_valid_date(self):$/;"	m	class:MerctransJobs
 _get_street_pic	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_street_pic(self):$/;"	m	class:MerctransJobs
 _name	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    _name = 'merctrans.jobs'$/;"	v	class:MerctransJobs
 _name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _name = 'merctrans.invoices'$/;"	v	class:MercTransInvoices
@@ -72,8 +77,8 @@ dbfilter	config-test/odoo.conf	/^dbfilter = $/;"	k	section:options
 dbfilter	config/odoo.conf	/^dbfilter = $/;"	k	section:options
 demo	config-test/odoo.conf	/^demo = {}$/;"	k	section:options
 demo	config/odoo.conf	/^demo = False$/;"	k	section:options
-department	local-addons/merctrans_projects/models/merctrans_projects.py	/^    department = fields.Selection(string="Department",$/;"	v	class:MercTransServices
-department_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    department_list = [('localization', 'Localization'),$/;"	v	class:MercTransServices
+department	local-addons/merctrans_projects/models/merctrans_projects.py	/^    department = fields.Selection(string="Department", selection=department_list)$/;"	v	class:MercTransServices
+department_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    department_list = [('localization', 'Localization'), ('marketing', 'Marketing'), ('developem/;"	v	class:MercTransServices
 discount	local-addons/merctrans_projects/models/merctrans_projects.py	/^    discount = fields.Integer('Discount (%)')$/;"	v	class:MercTransProjects
 due_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    due_date = fields.Date(string='Due Date')$/;"	v	class:MerctransJobs
 due_date	local-addons/merctrans_projects/models/merctrans_projects.py	/^    due_date = fields.Date(string='Due Date')$/;"	v	class:MercTransProjects
@@ -91,13 +96,13 @@ http_port	config-test/odoo.conf	/^http_port = 8069$/;"	k	section:options
 http_port	config/odoo.conf	/^http_port = 8069$/;"	k	section:options
 import_partial	config-test/odoo.conf	/^import_partial = $/;"	k	section:options
 import_partial	config/odoo.conf	/^import_partial = $/;"	k	section:options
-invoice_client	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_client = fields.Many2one('res.partner',$/;"	v	class:MercTransInvoices
+invoice_client	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_client = fields.Many2one('res.partner', string='Client', required='True')$/;"	v	class:MercTransInvoices
 invoice_date	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_date = fields.Date(string='Invoice Date')$/;"	v	class:MercTransInvoices
-invoice_details_ids	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_details_ids = fields.Many2many('merctrans.projects',$/;"	v	class:MercTransInvoices
+invoice_details_ids	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_details_ids = fields.Many2many('merctrans.projects', string='Invoice Lines')$/;"	v	class:MercTransInvoices
 invoice_id	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_id = fields.Integer('Invoice ID')$/;"	v	class:MercTransInvoices
 invoice_name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_name = fields.Char('Invoice name')$/;"	v	class:MercTransInvoices
-invoice_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_status = fields.Selection(string="Invoice Status",$/;"	v	class:MercTransInvoices
-invoice_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_value = fields.Monetary("Invoice Value",$/;"	v	class:MercTransInvoices
+invoice_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_status = fields.Selection(string="Invoice Status", selection=status_list)$/;"	v	class:MercTransInvoices
+invoice_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    invoice_value = fields.Monetary("Invoice Value", compute="_compute_invoice_value", currency_/;"	v	class:MercTransInvoices
 invoices_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_in/;"	i
 invoices_view_form	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="invoices_view_form" model="ir.ui.view">$/;"	i
 invoices_view_tree	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="invoices_view_tree" model="ir.ui.view">$/;"	i
@@ -106,12 +111,12 @@ job_instruction	local-addons/merctrans_projects/models/merctrans_projects.py	/^ 
 job_menu_in_base_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctran/;"	i
 job_name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_name = fields.Char('Project Name', default='Project Name')$/;"	v	class:MercTransProjects
 job_status	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    job_status = fields.Selection(string='JOB STATUS',$/;"	v	class:MerctransJobs
-job_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_value = fields.Monetary("Job Value",$/;"	v	class:MercTransProjects
-job_view_form	local-addons/merctrans_projects/views/jobs.xml	/^  <record id="job_view_form" model="ir.ui.view">$/;"	i
+job_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_value = fields.Monetary("Job Value", compute="_compute_job_value", currency_field='curre/;"	v	class:MercTransProjects
+job_view_form	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="job_view_form" model="ir.ui.view">$/;"	i
 job_view_form_in_base_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^  <record id="job_view_form_in_base_menu" model="ir.ui.view">$/;"	i
-job_view_tree	local-addons/merctrans_projects/views/jobs.xml	/^  <record id="job_view_tree" model="ir.ui.view">$/;"	i
+job_view_tree	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="job_view_tree" model="ir.ui.view">$/;"	i
 job_view_tree_in_base_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^  <record id="job_view_tree_in_base_menu" model="ir.ui.view">$/;"	i
-language_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    language_list = [('zh-CN', 'Chinese (Simplified)'),$/;"	v	class:MercTransProjects
+language_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    language_list = [('zh-CN', 'Chinese (Simplified)'), ('zh-TW', 'Chinese (Traditional)'), ('en/;"	v	class:MercTransProjects
 limit_memory_hard	config-test/odoo.conf	/^limit_memory_hard = 2684354560$/;"	k	section:options
 limit_memory_hard	config/odoo.conf	/^limit_memory_hard = 2684354560$/;"	k	section:options
 limit_memory_soft	config-test/odoo.conf	/^limit_memory_soft = 2147483648$/;"	k	section:options
@@ -142,8 +147,8 @@ max_cron_threads	config-test/odoo.conf	/^max_cron_threads = 2$/;"	k	section:opti
 max_cron_threads	config/odoo.conf	/^max_cron_threads = 2$/;"	k	section:options
 mectrans_jobs_user_rule	local-addons/merctrans_projects/security/security_rules.xml	/^  <record model="ir.rule" id="mectrans_jobs_user_rule">$/;"	i
 merctrans_invoices_action	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="merctrans_invoices_action" model='ir.actions.act_window'>$/;"	i
-merctrans_jobs_actions	local-addons/merctrans_projects/views/jobs.xml	/^  <record id="merctrans_jobs_actions" model="ir.actions.act_window">$/;"	i
-merctrans_jobs_view_search	local-addons/merctrans_projects/views/jobs.xml	/^  <record id="merctrans_jobs_view_search" model="ir.ui.view">$/;"	i
+merctrans_jobs_actions	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="merctrans_jobs_actions" model="ir.actions.act_window">$/;"	i
+merctrans_jobs_view_search	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="merctrans_jobs_view_search" model="ir.ui.view">$/;"	i
 merctrans_projects_action	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="merctrans_projects_action" model='ir.actions.act_window'>$/;"	i
 merctrans_services_action	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="merctrans_services_action" model='ir.actions.act_window'>$/;"	i
 module_category_merctransproject	local-addons/merctrans_projects/security/security.xml	/^    <record model = "ir.module.category" id="module_category_merctransproject">$/;"	i
@@ -153,8 +158,8 @@ osv_memory_age_limit	config-test/odoo.conf	/^osv_memory_age_limit = False$/;"	k	
 osv_memory_age_limit	config/odoo.conf	/^osv_memory_age_limit = False$/;"	k	section:options
 osv_memory_count_limit	config-test/odoo.conf	/^osv_memory_count_limit = False$/;"	k	section:options
 osv_memory_count_limit	config/odoo.conf	/^osv_memory_count_limit = False$/;"	k	section:options
-payment_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    payment_status = fields.Selection(string='Payment Status',$/;"	v	class:MercTransProjects
-payment_status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),$/;"	v	class:MercTransProjects
+payment_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    payment_status = fields.Selection(string='Payment Status', selection=payment_status_list)$/;"	v	class:MercTransProjects
+payment_status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'), ('paid', 'Paid')]$/;"	v	class:MercTransProjects
 pg_path	config-test/odoo.conf	/^pg_path = $/;"	k	section:options
 pg_path	config/odoo.conf	/^pg_path = $/;"	k	section:options
 pic	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    pic = fields.Many2one('res.users', 'PIC', required=True)$/;"	v	class:MerctransJobs
@@ -166,9 +171,9 @@ project_base_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^   
 project_id	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    project_id = fields.Many2one('merctrans.projects',$/;"	v	class:MerctransJobs
 project_manager	local-addons/merctrans_projects/models/merctrans_projects.py	/^    project_manager = fields.Many2one('res.users', string='Project Manager')$/;"	v	class:MercTransProjects
 project_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_pro/;"	i
-project_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    project_status = fields.Selection(string='Project Status',$/;"	v	class:MercTransProjects
+project_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    project_status = fields.Selection(string='Project Status', selection=project_status_list)$/;"	v	class:MercTransProjects
 project_status_list	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    project_status_list = [('potential', 'Potential'),$/;"	v	class:MerctransJobs
-project_status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    project_status_list = [('potential', 'Potential'),$/;"	v	class:MercTransProjects
+project_status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    project_status_list = [('potential', 'Potential'), ('confirmed', 'Confirmed'), ('in progress/;"	v	class:MercTransProjects
 project_view_form	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="project_view_form" model="ir.ui.view">$/;"	i
 project_view_tree	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="project_view_tree" model="ir.ui.view">$/;"	i
 proxy_mode	config-test/odoo.conf	/^proxy_mode = False$/;"	k	section:options
@@ -197,15 +202,15 @@ smtp_ssl	config/odoo.conf	/^smtp_ssl = False$/;"	k	section:options
 smtp_user	config-test/odoo.conf	/^smtp_user = False$/;"	k	section:options
 smtp_user	config/odoo.conf	/^smtp_user = False$/;"	k	section:options
 source_language	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    source_language = fields.Char('Source Language',$/;"	v	class:MerctransJobs
-source_language	local-addons/merctrans_projects/models/merctrans_projects.py	/^    source_language = fields.Selection(string="Source Languages",$/;"	v	class:MercTransProjects
+source_language	local-addons/merctrans_projects/models/merctrans_projects.py	/^    source_language = fields.Selection(string="Source Languages", selection=language_list, defau/;"	v	class:MercTransProjects
 start_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    start_date = fields.Date(string='Start Date')$/;"	v	class:MerctransJobs
 start_date	local-addons/merctrans_projects/models/merctrans_projects.py	/^    start_date = fields.Date(string='Start Date')$/;"	v	class:MercTransProjects
-status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    status_list = [('invoiced', 'Invoiced'), ('paid', 'Paid'),$/;"	v	class:MercTransInvoices
+status_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    status_list = [('invoiced', 'Invoiced'), ('paid', 'Paid'), ('unpaid', 'Unpaid')]$/;"	v	class:MercTransInvoices
 sync_status	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def sync_status(self):$/;"	m	class:MercTransInvoices
 syslog	config-test/odoo.conf	/^syslog = False$/;"	k	section:options
 syslog	config/odoo.conf	/^syslog = False$/;"	k	section:options
 target_language	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    target_language = fields.Char('Target Language',$/;"	v	class:MerctransJobs
-target_language	local-addons/merctrans_projects/models/merctrans_projects.py	/^    target_language = fields.Selection(string="Target Language",$/;"	v	class:MercTransProjects
+target_language	local-addons/merctrans_projects/models/merctrans_projects.py	/^    target_language = fields.Selection(string="Target Language", selection=language_list, defaul/;"	v	class:MercTransProjects
 test_enable	config-test/odoo.conf	/^test_enable = False$/;"	k	section:options
 test_enable	config/odoo.conf	/^test_enable = False$/;"	k	section:options
 test_file	config-test/odoo.conf	/^test_file = $/;"	k	section:options
@@ -221,11 +226,12 @@ unaccent	config-test/odoo.conf	/^unaccent = False$/;"	k	section:options
 unaccent	config/odoo.conf	/^unaccent = False$/;"	k	section:options
 upgrade_path	config-test/odoo.conf	/^upgrade_path = $/;"	k	section:options
 upgrade_path	config/odoo.conf	/^upgrade_path = $/;"	k	section:options
+valid_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    valid_date = fields.Char('Valid Date',$/;"	v	class:MerctransJobs
 volume	local-addons/merctrans_projects/models/merctrans_projects.py	/^    volume = fields.Integer('Project Volume')$/;"	v	class:MercTransProjects
 without_demo	config-test/odoo.conf	/^without_demo = True$/;"	k	section:options
 without_demo	config/odoo.conf	/^without_demo = True$/;"	k	section:options
 work_unit	local-addons/merctrans_projects/models/merctrans_projects.py	/^    work_unit = fields.Selection(string='Work Unit', selection=work_unit_list)$/;"	v	class:MercTransProjects
-work_unit_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    work_unit_list = [('word', 'Word'), ('hour', 'Hour'), ('page', 'Page'),$/;"	v	class:MercTransProjects
+work_unit_list	local-addons/merctrans_projects/models/merctrans_projects.py	/^    work_unit_list = [('word', 'Word'), ('hour', 'Hour'), ('page', 'Page'), ('job', 'Job')]$/;"	v	class:MercTransProjects
 workers	config-test/odoo.conf	/^workers = 0$/;"	k	section:options
 workers	config/odoo.conf	/^workers = 0$/;"	k	section:options
 write	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def write(self, vals):$/;"	m	class:MercTransInvoices

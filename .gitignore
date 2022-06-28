@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 odoo/
 odoo_pg_pass
+.idea
