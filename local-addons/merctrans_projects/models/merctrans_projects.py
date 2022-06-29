@@ -20,7 +20,7 @@ class MercTransServices(models.Model):
 class MercTransProjects(models.Model):
     _name = 'merctrans.projects'
     _description = 'MercTrans Projects'
-    _rec_name = 'job_name'
+    _rec_name = 'project_name'
 
     language_list = [('zh-CN', 'Chinese (Simplified)'),
                      ('zh-TW', 'Chinese (Traditional)'),
