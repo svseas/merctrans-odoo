@@ -135,7 +135,7 @@ class MercTransInvoices(models.Model):
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
-            item.invoice_value = sum(x.job_value
+            item.invoice_value = sum(x.job_value  # x??? rename plz 
                                      for x in item.invoice_details_ids)
 
     @api.constrains('invoice_details_ids')
