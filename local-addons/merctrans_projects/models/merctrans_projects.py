@@ -47,7 +47,7 @@ class MercTransProjects(models.Model):
     payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
                            ('paid', 'Paid')]
 
-    project_id = id
+    project_id = fields.Char('Project Id') 
     project_name = fields.Char('Project Name', default='Project Name')
     client = fields.Many2many('res.partner', string='Clients', required=True)
 

@@ -64,6 +64,7 @@ class MerctransJobs(models.Model):
     # get Source default
 
     # TODO: Sau khi có currency change street = currency EZ???
+
     # Get pic address
     @api.onchange('pic')
     @api.depends('pic')
