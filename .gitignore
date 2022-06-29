@@ -3,3 +3,4 @@ __pycache__/
 odoo/
 odoo_pg_pass
 .idea
+docker-compose.yml
