@@ -4,3 +4,4 @@ odoo/
 odoo_pg_pass
 .idea
 docker-compose.yml
+tags
