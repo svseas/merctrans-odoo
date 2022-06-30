@@ -53,7 +53,7 @@ class MercTransProjects(models.Model):
 
     # services contain tags
     services_ids = fields.Many2many('merctrans.services', string='Services')
-    project_instruction = fields.Char('Project Instruction')
+    project_instruction = fields.Html('Project Instruction')
     source_language = fields.Selection(string="Source Languages",
                                        selection=language_list,
                                        default="Select a language")

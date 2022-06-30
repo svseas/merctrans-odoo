@@ -111,7 +111,7 @@
                 <field name="project_manager" />
                 <field name="project_id" />
                 <field name="project_name" />
-                <field name="project_instruction" />
+
                 <field name="work_unit" />
                 <field name="discount" />
                 <field name="currency_id" />
@@ -132,6 +132,11 @@
                 <field name="payment_status" />
               </group>
             </group>
+            <notebook>
+              <page string="Project Instruction" name="project_instruction">
+                <field name="project_instruction" />
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>
