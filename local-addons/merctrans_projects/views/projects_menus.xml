@@ -97,7 +97,14 @@
         </tree>
       </field>
     </record>
-
+    <!-- Sequence auto incement -->
+    <record id="increment_number_id" model="ir.sequence">
+      <field name="name">Filed increment </field>
+      <field name="code">increment_number_id</field>
+      <field name='prefix'></field>
+      <field name='padding'>5</field>
+      <field name="company_id" eval="False" />
+    </record>
 
     <!-- project form view-->
     <record id="project_view_form" model="ir.ui.view">
@@ -111,7 +118,8 @@
                 <field name="project_manager" />
                 <field name="project_id" />
                 <field name="project_name" />
-
+                <field name="number_id" />
+                <field name="project_instruction" />
                 <field name="work_unit" />
                 <field name="discount" />
                 <field name="currency_id" />
@@ -151,6 +159,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="project_id" />
+          <field name="number_id" />
           <field name="project_name" />
 <!--          <field name="project_manager" />-->
           <field name="work_unit" />
@@ -171,54 +180,54 @@
         </tree>
       </field>
     </record>
-      <!-- job form view -->
-  <record id="job_view_form_in_base_menu" model="ir.ui.view">
-    <field name="name">Job Form</field>
-    <field name="model">merctrans.jobs</field>
-    <field name="arch" type="xml">
-      <form>
-        <group>
+    <!-- job form view -->
+    <record id="job_view_form_in_base_menu" model="ir.ui.view">
+      <field name="name">Job Form</field>
+      <field name="model">merctrans.jobs</field>
+      <field name="arch" type="xml">
+        <form>
           <group>
-            <field name="title" />
-            <field name="project_id" />
-            <field name="job_status" />
-            <field name="source_language" readonly='1' />
-            <field name="target_language" readonly='1' />
-            <field name="start_date" />
-            <field name="due_date" />
-            <!-- <field name="source_language" readonly="1"/> -->
+            <group>
+              <field name="title" />
+              <field name="project_id" />
+              <field name="job_status" />
+              <field name="source_language" readonly='1' />
+              <field name="target_language" readonly='1' />
+              <field name="start_date" />
+              <field name="due_date" />
+              <!-- <field name="source_language" readonly="1"/> -->
+            </group>
+            <group>
+              <field name="pic" />
+              <field name="address" readonly='1' />
+              <field name="pic_email" readonly='1' />
+              <field name="currency_id" />
+            </group>
           </group>
-          <group>
-            <field name="pic" />
-            <field name="address" readonly='1' />
-            <field name="pic_email" readonly='1' />
-            <field name="currency_id"/>
-          </group>
-        </group>
-      </form>
-    </field>
-  </record>
+        </form>
+      </field>
+    </record>
 
-  <!-- job view tree -->
-  <record id="job_view_tree_in_base_menu" model="ir.ui.view">
-    <field name="name">Job Tree</field>
-    <field name="model">merctrans.jobs</field>
-    <field name="arch" type="xml">
-      <tree>
-        <field name="title" />
-        <field name="project_id" />
-        <field name="pic" />
-        <field name="job_status" />
-        <field name="due_date" />
-        <field name="source_language" readonly='1' />
-        <field name="target_language" readonly='1' />
-        <field name="address" />
-        <field name="pic_email" />
+    <!-- job view tree -->
+    <record id="job_view_tree_in_base_menu" model="ir.ui.view">
+      <field name="name">Job Tree</field>
+      <field name="model">merctrans.jobs</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="title" />
+          <field name="project_id" />
+          <field name="pic" />
+          <field name="job_status" />
+          <field name="due_date" />
+          <field name="source_language" readonly='1' />
+          <field name="target_language" readonly='1' />
+          <field name="address" />
+          <field name="pic_email" />
 
-      </tree>
-    </field>
+        </tree>
+      </field>
 
-  </record>
+    </record>
 
 
   </data>

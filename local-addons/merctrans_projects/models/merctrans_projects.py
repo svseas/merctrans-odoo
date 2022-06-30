@@ -47,8 +47,12 @@ class MercTransProjects(models.Model):
     payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
                            ('paid', 'Paid')]
 
-    project_id = fields.Char('Project Id') 
-    project_name = fields.Char('Project Name*', default='Project Name', required=True)
+    # number_id = fields.Integer(string="Stt",
+    #                            default=lambda self: self.env['ir.sequence'].
+    #                            next_by_code('increment_number_id'))
+    project_id = fields.Char('Project Id', default="Hoc", readonly=True)
+    number_id = fields.Integer('No number', index=True, readonly=True)
+    project_name = fields.Char('Project Name', default='Project Name')
     client = fields.Many2many('res.partner', string='Clients', required=True)
 
     # services contain tags
@@ -86,11 +90,16 @@ class MercTransProjects(models.Model):
     @api.model
     def create(self, vals):
         print("Project Create Vals ", vals)
+        vals['number_id'] = self.env['ir.sequence'].next_by_code(
+            'increment_number_id') or _('New')
         return super(MercTransProjects, self).create(vals)
 
+    @api.model
     def write(self, vals):
         print("Project Write Vals ", vals)
         return super(MercTransProjects, self).write(vals)
+
+    # Auto genarate porject_id with client name, datetime and native id
 
     @api.onchange('volume', 'rate_per_work_unit')
     @api.depends('volume', 'sale_rate_per_work_unit', 'discount')
