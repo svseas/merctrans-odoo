@@ -100,9 +100,9 @@
     <!-- Sequence auto incement -->
     <record id="increment_number_id" model="ir.sequence">
       <field name="name">Filed increment </field>
-      <field name="code">increment_number_id</field>
+      <field name="code">merctrans.project</field>
       <field name='prefix'></field>
-      <field name='padding'>5</field>
+      <field name='padding'>0001</field>
       <field name="company_id" eval="False" />
     </record>
 
@@ -158,8 +158,8 @@
       <field name="model">merctrans.projects</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="project_id" />
           <field name="number_id" />
+          <field name="project_id" />
           <field name="project_name" />
 <!--          <field name="project_manager" />-->
           <field name="work_unit" />
