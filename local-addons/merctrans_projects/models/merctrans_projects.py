@@ -48,7 +48,7 @@ class MercTransProjects(models.Model):
                            ('paid', 'Paid')]
 
     project_id = fields.Char('Project Id') 
-    project_name = fields.Char('Project Name', default='Project Name')
+    project_name = fields.Char('Project Name*', default='Project Name', required=True)
     client = fields.Many2many('res.partner', string='Clients', required=True)
 
     # services contain tags
@@ -60,28 +60,28 @@ class MercTransProjects(models.Model):
     target_language = fields.Selection(string="Target Language",
                                        selection=language_list,
                                        default="Select a language")
-    discount = fields.Integer('Discount (%)')
+    discount = fields.Integer(string='Discount (%)', default=0)
     # add discount field
     # fixed job
 
-    work_unit = fields.Selection(string='Work Unit', selection=work_unit_list)
-    volume = fields.Integer('Project Volume')
-    currency_id = fields.Many2one('res.currency', string='Currency')
-    sale_rate_per_work_unit = fields.Float('Sale rate per Work Unit')
+    work_unit = fields.Selection(string='Work Unit*', selection=work_unit_list, required=True)
+    volume = fields.Integer(string='Project Volume*', required=True, default=0)
+    currency_id = fields.Many2one('res.currency', string='Currency*', required=True)
+    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit', required=True, default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
-    job_value = fields.Monetary("Job Value",
+    job_value = fields.Monetary("Project Value",
                                 compute="_compute_job_value",
                                 currency_field='currency_id',
                                 store=True,
-                                readonly=True)
+                                readonly=True, default=0)
 
-    project_manager = fields.Many2one('res.users', string='Project Manager')
-    start_date = fields.Date(string='Start Date')
-    due_date = fields.Date(string='Due Date')
+    project_manager = fields.Many2one('res.users', string='Project Manager*', required=True)
+    start_date = fields.Date(string='Start Date*', required=True)
+    due_date = fields.Date(string='Due Date*', required=True)
     project_status = fields.Selection(string='Project Status',
-                                      selection=project_status_list)
+                                      selection=project_status_list, required=True, default='Project Status')
     payment_status = fields.Selection(string='Payment Status',
-                                      selection=payment_status_list)
+                                      selection=payment_status_list, default='Payment Status')
 
     @api.model
     def create(self, vals):
