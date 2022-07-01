@@ -109,6 +109,8 @@ class MercTransProjects(models.Model):
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
                                       default='Payment Status')
+    job_details = fields.Many2many("merctrans.jobs",
+                                   string="Jobs in this Project")
 
     @api.model
     def create(self, vals):
