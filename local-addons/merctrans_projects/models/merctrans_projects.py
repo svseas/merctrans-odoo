@@ -92,12 +92,11 @@ class MercTransProjects(models.Model):
                                            required=True,
                                            default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
-    job_value = fields.Monetary("Project Value",
-                                compute="_compute_job_value",
-                                currency_field='currency_id',
-                                store=True,
-                                readonly=True,
-                                default=0)
+    job_value = fields.Float("Project Value",
+                             compute="_compute_job_value",
+                             store=True,
+                             readonly=True,
+                             default=0)
 
     project_manager = fields.Many2one('res.users',
                                       string='Project Manager*',
@@ -173,15 +172,13 @@ class MercTransInvoices(models.Model):
     invoice_id = fields.Integer('Invoice ID')
     invoice_name = fields.Char('Invoice name')
     invoice_date = fields.Date(string='Invoice Date')
-    invoice_client = fields.Many2one('res.partner',
+    invoice_client = fields.Many2one('merctrans.clients',
                                      string='Client',
                                      required='True')
     invoice_details_ids = fields.Many2many('merctrans.projects',
                                            string='Invoice Lines')
     currency_id = fields.Many2one('res.currency', string='Currency')
-    invoice_value = fields.Monetary("Invoice Value",
-                                    compute="_compute_invoice_value",
-                                    currency_field='currency_id')
+    invoice_value = fields.Float("Invoice Value", compute="_compute_invoice_value")
     # invoice_details_ids = fields.Many2many('merctrans.invoices.lines', 'job_id', string="Invoice Lines")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list)

@@ -5,7 +5,7 @@
     <field name="res_model">merctrans.clients</field>
     <field name="view_mode">tree,form</field>
   </record>
-  <!-- job form view -->
+  <!-- client form view -->
   <record id="client_view_form" model="ir.ui.view">
     <field name="name">Client Form</field>
     <field name="model">merctrans.clients</field>
@@ -15,12 +15,11 @@
           <group>
             <field name="name" />
             <field name="email" />
-            <field name="client_currency" />
+<!--            <field name="partner_id"/>-->
+<!--            <field name="client_currency" />-->
             <!-- <field name="source_language" readonly="1"/> -->
           </group>
-          <group>
-            <field name="client_currency" />
-          </group>
+
         </group>
         <notebook>
           <page string="Client Note" name="client_note">
@@ -32,7 +31,7 @@
     </field>
   </record>
 
-  <!-- job view tree -->
+  <!-- client tree view -->
   <record id="client_view_tree" model="ir.ui.view">
     <field name="name">Client Tree</field>
     <field name="model">merctrans.clients</field>
@@ -40,7 +39,7 @@
       <tree>
         <field name="name" />
         <field name="email" />
-        <field name="client_currency" />
+<!--        <field name="client_currency" />-->
 
       </tree>
     </field>

@@ -40,6 +40,7 @@
           <field name="invoice_client" />
           <field name="invoice_value" />
           <field name="currency_id" />
+          <field name="invoice_status"/>
         </tree>
 
 
@@ -72,6 +73,7 @@
                     <field name="sale_rate_per_work_unit" />
                     <field name="discount" />
                     <field name="job_value" />
+                    <field name="currency_id"/>
                     <field name="payment_status" />
                   </tree>
                 </field>
@@ -120,13 +122,12 @@
                 <field name="project_id" />
                 <field name="number_id" />
                 <field name="project_name" />
-
                 <field name="work_unit" />
                 <field name="discount" />
                 <field name="currency_id" />
                 <field name="start_date" />
                 <field name="due_date" />
-                <field name="project_instruction" />
+<!--            <field name="project_instruction" />-->
                 <!-- <field name="child_jobs_id" /> -->
 
               </group>
@@ -165,11 +166,6 @@
       <field name="arch" type="xml">
         <tree>
           <field name="project_id" />
-<!--          <field name="number_id" />-->
-
-          <field name="number_id" />
-          <field name="project_id" />
-
           <field name="project_name" />
           <!--          <field name="project_manager" />-->
           <field name="work_unit" />
@@ -183,10 +179,7 @@
           <!--          <field name="discount" />-->
           <field name="job_value" />
           <field name="currency_id" />
-
-          <field name="currency_id" />
-          <!--          <field name="discount" />-->
-          <field name="job_value" />
+           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />
           <field name="project_status" />
