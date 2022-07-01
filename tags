@@ -16,10 +16,12 @@ Default	.idea/workspace.xml	/^    <task active="true" id="Default" summary="Defa
 MercTransInvoices	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransInvoices(models.Model):$/;"	c
 MercTransProjects	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransProjects(models.Model):$/;"	c
 MercTransServices	local-addons/merctrans_projects/models/merctrans_projects.py	/^class MercTransServices(models.Model):$/;"	c
+MerctransClient	local-addons/merctrans_projects/models/merctrans_clients.py	/^class MerctransClient(models.Model):$/;"	c
 MerctransJobs	local-addons/merctrans_projects/models/merctrans_jobs.py	/^class MerctransJobs(models.Model):$/;"	c
 _compute_invoice_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def _compute_invoice_value(self):$/;"	m	class:MercTransInvoices
 _compute_job_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def _compute_job_value(self):$/;"	m	class:MercTransProjects
 _constraint_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _constraint_date(self):$/;"	m	class:MerctransJobs
+_description	local-addons/merctrans_projects/models/merctrans_clients.py	/^    _description = "Merctrans's Partner"$/;"	v	class:MerctransClient
 _description	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    _description = "Jobs by Projects"$/;"	v	class:MerctransJobs
 _description	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _description = 'MercTrans Invoices for Project Managers'$/;"	v	class:MercTransInvoices
 _description	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _description = 'MercTrans Projects'$/;"	v	class:MercTransProjects
@@ -32,10 +34,13 @@ _get_project_source	local-addons/merctrans_projects/models/merctrans_jobs.py	/^ 
 _get_project_target	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_project_target(self):$/;"	m	class:MerctransJobs
 _get_project_valid_date	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_project_valid_date(self):$/;"	m	class:MerctransJobs
 _get_street_pic	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    def _get_street_pic(self):$/;"	m	class:MerctransJobs
+_inherit	local-addons/merctrans_projects/models/merctrans_clients.py	/^    _inherit = 'res.partner'$/;"	v	class:MerctransClient
+_name	local-addons/merctrans_projects/models/merctrans_clients.py	/^    _name = 'merctrans.clients'$/;"	v	class:MerctransClient
 _name	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    _name = 'merctrans.jobs'$/;"	v	class:MerctransJobs
 _name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _name = 'merctrans.invoices'$/;"	v	class:MercTransInvoices
 _name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _name = 'merctrans.projects'$/;"	v	class:MercTransProjects
 _name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _name = 'merctrans.services'$/;"	v	class:MercTransServices
+_rec_name	local-addons/merctrans_projects/models/merctrans_clients.py	/^    _rec_name = 'name'$/;"	v	class:MerctransClient
 _rec_name	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    _rec_name = "title"$/;"	v	class:MerctransJobs
 _rec_name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _rec_name = 'invoice_name'$/;"	v	class:MercTransInvoices
 _rec_name	local-addons/merctrans_projects/models/merctrans_projects.py	/^    _rec_name = 'project_name'$/;"	v	class:MercTransProjects
@@ -46,7 +51,13 @@ addons_path	config/odoo.conf	/^addons_path = \/usr\/lib\/python3\/dist-packages\
 address	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    address = fields.Char('Address',$/;"	v	class:MerctransJobs
 admin_passwd	config-test/odoo.conf	/^admin_passwd = $pbkdf2-sha512$25000$PGcsJUQoBQBAaK01xhhDiA$\/NTAxCw1WKf.AhwdY8GSeD.g661WlpE0egA6/;"	k	section:options
 admin_passwd	config/odoo.conf	/^admin_passwd = $pbkdf2-sha512$25000$PGcsJUQoBQBAaK01xhhDiA$\/NTAxCw1WKf.AhwdY8GSeD.g661WlpE0egA6/;"	k	section:options
-client	local-addons/merctrans_projects/models/merctrans_projects.py	/^    client = fields.Many2many('res.partner', string='Clients', required=True)$/;"	v	class:MercTransProjects
+channel_ids	local-addons/merctrans_projects/models/merctrans_clients.py	/^    channel_ids = fields.Many2many('res.partner',$/;"	v	class:MerctransClient
+client	local-addons/merctrans_projects/models/merctrans_projects.py	/^    client = fields.Many2many('merctrans.clients', string='Clients', required=True)$/;"	v	class:MercTransProjects
+client_currency	local-addons/merctrans_projects/models/merctrans_clients.py	/^    client_currency = fields.Many2one('res.currency',$/;"	v	class:MerctransClient
+client_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Client" id="client_menu" parent="project_base_menu" action="merctrans_client/;"	i
+client_note	local-addons/merctrans_projects/models/merctrans_clients.py	/^    client_note = fields.Html('Client note')$/;"	v	class:MerctransClient
+client_view_form	local-addons/merctrans_projects/views/clients.xml	/^  <record id="client_view_form" model="ir.ui.view">$/;"	i
+client_view_tree	local-addons/merctrans_projects/views/clients.xml	/^  <record id="client_view_tree" model="ir.ui.view">$/;"	i
 create	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def create(self, vals):$/;"	m	class:MercTransInvoices
 create	local-addons/merctrans_projects/models/merctrans_projects.py	/^    def create(self, vals):$/;"	m	class:MercTransProjects
 csv_internal_sep	config-test/odoo.conf	/^csv_internal_sep = ,$/;"	k	section:options
@@ -109,7 +120,7 @@ invoice_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^   
 invoices_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_in/;"	i
 invoices_view_form	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="invoices_view_form" model="ir.ui.view">$/;"	i
 invoices_view_tree	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="invoices_view_tree" model="ir.ui.view">$/;"	i
-job_details	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_details = fields.Many2many("merctrans.jobs",string="Jobs in this Project")$/;"	v	class:MercTransProjects
+job_details	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_details = fields.Many2many("merctrans.jobs",$/;"	v	class:MercTransProjects
 job_menu_in_base_menu	local-addons/merctrans_projects/views/projects_menus.xml	/^    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctran/;"	i
 job_status	local-addons/merctrans_projects/models/merctrans_jobs.py	/^    job_status = fields.Selection(string='JOB STATUS',$/;"	v	class:MerctransJobs
 job_value	local-addons/merctrans_projects/models/merctrans_projects.py	/^    job_value = fields.Monetary("Project Value",$/;"	v	class:MercTransProjects
@@ -147,6 +158,7 @@ longpolling_port	config/odoo.conf	/^longpolling_port = 8072$/;"	k	section:option
 max_cron_threads	config-test/odoo.conf	/^max_cron_threads = 2$/;"	k	section:options
 max_cron_threads	config/odoo.conf	/^max_cron_threads = 2$/;"	k	section:options
 mectrans_jobs_user_rule	local-addons/merctrans_projects/security/security_rules.xml	/^  <record model="ir.rule" id="mectrans_jobs_user_rule">$/;"	i
+merctrans_clients_actions	local-addons/merctrans_projects/views/clients.xml	/^  <record id="merctrans_clients_actions" model="ir.actions.act_window">$/;"	i
 merctrans_invoices_action	local-addons/merctrans_projects/views/projects_menus.xml	/^    <record id="merctrans_invoices_action" model='ir.actions.act_window'>$/;"	i
 merctrans_jobs_actions	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="merctrans_jobs_actions" model="ir.actions.act_window">$/;"	i
 merctrans_jobs_view_search	local-addons/merctrans_projects/views/jobs.xml	/^    <record id="merctrans_jobs_view_search" model="ir.ui.view">$/;"	i

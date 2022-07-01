@@ -64,7 +64,9 @@ class MercTransProjects(models.Model):
     current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
     project_name = fields.Char('Project Name',
                                default=f'Project Name { number_id }')
-    client = fields.Many2many('res.partner', string='Clients', required=True)
+    client = fields.Many2many('merctrans.clients',
+                              string='Clients',
+                              required=True)
 
     # services contain tags
     services_ids = fields.Many2many('merctrans.services', string='Services')
