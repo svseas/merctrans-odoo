@@ -25,7 +25,8 @@
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
     <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
-    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="3" />
+    <menuitem name="Client" id="client_menu" parent="project_base_menu" action="merctrans_clients_actions" sequence="3" />
+    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="4" />
 
     <!-- invoices tree view -->
     <record id="invoices_view_tree" model="ir.ui.view">
@@ -100,9 +101,9 @@
     <!-- Sequence auto incement -->
     <record id="increment_number_id" model="ir.sequence">
       <field name="name">Filed increment </field>
-      <field name="code">increment_number_id</field>
+      <field name="code">merctrans.project</field>
       <field name='prefix'></field>
-      <field name='padding'>5</field>
+      <field name='padding'>0001</field>
       <field name="company_id" eval="False" />
     </record>
 
@@ -117,14 +118,15 @@
               <group>
                 <field name="project_manager" />
                 <field name="project_id" />
-                <field name="project_name" />
                 <field name="number_id" />
-<!--                <field name="project_instruction" />-->
+                <field name="project_name" />
+
                 <field name="work_unit" />
                 <field name="discount" />
                 <field name="currency_id" />
                 <field name="start_date" />
                 <field name="due_date" />
+                <field name="project_instruction" />
                 <!-- <field name="child_jobs_id" /> -->
 
               </group>
@@ -138,6 +140,10 @@
                 <field name="job_value" />
                 <field name="project_status" />
                 <field name="payment_status" />
+                <field name="job_details" widget="many2many">
+                  <tree>
+                  </tree>
+                </field>
               </group>
             </group>
             <notebook>
@@ -160,18 +166,27 @@
         <tree>
           <field name="project_id" />
 <!--          <field name="number_id" />-->
+
+          <field name="number_id" />
+          <field name="project_id" />
+
           <field name="project_name" />
-<!--          <field name="project_manager" />-->
+          <!--          <field name="project_manager" />-->
           <field name="work_unit" />
-<!--          <field name="source_language" />-->
-<!--          <field name="target_language" />-->
+          <!--          <field name="source_language" />-->
+          <!--          <field name="target_language" />-->
           <field name="client" widget="many2many_tags" />
           <field name="services_ids" widget="many2many_tags" />
           <field name="volume" />
           <field name="sale_rate_per_work_unit" />
+
           <!--          <field name="discount" />-->
           <field name="job_value" />
           <field name="currency_id" />
+
+          <field name="currency_id" />
+          <!--          <field name="discount" />-->
+          <field name="job_value" />
           <!--          <field name="start_date" />-->
           <field name="due_date" />
           <field name="project_status" />

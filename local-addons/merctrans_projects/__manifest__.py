@@ -35,6 +35,7 @@
         'security/ir.model.access.csv',
         # View <>
         'views/jobs.xml',
+        'views/clients.xml',
         'views/projects_menus.xml',
         'views/templates.xml',
         # 'views/sale.xml',

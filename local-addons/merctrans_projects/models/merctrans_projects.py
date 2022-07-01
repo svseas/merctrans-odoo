@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from odoo.exceptions import ValidationError
 
 from odoo import api, fields, models
@@ -50,10 +52,21 @@ class MercTransProjects(models.Model):
     # number_id = fields.Integer(string="Stt",
     #                            default=lambda self: self.env['ir.sequence'].
     #                            next_by_code('increment_number_id'))
-    project_id = fields.Char('Project Id', default="Hoc", readonly=True)
-    number_id = fields.Integer('No number', index=True, readonly=True)
-    project_name = fields.Char('Project Name', default='Project Name')
-    client = fields.Many2many('res.partner', string='Clients', required=True)
+    # Auto gen number_id
+    number_id = fields.Integer('No number',
+                               index=True,
+                               readonly=True,
+                               copy=False)
+    project_id = fields.Char('Project Id',
+                             default="new_project",
+                             readonly=True,
+                             compute="_get_project_id")
+    current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
+    project_name = fields.Char('Project Name',
+                               default=f'Project Name { number_id }')
+    client = fields.Many2many('merctrans.clients',
+                              string='Clients',
+                              required=True)
 
     # services contain tags
     services_ids = fields.Many2many('merctrans.services', string='Services')
@@ -68,38 +81,70 @@ class MercTransProjects(models.Model):
     # add discount field
     # fixed job
 
-    work_unit = fields.Selection(string='Work Unit*', selection=work_unit_list, required=True)
+    work_unit = fields.Selection(string='Work Unit*',
+                                 selection=work_unit_list,
+                                 required=True)
     volume = fields.Integer(string='Project Volume*', required=True, default=0)
-    currency_id = fields.Many2one('res.currency', string='Currency*', required=True)
-    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit', required=True, default=0)
+    currency_id = fields.Many2one('res.currency',
+                                  string='Currency*',
+                                  required=True)
+    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit',
+                                           required=True,
+                                           default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
     job_value = fields.Monetary("Project Value",
                                 compute="_compute_job_value",
                                 currency_field='currency_id',
                                 store=True,
-                                readonly=True, default=0)
+                                readonly=True,
+                                default=0)
 
-    project_manager = fields.Many2one('res.users', string='Project Manager*', required=True)
+    project_manager = fields.Many2one('res.users',
+                                      string='Project Manager*',
+                                      required=True)
     start_date = fields.Date(string='Start Date*', required=True)
     due_date = fields.Date(string='Due Date*', required=True)
     project_status = fields.Selection(string='Project Status',
-                                      selection=project_status_list, required=True, default='Project Status')
+                                      selection=project_status_list,
+                                      required=True,
+                                      default='Project Status')
     payment_status = fields.Selection(string='Payment Status',
-                                      selection=payment_status_list, default='Payment Status')
+                                      selection=payment_status_list,
+                                      default='Payment Status')
+    job_details = fields.Many2many("merctrans.jobs",
+                                   string="Jobs in this Project")
 
     @api.model
     def create(self, vals):
         print("Project Create Vals ", vals)
         vals['number_id'] = self.env['ir.sequence'].next_by_code(
-            'increment_number_id') or _('New')
+            'merctrans.project') or _('New')
         return super(MercTransProjects, self).create(vals)
 
+
     # @api.model
+    # @api.model # đoạn code bên dưới gây bug khi chỉnh sửa project
     # def write(self, vals):
     #     print("Project Write Vals ", vals)
     #     return super(MercTransProjects, self).write(vals)
 
     # Auto genarate porject_id with client name, datetime and native id
+
+    @api.onchange('client')
+    @api.depends('client')
+    def _get_project_id(self):
+        create_time = datetime.today().strftime('%Y%m%d')
+        for project in self:
+            print(project.client.__dir__())
+            if project.client:
+
+                # client is many2many nen can chinh sua lai 1 chut, chi lay ten cua thang dau tien, should be change with project.client
+                client_name = project.client[0].name if len(
+                    project.client) > 1 else project.client.name
+                short_name = client_name[:4].upper()
+                project.project_id = f"{short_name}-{create_time}-{project.number_id}"
+            else:
+                project.project_id = "on change"
 
     @api.onchange('volume', 'rate_per_work_unit')
     @api.depends('volume', 'sale_rate_per_work_unit', 'discount')
@@ -144,8 +189,8 @@ class MercTransInvoices(models.Model):
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
-            item.invoice_value = sum(x.job_value  # x??? rename plz 
-                                     for x in item.invoice_details_ids)
+            item.invoice_value = sum(line.job_value  # x??? rename plz
+                                     for line in item.invoice_details_ids)
 
     @api.constrains('invoice_details_ids')
     def currency_constrains(self):
