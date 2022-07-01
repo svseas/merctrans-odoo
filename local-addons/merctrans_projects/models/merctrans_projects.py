@@ -94,10 +94,10 @@ class MercTransProjects(models.Model):
             'increment_number_id') or _('New')
         return super(MercTransProjects, self).create(vals)
 
-    @api.model
-    def write(self, vals):
-        print("Project Write Vals ", vals)
-        return super(MercTransProjects, self).write(vals)
+    # @api.model
+    # def write(self, vals):
+    #     print("Project Write Vals ", vals)
+    #     return super(MercTransProjects, self).write(vals)
 
     # Auto genarate porject_id with client name, datetime and native id
 
@@ -155,14 +155,14 @@ class MercTransInvoices(models.Model):
                     raise ValidationError(
                         'Job currency must be the same as invoice currency!')
 
-    @api.model
-    def create(self, vals):
-        print("Invoices Create Vals ", vals)
-        return super(MercTransInvoices, self).create(vals)
-
-    def write(self, vals):
-        print("Invoices Write Vals ", vals)
-        return super(MercTransInvoices, self).write(vals)
+    # @api.model
+    # def create(self, vals):
+    #     print("Invoices Create Vals ", vals)
+    #     return super(MercTransInvoices, self).create(vals)
+    #
+    # def write(self, vals):
+    #     print("Invoices Write Vals ", vals)
+    #     return super(MercTransInvoices, self).write(vals)
 
     @api.onchange('invoice_status')
     def sync_status(self):

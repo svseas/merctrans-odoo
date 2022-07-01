@@ -119,7 +119,7 @@
                 <field name="project_id" />
                 <field name="project_name" />
                 <field name="number_id" />
-                <field name="project_instruction" />
+<!--                <field name="project_instruction" />-->
                 <field name="work_unit" />
                 <field name="discount" />
                 <field name="currency_id" />
@@ -159,7 +159,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="project_id" />
-          <field name="number_id" />
+<!--          <field name="number_id" />-->
           <field name="project_name" />
 <!--          <field name="project_manager" />-->
           <field name="work_unit" />
@@ -169,10 +169,10 @@
           <field name="services_ids" widget="many2many_tags" />
           <field name="volume" />
           <field name="sale_rate_per_work_unit" />
-          <field name="currency_id" />
-<!--          <field name="discount" />-->
+          <!--          <field name="discount" />-->
           <field name="job_value" />
-<!--          <field name="start_date" />-->
+          <field name="currency_id" />
+          <!--          <field name="start_date" />-->
           <field name="due_date" />
           <field name="project_status" />
           <field name="payment_status" />
