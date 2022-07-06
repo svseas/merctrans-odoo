@@ -1,7 +1,7 @@
-__pycache__/
+*/__pycache__/
+__pycache__
 *.pyc
 odoo/
-odoo_pg_pass
 .idea
 docker-compose.yml
 tags
