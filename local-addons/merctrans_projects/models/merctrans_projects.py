@@ -62,12 +62,16 @@ class MercTransProjects(models.Model):
                              readonly=True,
                              compute="_get_project_id")
     current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
-    project_name = fields.Char('Project Name',
-                               default=f'Project Name { number_id }')
+
+    project_name = fields.Char(
+        'Project Name',
+        default=lambda self:
+        f"Project No {self.env['merctrans.projects'].search_count([])}")
     client = fields.Many2many('merctrans.clients',
                               string='Clients',
                               required=True)
 
+    # compute project_id by client many 2 one -> should default value client_name
     # services contain tags
     services_ids = fields.Many2many('merctrans.services', string='Services')
     project_instruction = fields.Html('Project Instruction')
@@ -113,13 +117,19 @@ class MercTransProjects(models.Model):
     job_details = fields.Many2many("merctrans.jobs",
                                    string="Jobs in this Project")
 
+    # def _get_client_name(self): self.client_name = 'default bug'
+    #     for record in self:
+    #         if record.client:
+    #             record.client_name = record.client.name
+    #         else:
+    #             record.client_name = 'default bug'
+
     @api.model
     def create(self, vals):
         print("Project Create Vals ", vals)
         vals['number_id'] = self.env['ir.sequence'].next_by_code(
             'merctrans.project') or _('New')
         return super(MercTransProjects, self).create(vals)
-
 
     # @api.model
     # @api.model # đoạn code bên dưới gây bug khi chỉnh sửa project
@@ -134,12 +144,9 @@ class MercTransProjects(models.Model):
     def _get_project_id(self):
         create_time = datetime.today().strftime('%Y%m%d')
         for project in self:
-            print(project.client.__dir__())
             if project.client:
-
                 # client is many2many nen can chinh sua lai 1 chut, chi lay ten cua thang dau tien, should be change with project.client
-                client_name = project.client[0].name if len(
-                    project.client) > 1 else project.client.name
+                client_name = project.client.name
                 short_name = client_name[:4].upper()
                 project.project_id = f"{short_name}-{create_time}-{project.number_id}"
             else:
@@ -178,7 +185,8 @@ class MercTransInvoices(models.Model):
     invoice_details_ids = fields.Many2many('merctrans.projects',
                                            string='Invoice Lines')
     currency_id = fields.Many2one('res.currency', string='Currency')
-    invoice_value = fields.Float("Invoice Value", compute="_compute_invoice_value")
+    invoice_value = fields.Float("Invoice Value",
+                                 compute="_compute_invoice_value")
     # invoice_details_ids = fields.Many2many('merctrans.invoices.lines', 'job_id', string="Invoice Lines")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list)
