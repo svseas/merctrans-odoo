@@ -5,3 +5,5 @@ odoo/
 .idea
 docker-compose.yml
 tags
+venv
+
