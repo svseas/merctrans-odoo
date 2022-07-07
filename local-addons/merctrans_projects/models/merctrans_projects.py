@@ -71,6 +71,11 @@ class MercTransProjects(models.Model):
                               string='Clients',
                               required=True)
 
+    client_name = fields.Char('Client_',
+                              compute='_get_client_name',
+                              default='merctrans',
+                              readonly=True)
+
     # compute project_id by client many 2 one -> should default value client_name
     # services contain tags
     services_ids = fields.Many2many('merctrans.services', string='Services')
@@ -88,7 +93,7 @@ class MercTransProjects(models.Model):
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
                                  required=True)
-    volume = fields.Integer(string='Project Volume*', required=True, default=0)
+    volume = fields.Integer(string='Volume*', required=True, default=0)
     currency_id = fields.Many2one('res.currency',
                                   string='Currency*',
                                   required=True)
@@ -117,12 +122,13 @@ class MercTransProjects(models.Model):
     job_details = fields.Many2many("merctrans.jobs",
                                    string="Jobs in this Project")
 
-    # def _get_client_name(self): self.client_name = 'default bug'
-    #     for record in self:
-    #         if record.client:
-    #             record.client_name = record.client.name
-    #         else:
-    #             record.client_name = 'default bug'
+    def _get_client_name(self):
+        self.client_name = ''
+        for record in self:
+            if record.client:
+                record.client_name += record.client.name
+            else:
+                record.client_name = 'default bug'
 
     @api.model
     def create(self, vals):
@@ -146,7 +152,8 @@ class MercTransProjects(models.Model):
         for project in self:
             if project.client:
                 # client is many2many nen can chinh sua lai 1 chut, chi lay ten cua thang dau tien, should be change with project.client
-                client_name = project.client.name
+                client_name = project.client[0].name if len(
+                    project.client) > 1 else project.client.name
                 short_name = client_name[:4].upper()
                 project.project_id = f"{short_name}-{create_time}-{project.number_id}"
             else:

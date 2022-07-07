@@ -11,3 +11,5 @@ venv
 local-addons/merctrans_projects/__pycache__
 local-addons/merctrans_projects/controllers/__pycache__
 local-addons/merctrans_projects/models/__pycache__
+odoo
+tags

@@ -19,6 +19,7 @@
                         <field name="title"/>
                         <field name="project_id"/>
                         <field name="job_status"/>
+                        <field name="service"/>
                         <field name="source_language" readonly='1'/>
                         <field name="target_language" readonly='1'/>
                         <field name="valid_date" readonly='1'/>
@@ -30,7 +31,13 @@
                         <field name="pic"/>
                         <field name="address" readonly='1'/>
                         <field name="pic_email" readonly='1'/>
+                        <field name="work_unit"/>
+                        <field name="volume"/>
+                        <field name="sale_rate_per_work_unit"/>
+                        <field name="job_value"/>
                         <field name="currency_id"/>
+                        <field name="payment_status"/>
+
                     </group>
                 </group>
             </form>

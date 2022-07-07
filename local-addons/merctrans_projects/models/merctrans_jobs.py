@@ -7,12 +7,14 @@ class MerctransJobs(models.Model):
     _name = 'merctrans.jobs'
     _description = "Jobs by Projects"
     _rec_name = "title"
-    project_status_list = [('potential', 'Potential'),
-                           ('confirmed', 'Confirmed'),
-                           ('in progress', 'In Progress'), ('in qa', 'In QA'),
-                           ('delivered', 'Delivered'),
-                           ('canceled', 'Canceled')]
+    job_status_list = [('in progress', 'In Progress'),
+                       ('completed', 'Completed'), ('canceled', 'Canceled')]
 
+    work_unit_list = [('word', 'Word'), ('hour', 'Hour'), ('page', 'Page'),
+                      ('job', 'Job')]
+
+    payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
+                           ('paid', 'Paid')]
     # Detail Job
 
     title = fields.Char('Job Title', default='Job Title')
@@ -39,6 +41,23 @@ class MerctransJobs(models.Model):
                                   readonly=True,
                                   compute='_get_project_target')
     currency_id = fields.Many2one('res.currency', string='Currency')
+    work_unit = fields.Selection(string='Work Unit*',
+                                 selection=work_unit_list,
+                                 required=True)
+    volume = fields.Integer(string='Volume*', required=True, default=0)
+
+    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit',
+                                           required=True,
+                                           default=0)
+    payment_status = fields.Selection(string='Payment Status',
+                                      selection=payment_status_list,
+                                      default='Payment Status')
+
+    job_value = fields.Float("Project Value",
+                             compute="_compute_job_value",
+                             store=True,
+                             readonly=True,
+                             default=0)
     valid_date = fields.Char('Valid Date',
                              default="Choose Project",
                              readonly=True,
@@ -53,7 +72,8 @@ class MerctransJobs(models.Model):
                                  string="Project",
                                  required=True)
     job_status = fields.Selection(string='JOB STATUS',
-                                  selection=project_status_list)
+                                  selection=job_status_list)
+    service = fields.Many2one('merctrans.services', string='Service')
 
     # Currency - get from partner Currency
 
@@ -136,3 +156,12 @@ class MerctransJobs(models.Model):
             if project.start_date > project.due_date:
                 raise ValidationError(
                     'Due date must be greater than Start date!')
+
+    # workunit
+    @api.onchange('volume', 'rate_per_work_unit')
+    @api.depends('volume', 'sale_rate_per_work_unit')
+    def _compute_job_value(self):
+        for project in self:
+            project.job_value = (
+                100 -
+                0) / 100 * project.volume * project.sale_rate_per_work_unit

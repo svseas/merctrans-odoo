@@ -167,23 +167,21 @@
         <tree>
           <field name="project_id" />
           <field name="project_name" />
+          <field name="client_name" />
+          <field name="services_ids" widget="many2many_tags" />
           <!--          <field name="project_manager" />-->
           <field name="work_unit" />
           <!--          <field name="source_language" />-->
           <!--          <field name="target_language" />-->
-          <field name="client" widget="many2many_tags" />
-          <field name="services_ids" widget="many2many_tags" />
           <field name="volume" />
           <field name="sale_rate_per_work_unit" />
 
-          <!--          <field name="discount" />-->
-          <field name="job_value" />
           <field name="currency_id" />
+          <field name="job_value" />
            <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />
           <field name="project_status" />
-          <field name="payment_status" />
 
         </tree>
       </field>
