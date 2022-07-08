@@ -67,9 +67,11 @@ class MercTransProjects(models.Model):
         'Project Name',
         default=lambda self:
         f"Project No {self.env['merctrans.projects'].search_count([])}")
-    client = fields.Many2many('merctrans.clients',
-                              string='Clients',
-                              required=True)
+    client = fields.Many2one('merctrans.clients',
+                             string='Clients',
+                             required=True,
+                             default=lambda self: self.env['merctrans.clients']
+                             .search([('name', '=', 'merctrans')], limit=1))
 
     client_name = fields.Char('Client_',
                               compute='_get_client_name',
