@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Currencies -->
+        <record id="base.USD" model="res.currency">
+            <field name="name">USD</field>
+            <field name="symbol">$</field>
+            <field name="rounding">0.01</field>
+            <field name="active" eval="True"/>
+            <field name="position">before</field>
+            <field name="currency_unit_label">Dollars</field>
+            <field name="currency_subunit_label">Cents</field>
+        </record>
+
+        <record id="base.VEF" model="res.currency">
+            <field name="name">VEF</field>
+            <field name="symbol">Bs.F</field>
+            <field name="rounding">0.0001</field>
+            <field name="active" eval="True"/>
+            <field name="currency_unit_label">Bolivar</field>
+            <field name="currency_subunit_label">Centimos</field>
+        </record>
+
+        <record id="base.CAD" model="res.currency">
+            <field name="name">CAD</field>
+            <field name="symbol">$</field>
+            <field name="rounding">0.01</field>
+            <field name="active" eval="True"/>
+            <field name="currency_unit_label">Dollars</field>
+            <field name="currency_subunit_label">Cents</field>
+        </record>
+    </data>
+</odoo>
