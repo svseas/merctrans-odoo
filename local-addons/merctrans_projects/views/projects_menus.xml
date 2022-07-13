@@ -40,7 +40,7 @@
           <field name="invoice_client" />
           <field name="invoice_value" />
           <field name="currency_id" />
-          <field name="invoice_status"/>
+          <field name="invoice_status" />
         </tree>
 
 
@@ -73,7 +73,7 @@
                     <field name="sale_rate" />
                     <field name="discount" />
                     <field name="job_value" />
-                    <field name="currency_id"/>
+                    <field name="currency_id" />
                     <field name="payment_status" />
                   </tree>
                 </field>
@@ -120,35 +120,62 @@
               <group>
                 <field name="project_manager" />
                 <field name="project_id" />
-                <field name="number_id" />
                 <field name="project_name" />
-                <field name="work_unit" />
-                <field name="discount" />
-                <field name="currency_id" />
-                <field name="start_date" />
-                <field name="due_date" />
-<!--            <field name="project_instruction" />-->
-                <!-- <field name="child_jobs_id" /> -->
-
-              </group>
-              <group>
+                <field name="client" />
                 <field name="source_language" />
                 <field name="target_language" />
-                <field name="client" />
+                <field name="start_date" />
+                <field name="due_date" />
                 <field name="services_ids" widget="many2many_tags" />
-                <field name="tags" widget="many2many_tags"/>
+              </group>
+              <group>
+                <field name="tags" widget="many2many_tags" />
+                <field name="currency_id" />
+                <field name="discount" />
+                <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
                 <field name="job_value" />
                 <field name="project_status" />
                 <field name="payment_status" />
-                <field name="job_details" widget="many2many">
-                  <tree>
-                  </tree>
-                </field>
               </group>
             </group>
             <notebook>
+              <page string="Job child">
+                <field name="job_details">
+                  <tree editable="True">
+                    <field name="purchase_order" />
+                    <field name="target_language" />
+                    <field name="source_language" />
+                    <field name="payment_status" />
+                    <field name="volume" />
+                    <field name="work_unit" />
+                    <field name="sale_rate_per_work_unit" />
+                    <field name="contributor" />
+                    <field name="start_date" />
+                    <field name="due_date" />
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="purchase_order" />
+                        <field name="target_language" />
+                        <field name="source_language" />
+                        <field name="valid_date" />
+                        <field name="start_date" />
+                        <field name="due_date" />
+                      </group>
+                      <group>
+                        <field name="contributor" />
+                        <field name="payment_status" />
+                        <field name="volume" />
+                        <field name="work_unit" />
+                        <field name="sale_rate_per_work_unit" />
+                      </group>
+                    </group>
+                  </form>
+                </field>
+              </page>
               <page string="Project Instruction" name="project_instruction">
                 <field name="project_instruction" />
               </page>
@@ -168,7 +195,7 @@
         <tree>
           <field name="project_id" />
           <field name="project_name" />
-          <field name="project_manager"/>
+          <field name="project_manager" />
           <field name="client" />
           <!-- <field name="client_name" /> -->
           <field name="services_ids" widget="many2many_tags" />
@@ -178,14 +205,12 @@
           <!--          <field name="target_language" />-->
           <field name="volume" />
           <field name="sale_rate" />
-
-          <field name="currency_id" />
           <field name="job_value" />
-           <!--          <field name="discount" />-->
+          <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />
-          <field name="project_status"/>
-          <field name="payment_status"/>
+          <field name="project_status" />
+          <field name="payment_status" />
 
         </tree>
       </field>
@@ -198,7 +223,7 @@
         <form>
           <group>
             <group>
-              <field name="title" />
+              <field name="purchase_order" />
               <field name="project_id" />
               <field name="job_status" />
               <field name="source_language" readonly='1' />
@@ -208,9 +233,9 @@
               <!-- <field name="source_language" readonly="1"/> -->
             </group>
             <group>
-              <field name="pic" />
+              <field name="contributor" />
               <field name="address" readonly='1' />
-              <field name="pic_email" readonly='1' />
+              <field name="contributor_email" readonly='1' />
               <field name="currency_id" />
             </group>
           </group>
@@ -224,22 +249,18 @@
       <field name="model">merctrans.jobs</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="title" />
+          <field name="purchase_order" />
           <field name="project_id" />
-          <field name="pic" />
+          <field name="contributor" />
           <field name="job_status" />
           <field name="due_date" />
           <field name="source_language" readonly='1' />
           <field name="target_language" readonly='1' />
           <field name="address" />
-          <field name="pic_email" />
-
+          <field name="contributor_email" />
         </tree>
       </field>
-
     </record>
-
-
   </data>
 
 

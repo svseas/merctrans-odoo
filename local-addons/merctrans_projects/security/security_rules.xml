@@ -5,7 +5,7 @@
     <field name="model_id" ref="model_merctrans_jobs"/>
     <field name="groups" eval="[(4, ref('merctrans_projects.group_merctrans_contributor'))]"/>
     <field name="domain_force" >
-      [('pic_id','=',user.id)]
+      [('contributor_id','=',user.id)]
     </field>
   </record>
 </odoo>

@@ -18,6 +18,7 @@ class MercTransServices(models.Model):
                                   selection=department_list)
     services_names = fields.Char('Services')
 
+
 class MercTransTags(models.Model):
     _name = 'merctrans.tags'
     _rec_name = 'tag'
@@ -25,10 +26,17 @@ class MercTransTags(models.Model):
 
     tag = fields.Char(string='Tag', required=True)
 
+
 class MercTransProjects(models.Model):
+    """
+        Khởi tạo model
+    """
     _name = 'merctrans.projects'
     _description = 'MercTrans Projects'
     _rec_name = 'project_name'
+    """
+        Static list
+    """
 
     language_list = [('zh-CN', 'Chinese (Simplified)'),
                      ('zh-TW', 'Chinese (Traditional)'),
@@ -59,6 +67,12 @@ class MercTransProjects(models.Model):
     #                            default=lambda self: self.env['ir.sequence'].
     #                            next_by_code('increment_number_id'))
     # Auto gen number_id
+    """
+        Field and decorate function, được nhóm chung vào từng section
+        để thuận tiện hơn trong chỉnh sửa và debug
+    """
+
+    # NOTE: ID and Project ID, project name, client, tags
     number_id = fields.Integer('No number',
                                index=True,
                                readonly=True,
@@ -67,34 +81,45 @@ class MercTransProjects(models.Model):
                              default="new_project",
                              readonly=True,
                              compute="_get_project_id")
-    tags = fields.Many2many('merctrans.tags',string='Tags')
-    current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
 
     project_name = fields.Char(
         'Project Name',
         default=lambda self:
         f"Project No {self.env['merctrans.projects'].search_count([])}")
+
     client = fields.Many2one('merctrans.clients',
                              string='Clients',
                              required=True,
                              default=lambda self: self.env['merctrans.clients']
                              .search([('name', '=', 'merctrans')], limit=1))
 
+    services_ids = fields.Many2many('merctrans.services', string='Services')
     client_name = fields.Char('Client_',
                               compute='_get_client_name',
                               default='merctrans',
                               readonly=True)
+    tags = fields.Many2many('merctrans.tags', string='Tags')
 
+    project_manager = fields.Many2one('res.users',
+                                      string='Project Manager*',
+                                      required=True)
     # compute project_id by client many 2 one -> should default value client_name
     # services contain tags
-    services_ids = fields.Many2many('merctrans.services', string='Services')
-    project_instruction = fields.Html('Project Instruction')
+    # NOTE: Target and Source Language
     source_language = fields.Selection(string="Source Languages",
                                        selection=language_list,
                                        default="Select a language")
     target_language = fields.Selection(string="Target Language",
                                        selection=language_list,
                                        default="Select a language")
+
+    # NOTE: TIME, START and DUE DATE
+    current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
+    start_date = fields.Date(string='Start Date*', required=True)
+    due_date = fields.Date(string='Due Date*', required=True)
+
+    # NOTE: SALE, Volume, unit, rate
+
     discount = fields.Integer(string='Discount (%)', default=0)
     # add discount field
     # fixed job
@@ -106,21 +131,16 @@ class MercTransProjects(models.Model):
     currency_id = fields.Many2one('res.currency',
                                   string='Currency*',
                                   required=True)
-    sale_rate = fields.Float(string='Rate*',
-                             required=True,
-                             default=0)
+    sale_rate = fields.Float(string='Rate*', required=True, default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
     job_value = fields.Float("Project Value",
                              compute="_compute_job_value",
                              store=True,
                              readonly=True,
                              default=0)
+    # NOTE: PROJECT STATUS
 
-    project_manager = fields.Many2one('res.users',
-                                      string='Project Manager*',
-                                      required=True)
-    start_date = fields.Date(string='Start Date*', required=True)
-    due_date = fields.Date(string='Due Date*', required=True)
+    project_instruction = fields.Html('Project Instruction')
     project_status = fields.Selection(string='Project Status',
                                       selection=project_status_list,
                                       required=True,
@@ -128,8 +148,10 @@ class MercTransProjects(models.Model):
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
                                       default='Payment Status')
-    job_details = fields.Many2many("merctrans.jobs",
-                                   string="Jobs in this Project")
+
+    job_details = fields.One2many("merctrans.jobs",
+                                  "project_id",
+                                  string="Jobs in this Project")
 
     def _get_client_name(self):
         self.client_name = ''
@@ -172,9 +194,8 @@ class MercTransProjects(models.Model):
     @api.depends('volume', 'sale_rate', 'discount')
     def _compute_job_value(self):
         for project in self:
-            project.job_value = (
-                100 - project.discount
-            ) / 100 * project.volume * project.sale_rate
+            project.job_value = (100 - project.discount
+                                 ) / 100 * project.volume * project.sale_rate
 
     @api.constrains('start_date', 'due_date')
     def date_constrains(self):
