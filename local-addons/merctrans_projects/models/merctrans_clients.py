@@ -15,6 +15,7 @@ class MerctransClient(models.Model):
     client_note = fields.Html('Client note')
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
+
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
     @api.constrains('name')
