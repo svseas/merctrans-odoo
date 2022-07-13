@@ -18,6 +18,12 @@ class MercTransServices(models.Model):
                                   selection=department_list)
     services_names = fields.Char('Services')
 
+class MercTransTags(models.Model):
+    _name = 'merctrans.tags'
+    _rec_name = 'tag'
+    _description = 'Project Tags'
+
+    tag = fields.Char(string='Tag', required=True)
 
 class MercTransProjects(models.Model):
     _name = 'merctrans.projects'
@@ -61,6 +67,7 @@ class MercTransProjects(models.Model):
                              default="new_project",
                              readonly=True,
                              compute="_get_project_id")
+    tags = fields.Many2many('merctrans.tags',string='Tags')
     current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
 
     project_name = fields.Char(
@@ -99,9 +106,9 @@ class MercTransProjects(models.Model):
     currency_id = fields.Many2one('res.currency',
                                   string='Currency*',
                                   required=True)
-    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit',
-                                           required=True,
-                                           default=0)
+    sale_rate = fields.Float(string='Rate*',
+                             required=True,
+                             default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
     job_value = fields.Float("Project Value",
                              compute="_compute_job_value",
@@ -162,12 +169,12 @@ class MercTransProjects(models.Model):
                 project.project_id = "on change"
 
     @api.onchange('volume', 'rate_per_work_unit')
-    @api.depends('volume', 'sale_rate_per_work_unit', 'discount')
+    @api.depends('volume', 'sale_rate', 'discount')
     def _compute_job_value(self):
         for project in self:
             project.job_value = (
                 100 - project.discount
-            ) / 100 * project.volume * project.sale_rate_per_work_unit
+            ) / 100 * project.volume * project.sale_rate
 
     @api.constrains('start_date', 'due_date')
     def date_constrains(self):

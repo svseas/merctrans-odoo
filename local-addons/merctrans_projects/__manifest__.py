@@ -25,7 +25,7 @@
     '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
@@ -39,6 +39,8 @@
         'views/projects_menus.xml',
         'views/templates.xml',
         # 'views/sale.xml',
+        #data
+        'data/currencies.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
