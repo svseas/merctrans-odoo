@@ -58,8 +58,7 @@ class MerctransJobs(models.Model):
                              store=True,
                              readonly=True,
                              default=0)
-    job_status = fields.Selection(string='JOB STATUS',
-                                  selection=job_status_list)
+    job_status = fields.Selection(string='Status', selection=job_status_list)
     service = fields.Many2one('merctrans.services', string='Service')
     # NOTE: INHERIT FROM PROJECT
     source_language = fields.Char('Source Language',
