@@ -26,7 +26,7 @@
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
     <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
     <menuitem name="Client" id="client_menu" parent="project_base_menu" action="merctrans_clients_actions" sequence="3" />
-    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="4" />
+    <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="4" />
 
     <!-- invoices tree view -->
     <record id="invoices_view_tree" model="ir.ui.view">
@@ -72,7 +72,7 @@
                     <field name="volume" />
                     <field name="sale_rate" />
                     <field name="discount" />
-                    <field name="job_value" />
+                    <field name="project_value" />
                     <field name="currency_id" />
                     <field name="payment_status" />
                   </tree>
@@ -135,14 +135,14 @@
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
-                <field name="job_value" />
+                <field name="project_value" />
                 <field name="project_status" />
                 <field name="payment_status" />
               </group>
             </group>
             <notebook>
-              <page string="Job child">
-                <field name="job_details">
+              <page string="Purchase Order">
+                <field name="po_details">
                   <tree editable="True">
                     <field name="purchase_order" />
                     <field name="target_language" />
@@ -202,9 +202,14 @@
           <!--          <field name="source_language" />-->
           <!--          <field name="target_language" />-->
           <field name="volume" />
+
           <field name="sale_rate"/>
           <field name="currency_id" />
           <field name="job_value" />
+
+          <field name="sale_rate" />
+          <field name="project_value" />
+
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />
@@ -215,17 +220,17 @@
         </tree>
       </field>
     </record>
-    <!-- job form view -->
-    <record id="job_view_form_in_base_menu" model="ir.ui.view">
-      <field name="name">Job Form</field>
-      <field name="model">merctrans.jobs</field>
+    <!-- po form view -->
+    <record id="po_view_form_in_base_menu" model="ir.ui.view">
+      <field name="name">Purchase Order Form</field>
+      <field name="model">merctrans.pos</field>
       <field name="arch" type="xml">
         <form>
           <group>
             <group>
               <field name="purchase_order" />
               <field name="project_id" />
-              <field name="job_status" />
+              <field name="po_status" />
               <field name="source_language" readonly='1' />
               <field name="target_language" readonly='1' />
               <field name="start_date" />
@@ -243,16 +248,16 @@
       </field>
     </record>
 
-    <!-- job view tree -->
-    <record id="job_view_tree_in_base_menu" model="ir.ui.view">
-      <field name="name">Job Tree</field>
-      <field name="model">merctrans.jobs</field>
+    <!-- po view tree -->
+    <record id="po_view_tree_in_base_menu" model="ir.ui.view">
+      <field name="name">Purchase Order Tree</field>
+      <field name="model">merctrans.pos</field>
       <field name="arch" type="xml">
         <tree>
           <field name="purchase_order" />
           <field name="project_id" />
           <field name="contributor" />
-          <field name="job_status" />
+          <field name="po_status" />
           <field name="due_date" />
           <field name="source_language" readonly='1' />
           <field name="target_language" readonly='1' />

@@ -13,6 +13,8 @@ services:
     environment:
       - USER=odoo
       - PASSWORD=odoo
+    command: >
+      -u merctrans_projects
   db:
     image: postgres:13
     environment:

@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="merctrans_jobs_actions" model="ir.actions.act_window">
-        <field name="name">Merctrans Job List</field>
-        <field name="res_model">merctrans.jobs</field>
+    <record id="merctrans_pos_actions" model="ir.actions.act_window">
+        <field name="name">Merctrans Purhchase Order List</field>
+        <field name="res_model">merctrans.pos</field>
         <field name="view_mode">tree,form</field>
     </record>
     <!-- Cách để user chỉ nhìn được một menu-item -> Tách nó ra làm một Menu list riêng. Sau đó thêm tree, form view cho nó trên file Menu tổng. -> Tắt nó đi ở menu tổng. =)) Hide nó đi. Nó không hiện trong list menu tổng nữa. -->
-    <!-- <menuitem name="Merctrans Jobs" id="job_menu"  action="merctrans_jobs_actions"/> -->
 
-    <!-- job form view -->
-    <record id="job_view_form" model="ir.ui.view">
-        <field name="name">Job Form</field>
-        <field name="model">merctrans.jobs</field>
+    <!-- po form view -->
+    <record id="po_view_form" model="ir.ui.view">
+        <field name="name">Purchase Order Form</field>
+        <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
             <form>
                 <group>
                     <group>
                         <field name="purchase_order"/>
                         <field name="project_id" />
-                        <field name="job_status"/>
+                        <field name="po_status"/>
                         <field name="service"/>
                         <field name="source_language" readonly='1'/>
                         <field name="target_language" readonly='1'/>
@@ -34,7 +33,7 @@
                         <field name="work_unit"/>
                         <field name="volume"/>
                         <field name="sale_rate_per_work_unit"/>
-                        <field name="job_value"/>
+                        <field name="po_value"/>
                         <field name="currency_id"/>
                         <field name="payment_status"/>
 
@@ -44,16 +43,16 @@
         </field>
     </record>
 
-    <!-- job view tree -->
-    <record id="job_view_tree" model="ir.ui.view">
-        <field name="name">Job Tree</field>
-        <field name="model">merctrans.jobs</field>
+    <!-- po view tree -->
+    <record id="po_view_tree" model="ir.ui.view">
+        <field name="name">Purchase Order Tree</field>
+        <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="purchase_order"/>
                 <field name="project_id"/>
                 <field name="contributor"/>
-                <field name="job_status"/>
+                <field name="po_status"/>
                 <field name="due_date"/>
                 <field name="source_language" readonly='1'/>
                 <field name="target_language" readonly='1'/>
@@ -65,9 +64,9 @@
 
     </record>
     <!-- search view -->
-    <record id="merctrans_jobs_view_search" model="ir.ui.view">
-        <field name="name">Job Search</field>
-        <field name="model">merctrans.jobs</field>
+    <record id="merctrans_pos_view_search" model="ir.ui.view">
+        <field name="name">Purchase Order Search</field>
+        <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
             <search></search>
         </field>

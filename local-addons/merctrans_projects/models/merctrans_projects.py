@@ -133,11 +133,11 @@ class MercTransProjects(models.Model):
                                   required=True)
     sale_rate = fields.Float(string='Rate*', required=True, default=0)
     # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
-    job_value = fields.Float("Project Value",
-                             compute="_compute_job_value",
-                             store=True,
-                             readonly=True,
-                             default=0)
+    project_value = fields.Float("Project Value",
+                                 compute="_compute_project_value",
+                                 store=True,
+                                 readonly=True,
+                                 default=0)
     # NOTE: PROJECT STATUS
 
     project_instruction = fields.Html('Project Instruction')
@@ -149,9 +149,9 @@ class MercTransProjects(models.Model):
                                       selection=payment_status_list,
                                       default='Payment Status')
 
-    job_details = fields.One2many("merctrans.jobs",
-                                  "project_id",
-                                  string="Jobs in this Project")
+    po_details = fields.One2many("merctrans.pos",
+                                 "project_id",
+                                 string="Purchase Order in this Project")
 
     def _get_client_name(self):
         self.client_name = ''
@@ -192,10 +192,11 @@ class MercTransProjects(models.Model):
 
     @api.onchange('volume', 'rate_per_work_unit')
     @api.depends('volume', 'sale_rate', 'discount')
-    def _compute_job_value(self):
+    def _compute_project_value(self):
         for project in self:
-            project.job_value = (100 - project.discount
-                                 ) / 100 * project.volume * project.sale_rate
+            project.project_value = (
+                100 -
+                project.discount) / 100 * project.volume * project.sale_rate
 
     @api.constrains('start_date', 'due_date')
     def date_constrains(self):
@@ -224,14 +225,13 @@ class MercTransInvoices(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency')
     invoice_value = fields.Float("Invoice Value",
                                  compute="_compute_invoice_value")
-    # invoice_details_ids = fields.Many2many('merctrans.invoices.lines', 'job_id', string="Invoice Lines")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list)
 
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
-            item.invoice_value = sum(line.job_value  # x??? rename plz
+            item.invoice_value = sum(line.project_value  # x??? rename plz
                                      for line in item.invoice_details_ids)
 
     @api.constrains('invoice_details_ids')

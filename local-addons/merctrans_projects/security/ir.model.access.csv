@@ -2,6 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 acl_project,merctransproject.project_default,model_merctrans_projects,group_merctrans_pm,1,1,1,1
 acl_pm_services,merctransproject.service_default,model_merctrans_services,group_merctrans_pm,1,1,1,1
 acl_pm_invoices,merctransproject.invoices_default,model_merctrans_invoices,group_merctrans_pm,1,1,1,1
-acl_pm_jobs,merctransproject.jobs_default,model_merctrans_jobs,group_merctrans_pm,1,1,1,1
+acl_pm_pos,merctransproject.pos_default,model_merctrans_pos,group_merctrans_pm,1,1,1,1
 acl_pm_clients,merctransproject.clients_default,model_merctrans_clients,group_merctrans_pm,1,1,1,1
-acl_contributor_jobs,merctransproject.jobs_default,model_merctrans_jobs,group_merctrans_contributor,1,0,0,0
+acl_contributor_pos,merctransproject.pos_default,model_merctrans_pos,group_merctrans_contributor,1,0,0,0
