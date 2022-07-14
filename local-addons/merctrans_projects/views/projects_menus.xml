@@ -72,7 +72,7 @@
                     <field name="volume" />
                     <field name="sale_rate" />
                     <field name="discount" />
-                    <field name="job_value" />
+                    <field name="project_value" />
                     <field name="currency_id" />
                     <field name="payment_status" />
                   </tree>
@@ -135,7 +135,7 @@
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
-                <field name="job_value" />
+                <field name="project_value" />
                 <field name="project_status" />
                 <field name="payment_status" />
               </group>
@@ -205,7 +205,7 @@
           <!--          <field name="target_language" />-->
           <field name="volume" />
           <field name="sale_rate" />
-          <field name="job_value" />
+          <field name="project_value" />
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />
