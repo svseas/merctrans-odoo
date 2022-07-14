@@ -12,6 +12,7 @@ class MerctransClient(models.Model):
     #                              string='Related Partner', help='Partner-related data of the user')
     name = fields.Char(string='Client')
     email = fields.Char(string='Email')
+    country = fields.Many2one('res.country', string='Country')
     client_note = fields.Html('Client note')
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
@@ -31,3 +32,4 @@ class MerctransClient(models.Model):
             match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
         if match == None:
             raise ValidationError('Not a valid email')
+
