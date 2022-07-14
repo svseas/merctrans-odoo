@@ -4,9 +4,15 @@ from odoo import api, fields, models
 
 
 class MerctransJobs(models.Model):
+    """
+        Khoi tao model
+    """
     _name = 'merctrans.jobs'
     _description = "Jobs by Projects"
-    _rec_name = "title"
+    _rec_name = "purchase_order"
+    """
+        Static List
+    """
     job_status_list = [('in progress', 'In Progress'),
                        ('completed', 'Completed'), ('canceled', 'Canceled')]
 
@@ -16,31 +22,25 @@ class MerctransJobs(models.Model):
     payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
                            ('paid', 'Paid')]
     # Detail Job
-
-    title = fields.Char('Job Title', default='Job Title')
-    pic = fields.Many2one('res.users', 'PIC', required=True)
+    """
+        Field and API Decorate
+    """
+    # NOTE: NON-inherit from project page
+    purchase_order = fields.Char('Purchase Order', default='Purchase Order')
+    contributor = fields.Many2one('res.users', 'Contributor', required=True)
     address = fields.Char('Address',
                           store=True,
                           readonly=True,
-                          compute='_get_street_pic')
-    pic_id = fields.Char('Id',
-                         store=True,
-                         readonly=True,
-                         compute='_get_id_pic')
-    pic_email = fields.Char('Email',
-                            store=True,
-                            readonly=True,
-                            compute='_get_email_pic')
-    source_language = fields.Char('Source Language',
-                                  default="English",
-                                  store=True,
-                                  compute='_get_project_source',
-                                  readonly=True)
-    target_language = fields.Char('Target Language',
-                                  default="Vietnamess",
-                                  readonly=True,
-                                  compute='_get_project_target')
-    currency_id = fields.Many2one('res.currency', string='Currency')
+                          compute='_get_street_contributor')
+    contributor_id = fields.Char('Id',
+                                 store=True,
+                                 readonly=True,
+                                 compute='_get_id_contributor')
+    contributor_email = fields.Char('Email',
+                                    store=True,
+                                    readonly=True,
+                                    compute='_get_email_contributor')
+
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
                                  required=True)
@@ -58,60 +58,76 @@ class MerctransJobs(models.Model):
                              store=True,
                              readonly=True,
                              default=0)
+    job_status = fields.Selection(string='JOB STATUS',
+                                  selection=job_status_list)
+    service = fields.Many2one('merctrans.services', string='Service')
+    # NOTE: INHERIT FROM PROJECT
+    source_language = fields.Char('Source Language',
+                                  default="English",
+                                  store=True,
+                                  compute='_get_project_source',
+                                  readonly=True)
+    target_language = fields.Char('Target Language',
+                                  default="Vietnamess",
+                                  readonly=True,
+                                  compute='_get_project_target')
+    currency_id = fields.Many2one('res.currency', string='Currency')
     valid_date = fields.Char('Valid Date',
                              default="Choose Project",
                              readonly=True,
                              compute='_get_project_valid_date')
-    start_date = fields.Date(string='Start Date')
-    due_date = fields.Date(string='Due Date')
+    start_date = fields.Date(
+        string='Start Date')  #, default="_get_start_date")
+    due_date = fields.Date(string='Due Date')  #, default="_get_due_date")
 
     #  TODO: code = auto gen code unique
 
     # From Projects?
     project_id = fields.Many2one('merctrans.projects',
                                  string="Project",
-                                 required=True)
-    job_status = fields.Selection(string='JOB STATUS',
-                                  selection=job_status_list)
-    service = fields.Many2one('merctrans.services', string='Service')
+                                 store=True)
 
-    # Currency - get from partner Currency
-
-    #  TODO: - Cần thêm fields currency cho res.partner
-
-    # TODO: - Cần thêm fields rate cho model -> but? Tính kiểu ?
-
-    # get Source default
-
-    # TODO: Sau khi có currency change street = currency EZ???
-
-    # Get pic address
-    @api.onchange('pic')
-    @api.depends('pic')
-    def _get_street_pic(self):
+    # Get contributor address
+    @api.onchange('contributor')
+    @api.depends('contributor')
+    def _get_street_contributor(self):
         self.ensure_one()
-        print(self.pic.street)
-        self.address = self.pic.street
+        print(self.contributor.street)
+        self.address = self.contributor.street
 
     # Get api email
-    @api.onchange('pic')
-    @api.depends('pic')
-    def _get_email_pic(self):
+    @api.onchange('contributor')
+    @api.depends('contributor')
+    def _get_email_contributor(self):
         for project in self:
-            print(project.pic.email)
-            project.pic_email = project.pic.email
+            print(project.contributor.email)
+            project.contributor_email = project.contributor.email
 
-    @api.onchange('pic')
-    @api.depends('pic')
-    def _get_id_pic(self):
+    @api.onchange('contributor')
+    @api.depends('contributor')
+    def _get_id_contributor(self):
         for project in self:
-            print(project.pic.id)
-            project.pic_id = project.pic.id
+            print(project.contributor.id)
+            project.contributor_id = project.contributor.id
 
     @api.onchange('project_id')
     @api.depends('project_id')
     def _get_project_source(self):
         self.source_language = self.project_id.source_language
+
+    # @api.onchange('project_id')
+    # @api.depends('project_id')
+    # def _get_start_date(self):
+    #     for project in self:
+    #         if project.project_id.start_date:
+    #             return project.project_id.start_date
+    #
+    # @api.onchange('project_id')
+    # @api.depends('project_id')
+    # def _get_due_date(self):
+    #     for project in self:
+    #         if project.project_id.start_date:
+    #             return project.project_id.due_date
 
     @api.onchange('project_id')
     @api.depends('project_id')
@@ -133,7 +149,6 @@ class MerctransJobs(models.Model):
     @api.constrains('start_date', 'project_id')
     def _start_date_contrains(self):
         for project in self:
-            print(project.start_date, project.project_id.start_date)
             if project.start_date < project.project_id.start_date:
                 raise ValidationError(
                     f'Start date must be greater than project start date: {project.project_id.start_date}'
