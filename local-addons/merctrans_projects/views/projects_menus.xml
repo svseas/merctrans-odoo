@@ -123,10 +123,10 @@
                 <field name="project_name" />
                 <field name="client" options="{'no_create': True, 'no_create_edit':True}"/>
                 <field name="source_language" />
+                <field name="services_ids" widget="many2many_tags" />
                 <field name="target_language" />
                 <field name="start_date" />
                 <field name="due_date" />
-                <field name="services_ids" widget="many2many_tags" />
               </group>
               <group>
                 <field name="tags" widget="many2many_tags" />
@@ -145,32 +145,34 @@
                 <field name="po_details">
                   <tree>
                     <field name="purchase_order" />
-                    <field name="target_language" />
-                    <field name="source_language" />
-                    <field name="payment_status" />
-                    <field name="volume" />
-                    <field name="work_unit" />
-                    <field name="sale_rate_per_work_unit" />
                     <field name="contributor" />
-                    <field name="start_date" />
+                    <field name="service" />
+                    <field name="work_unit" />
+                    <field name="volume" />
+                    <field name="sale_rate_per_work_unit" />
                     <field name="due_date" />
+                    <field name="currency_id" />
+                    <field name="po_status" />
+                    <field name="payment_status" />
                   </tree>
                   <form>
                     <group>
                       <group>
                         <field name="purchase_order" />
+                        <field name="contributor" />
                         <field name="target_language" />
                         <field name="source_language" />
+                        <field name="service" />
                         <field name="valid_date" />
                         <field name="start_date" />
                         <field name="due_date" />
                       </group>
                       <group>
-                        <field name="contributor" />
-                        <field name="payment_status" />
-                        <field name="volume" />
                         <field name="work_unit" />
+                        <field name="volume" />
                         <field name="sale_rate_per_work_unit" />
+                        <field name="po_status" />
+                        <field name="payment_status" />
                       </group>
                     </group>
                   </form>
@@ -206,6 +208,7 @@
           <field name="sale_rate"/>
           <field name="currency_id" />
           <field name="sale_rate" />
+          <field name="currency_id" />
           <field name="project_value" />
 
           <!--          <field name="discount" />-->

@@ -62,17 +62,14 @@ class MerctransPOs(models.Model):
     service = fields.Many2one('merctrans.services', string='Service')
     # NOTE: INHERIT FROM PROJECT
     source_language = fields.Char('Source Language',
-                                  default="English",
                                   store=True,
                                   compute='_get_project_source',
                                   readonly=True)
     target_language = fields.Char('Target Language',
-                                  default="Vietnamess",
                                   readonly=True,
                                   compute='_get_project_target')
     currency_id = fields.Many2one('res.currency', string='Currency')
     valid_date = fields.Char('Valid Date',
-                             default="Choose Project",
                              readonly=True,
                              compute='_get_project_valid_date')
     start_date = fields.Date(
@@ -136,6 +133,7 @@ class MerctransPOs(models.Model):
                 project.valid_date = f"{project.project_id.start_date} >> {project.project_id.due_date}"
             else:
                 project.valid_date = "Choose Project"
+            return project.valid_date
 
     @api.onchange('project_id')
     @api.depends('project_id')
