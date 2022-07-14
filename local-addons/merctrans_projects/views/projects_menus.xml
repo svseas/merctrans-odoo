@@ -205,8 +205,6 @@
           <!--          <field name="target_language" />-->
           <field name="volume" />
 
-          <field name="sale_rate"/>
-          <field name="currency_id" />
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />

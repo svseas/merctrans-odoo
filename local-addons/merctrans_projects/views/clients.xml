@@ -31,6 +31,15 @@
           <page string="Project History" name="client_project_history">
             <field name="project_history"/>
           </page>
+          <page string="Invoice History" name="client_invoice_history">
+            <field name="invoice_history" domain="[('invoice_status','=','Unpaid')]">
+              <tree>
+                <field name="invoice_id"/>
+                <field name="invoice_name"/>
+                <field name="invoice_status" />
+              </tree>
+            </field>
+          </page>
         </notebook>
 
       </form>

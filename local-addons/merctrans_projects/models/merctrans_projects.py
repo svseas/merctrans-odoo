@@ -233,8 +233,8 @@ class MercTransInvoices(models.Model):
         for item in self:
             item.invoice_value = sum(line.project_value  # x??? rename plz
                                      for line in item.invoice_details_ids)
-
-    @api.constrains('invoice_details_ids')
+    # @api.depends('currency_id')
+    @api.constrains('invoice_details_ids', 'currency_id')
     def currency_constrains(self):
         for job in self:
             for x in job.invoice_details_ids:

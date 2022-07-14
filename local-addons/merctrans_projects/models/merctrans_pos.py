@@ -46,19 +46,19 @@ class MerctransPOs(models.Model):
                                  required=True)
     volume = fields.Integer(string='Volume*', required=True, default=0)
 
-    sale_rate_per_work_unit = fields.Float(string='Sale rate per Work Unit',
+    sale_rate_per_work_unit = fields.Float(string='Rate*',
                                            required=True,
                                            default=0)
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
-                                      default='Payment Status')
+                                      default='unpaid')
 
     po_value = fields.Float("Project Value",
                             compute="_compute_po_value",
                             store=True,
                             readonly=True,
                             default=0)
-    po_status = fields.Selection(string='Status', selection=po_status_list)
+    po_status = fields.Selection(string='Status', selection=po_status_list, default='Unpaid')
     service = fields.Many2one('merctrans.services', string='Service')
     # NOTE: INHERIT FROM PROJECT
     source_language = fields.Char('Source Language',

@@ -16,7 +16,8 @@ class MerctransClient(models.Model):
     client_note = fields.Html('Client note')
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
-    project_history = fields.Many2many('merctrans.projects', readonly=True, domain="[('client', '=', name)]")
+    project_history = fields.One2many('merctrans.projects', 'client', readonly=True)
+    invoice_history = fields.One2many('merctrans.invoices', 'invoice_client')
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
 
@@ -34,6 +35,4 @@ class MerctransClient(models.Model):
         if match == None:
             raise ValidationError('Not a valid email')
 
-    @api.onchange('name')
-    def get_project(self):
-        return {'domain': {'project_history': [('client', '=', self.name)]}}
+
