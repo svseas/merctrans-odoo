@@ -83,12 +83,12 @@ class MercTransProjects(models.Model):
                              compute="_get_project_id")
 
     project_name = fields.Char(
-        'Project Name',
+        'Project Name*',
         default=lambda self:
         f"Project No {self.env['merctrans.projects'].search_count([])}")
 
     client = fields.Many2one('merctrans.clients',
-                             string='Client',
+                             string='Client*',
                              required=True,
                              default=lambda self: self.env['merctrans.clients']
                              .search([('name', '=', 'merctrans')], limit=1))
@@ -118,9 +118,9 @@ class MercTransProjects(models.Model):
     start_date = fields.Date(string='Start Date*', required=True)
     due_date = fields.Date(string='Due Date*', required=True)
 
-    # NOTE: SALE, Volume, unit, rate
+    # NOTE: SALE, Volume, unit, rate, margin
 
-    discount = fields.Integer(string='Discount (%)', default=0)
+    discount = fields.Integer(string='Discount', default=0)
     # add discount field
     # fixed job
 
@@ -132,26 +132,35 @@ class MercTransProjects(models.Model):
                                   string='Currency*',
                                   required=True)
     sale_rate = fields.Float(string='Rate*', required=True, default=0)
-    # production_rate_per_work_unit = fields.Float('Production rate per Work Unit')
     project_value = fields.Float("Project Value",
                                  compute="_compute_project_value",
                                  store=True,
                                  readonly=True,
                                  default=0)
+    total_po_value = fields.Float("Total PO value",
+                                  compute="_compute_po_value",
+                                  store=True,
+                                  readonly=True,
+                                  default=0)
+    project_margin = fields.Float("Project Margin",
+                                  compute="_compute_margin",
+                                  store=True,
+                                  readonly=True,
+                                  default=0)
     # NOTE: PROJECT STATUS
 
     project_instruction = fields.Html('Project Instruction')
     project_status = fields.Selection(string='Project Status',
                                       selection=project_status_list,
                                       required=True,
-                                      default='Project Status')
+                                      default='in progress')
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
-                                      default='Payment Status')
+                                      default='unpaid')
 
     po_details = fields.One2many("merctrans.pos",
                                  "project_id",
-                                 string="Purchase Order in this Project")
+                                 string="Purchase Orders in this Project")
 
     def _get_client_name(self):
         self.client_name = ''
@@ -205,6 +214,19 @@ class MercTransProjects(models.Model):
                 raise ValidationError(
                     'Due date must be greater than Start date!')
 
+    @api.depends('po_details')
+    def _compute_po_value(self):
+        for job in self:
+            job.total_po_value = sum(po.po_value for po in job.po_details)
+
+    @api.onchange('project_value', 'total_po_value')
+    @api.depends('project_value', 'total_po_value')
+    def _compute_margin(self):
+        for project in self:
+            if project.project_value > 0:
+                project.project_margin = (project.project_value - project.total_po_value) / project.project_value
+
+
 
 class MercTransInvoices(models.Model):
     _name = 'merctrans.invoices'
@@ -226,14 +248,14 @@ class MercTransInvoices(models.Model):
     invoice_value = fields.Float("Invoice Value",
                                  compute="_compute_invoice_value")
     invoice_status = fields.Selection(string="Invoice Status",
-                                      selection=status_list)
+                                      selection=status_list, default='Unpaid')
 
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
             item.invoice_value = sum(line.project_value  # x??? rename plz
                                      for line in item.invoice_details_ids)
-    # @api.depends('currency_id')
+
     @api.constrains('invoice_details_ids', 'currency_id')
     def currency_constrains(self):
         for job in self:

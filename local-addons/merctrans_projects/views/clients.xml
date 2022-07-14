@@ -18,9 +18,6 @@
             <field name="email" />
             <field name="phone_number"/>
             <field name="website" widget="url"/>
-<!--            <field name="partner_id"/>-->
-<!--            <field name="client_currency" />-->
-            <!-- <field name="source_language" readonly="1"/> -->
           </group>
 
         </group>

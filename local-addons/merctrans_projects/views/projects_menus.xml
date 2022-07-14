@@ -127,15 +127,17 @@
                 <field name="target_language" />
                 <field name="start_date" />
                 <field name="due_date" />
+                <field name="tags" widget="many2many_tags" />
               </group>
               <group>
-                <field name="tags" widget="many2many_tags" />
                 <field name="currency_id" />
-                <field name="discount" />
+                <field name="discount" widget="percentage"/>
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
                 <field name="project_value" />
+                <field name="total_po_value"/>
+                <field name="project_margin" widget="percentage"/>
                 <field name="project_status" />
                 <field name="payment_status" />
               </group>
@@ -152,6 +154,7 @@
                     <field name="sale_rate_per_work_unit" />
                     <field name="due_date" />
                     <field name="currency_id" />
+                    <field name="po_value"/>
                     <field name="po_status" />
                     <field name="payment_status" />
                   </tree>
@@ -171,6 +174,7 @@
                         <field name="work_unit" />
                         <field name="volume" />
                         <field name="sale_rate_per_work_unit" />
+                        <field name="po_value"/>
                         <field name="po_status" />
                         <field name="payment_status" />
                       </group>
@@ -204,11 +208,11 @@
           <!--          <field name="source_language" />-->
           <!--          <field name="target_language" />-->
           <field name="volume" />
-
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />
-
+          <field name="project_margin" widget="percentage"/>
+<!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
           <field name="due_date" />

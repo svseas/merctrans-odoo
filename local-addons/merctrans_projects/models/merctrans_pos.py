@@ -58,7 +58,7 @@ class MerctransPOs(models.Model):
                             store=True,
                             readonly=True,
                             default=0)
-    po_status = fields.Selection(string='Status', selection=po_status_list, default='Unpaid')
+    po_status = fields.Selection(string='Status', selection=po_status_list, default='in progress')
     service = fields.Many2one('merctrans.services', string='Service')
     # NOTE: INHERIT FROM PROJECT
     source_language = fields.Char('Source Language',

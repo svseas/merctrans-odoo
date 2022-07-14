@@ -17,7 +17,7 @@ class MerctransClient(models.Model):
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
     project_history = fields.One2many('merctrans.projects', 'client', readonly=True)
-    invoice_history = fields.One2many('merctrans.invoices', 'invoice_client',domain=[('invoice_status', '=', 'unpaid')])
+    invoice_history = fields.One2many('merctrans.invoices', 'invoice_client', domain=[('invoice_status', '=', 'unpaid')])
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
 
