@@ -32,7 +32,7 @@
             <field name="project_history"/>
           </page>
           <page string="Invoice History" name="client_invoice_history">
-            <field name="invoice_history" domain="[('invoice_status','=','Unpaid')]">
+            <field name="invoice_history">
               <tree>
                 <field name="invoice_id"/>
                 <field name="invoice_name"/>
