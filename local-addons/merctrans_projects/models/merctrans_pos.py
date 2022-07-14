@@ -3,25 +3,25 @@ from odoo.exceptions import ValidationError
 from odoo import api, fields, models
 
 
-class MerctransJobs(models.Model):
+class MerctransPOs(models.Model):
     """
         Khoi tao model
     """
-    _name = 'merctrans.jobs'
-    _description = "Jobs by Projects"
+    _name = 'merctrans.pos'
+    _description = "Purchase Order by Projects"
     _rec_name = "purchase_order"
     """
         Static List
     """
-    job_status_list = [('in progress', 'In Progress'),
-                       ('completed', 'Completed'), ('canceled', 'Canceled')]
+    po_status_list = [('in progress', 'In Progress'),
+                      ('completed', 'Completed'), ('canceled', 'Canceled')]
 
     work_unit_list = [('word', 'Word'), ('hour', 'Hour'), ('page', 'Page'),
                       ('job', 'Job')]
 
     payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
                            ('paid', 'Paid')]
-    # Detail Job
+    # Detail po
     """
         Field and API Decorate
     """
@@ -53,12 +53,12 @@ class MerctransJobs(models.Model):
                                       selection=payment_status_list,
                                       default='Payment Status')
 
-    job_value = fields.Float("Project Value",
-                             compute="_compute_job_value",
-                             store=True,
-                             readonly=True,
-                             default=0)
-    job_status = fields.Selection(string='Status', selection=job_status_list)
+    po_value = fields.Float("Project Value",
+                            compute="_compute_po_value",
+                            store=True,
+                            readonly=True,
+                            default=0)
+    po_status = fields.Selection(string='Status', selection=po_status_list)
     service = fields.Many2one('merctrans.services', string='Service')
     # NOTE: INHERIT FROM PROJECT
     source_language = fields.Char('Source Language',
@@ -143,7 +143,7 @@ class MerctransJobs(models.Model):
         for project in self:
             project.target_language = project.project_id.target_language
 
-    # Job start date must greater than project start date
+    # po start date must greater than project start date
     @api.depends('project_id')
     @api.constrains('start_date', 'project_id')
     def _start_date_contrains(self):
@@ -153,7 +153,7 @@ class MerctransJobs(models.Model):
                     f'Start date must be greater than project start date: {project.project_id.start_date}'
                 )
 
-    # Job due date must lesser project due date
+    # po due date must lesser project due date
     @api.depends('project_id')
     @api.constrains('due_date', 'project_id')
     def _due_date_contrains(self):
@@ -174,8 +174,8 @@ class MerctransJobs(models.Model):
     # workunit
     @api.onchange('volume', 'rate_per_work_unit')
     @api.depends('volume', 'sale_rate_per_work_unit')
-    def _compute_job_value(self):
+    def _compute_po_value(self):
         for project in self:
-            project.job_value = (
+            project.po_value = (
                 100 -
                 0) / 100 * project.volume * project.sale_rate_per_work_unit

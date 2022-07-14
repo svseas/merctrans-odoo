@@ -149,9 +149,9 @@ class MercTransProjects(models.Model):
                                       selection=payment_status_list,
                                       default='Payment Status')
 
-    job_details = fields.One2many("merctrans.jobs",
-                                  "project_id",
-                                  string="Jobs in this Project")
+    po_details = fields.One2many("merctrans.pos",
+                                 "project_id",
+                                 string="Purchase Order in this Project")
 
     def _get_client_name(self):
         self.client_name = ''
@@ -225,7 +225,6 @@ class MercTransInvoices(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency')
     invoice_value = fields.Float("Invoice Value",
                                  compute="_compute_invoice_value")
-    # invoice_details_ids = fields.Many2many('merctrans.invoices.lines', 'job_id', string="Invoice Lines")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list)
 
