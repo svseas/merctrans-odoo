@@ -143,7 +143,7 @@
             <notebook>
               <page string="Purchase Order">
                 <field name="po_details">
-                  <tree editable="True">
+                  <tree>
                     <field name="purchase_order" />
                     <field name="target_language" />
                     <field name="source_language" />
@@ -205,8 +205,6 @@
 
           <field name="sale_rate"/>
           <field name="currency_id" />
-          <field name="job_value" />
-
           <field name="sale_rate" />
           <field name="project_value" />
 

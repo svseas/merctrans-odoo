@@ -260,11 +260,4 @@ class MercTransInvoices(models.Model):
             if self.invoice_status == 'invoiced':
                 project.write({'payment_status': 'invoiced'})
 
-    @api.onchange('invoice_client')
-    def onchange_client_name(self):
-        res = {}
-        res['domain'] = {'invoice_detail_ids':[]}
-        for rec in self:
-            if rec.invoice_client:
-                res['domain']['invoice_detail_ids'].append(('invoice_client', '=', rec.invoice_client))
-        return res
+

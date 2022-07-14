@@ -16,7 +16,7 @@ class MerctransClient(models.Model):
     client_note = fields.Html('Client note')
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
-    project_history = fields.Many2many('merctrans.projects', 'client', readonly=True)
+    project_history = fields.Many2many('merctrans.projects', readonly=True, domain="[('client', '=', name)]")
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
 
