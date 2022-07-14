@@ -28,6 +28,9 @@
           <page string="Client Note" name="client_note">
             <field name="client_note" />
           </page>
+          <page string="Project History" name="client_project_history">
+            <field name="project_history"/>
+          </page>
         </notebook>
 
       </form>

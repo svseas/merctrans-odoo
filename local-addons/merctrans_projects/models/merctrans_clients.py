@@ -16,9 +16,10 @@ class MerctransClient(models.Model):
     client_note = fields.Html('Client note')
     phone_number = fields.Char(string='Phone number')
     website = fields.Char(string='Website')
-
+    project_history = fields.Many2many('merctrans.projects', 'client', readonly=True)
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
+
     @api.constrains('name')
     def check_duplicate_name(self):
         for company_rec in self:
@@ -33,3 +34,6 @@ class MerctransClient(models.Model):
         if match == None:
             raise ValidationError('Not a valid email')
 
+    @api.onchange('name')
+    def get_project(self):
+        return {'domain': {'project_history': [('client', '=', self.name)]}}

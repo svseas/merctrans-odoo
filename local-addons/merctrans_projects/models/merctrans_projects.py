@@ -88,7 +88,7 @@ class MercTransProjects(models.Model):
         f"Project No {self.env['merctrans.projects'].search_count([])}")
 
     client = fields.Many2one('merctrans.clients',
-                             string='Clients',
+                             string='Client',
                              required=True,
                              default=lambda self: self.env['merctrans.clients']
                              .search([('name', '=', 'merctrans')], limit=1))
