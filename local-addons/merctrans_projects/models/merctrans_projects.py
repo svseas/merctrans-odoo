@@ -37,6 +37,7 @@ class MercTransProjects(models.Model):
     """
         Static list
     """
+    # NOTE: STATIC LIST
 
     language_list = [('zh-CN', 'Chinese (Simplified)'),
                      ('zh-TW', 'Chinese (Traditional)'),
@@ -72,11 +73,13 @@ class MercTransProjects(models.Model):
         để thuận tiện hơn trong chỉnh sửa và debug
     """
 
-    # NOTE: ID and Project ID, project name, client, tags
+    # NOTE: ID AND PROJECT ID, PROJECT NAME, CLIENT, TAGS
+
     number_id = fields.Integer('No number',
                                index=True,
                                readonly=True,
                                copy=False)
+
     project_id = fields.Char('Project Id',
                              default="new_project",
                              readonly=True,
@@ -94,31 +97,37 @@ class MercTransProjects(models.Model):
                              .search([('name', '=', 'merctrans')], limit=1))
 
     services_ids = fields.Many2many('merctrans.services', string='Services')
+
     client_name = fields.Char('Client_',
                               compute='_get_client_name',
                               default='merctrans',
                               readonly=True)
+
     tags = fields.Many2many('merctrans.tags', string='Tags')
 
     project_manager = fields.Many2one('res.users',
                                       string='Project Manager*',
                                       required=True)
-    # compute project_id by client many 2 one -> should default value client_name
-    # services contain tags
-    # NOTE: Target and Source Language
+
+    # NOTE: TARGET AND SOURCE LANGUAGE
+
     source_language = fields.Selection(string="Source Languages",
                                        selection=language_list,
                                        default="Select a language")
+
     target_language = fields.Selection(string="Target Language",
                                        selection=language_list,
                                        default="Select a language")
 
-    # NOTE: TIME, START and DUE DATE
+    # NOTE: TIME, START AND DUE DATE
+
     current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
+
     start_date = fields.Date(string='Start Date*', required=True)
+
     due_date = fields.Date(string='Due Date*', required=True)
 
-    # NOTE: SALE, Volume, unit, rate, margin
+    # NOTE: SALE, VOLUME, UNIT, RATE, MARGIN
 
     discount = fields.Integer(string='Discount', default=0)
     # add discount field
@@ -128,32 +137,40 @@ class MercTransProjects(models.Model):
                                  selection=work_unit_list,
                                  required=True)
     volume = fields.Integer(string='Volume*', required=True, default=0)
+
     currency_id = fields.Many2one('res.currency',
                                   string='Currency*',
                                   required=True)
+
     sale_rate = fields.Float(string='Rate*', required=True, default=0)
+
     project_value = fields.Float("Project Value",
                                  compute="_compute_project_value",
                                  store=True,
                                  readonly=True,
                                  default=0)
+
     total_po_value = fields.Float("Total PO value",
                                   compute="_compute_po_value",
                                   store=True,
                                   readonly=True,
                                   default=0)
+
     project_margin = fields.Float("Project Margin",
                                   compute="_compute_margin",
                                   store=True,
                                   readonly=True,
                                   default=0)
+
     # NOTE: PROJECT STATUS
 
     project_instruction = fields.Html('Project Instruction')
+
     project_status = fields.Selection(string='Project Status',
                                       selection=project_status_list,
                                       required=True,
                                       default='in progress')
+
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
                                       default='unpaid')
@@ -161,6 +178,8 @@ class MercTransProjects(models.Model):
     po_details = fields.One2many("merctrans.pos",
                                  "project_id",
                                  string="Purchase Orders in this Project")
+
+    # NOTE: FUNCTION AND API DECORATE
 
     def _get_client_name(self):
         self.client_name = ''
@@ -224,8 +243,9 @@ class MercTransProjects(models.Model):
     def _compute_margin(self):
         for project in self:
             if project.project_value > 0:
-                project.project_margin = (project.project_value - project.total_po_value) / project.project_value
-
+                project.project_margin = (
+                    project.project_value -
+                    project.total_po_value) / project.project_value
 
 
 class MercTransInvoices(models.Model):
@@ -248,7 +268,8 @@ class MercTransInvoices(models.Model):
     invoice_value = fields.Float("Invoice Value",
                                  compute="_compute_invoice_value")
     invoice_status = fields.Selection(string="Invoice Status",
-                                      selection=status_list, default='Unpaid')
+                                      selection=status_list,
+                                      default='Unpaid')
 
     @api.depends('invoice_details_ids')
     def _compute_invoice_value(self):
@@ -281,5 +302,3 @@ class MercTransInvoices(models.Model):
                 project.write({'payment_status': 'paid'})
             if self.invoice_status == 'invoiced':
                 project.write({'payment_status': 'invoiced'})
-
-

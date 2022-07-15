@@ -26,16 +26,21 @@ class MerctransPOs(models.Model):
         Field and API Decorate
     """
     # NOTE: NON-inherit from project page
+
     purchase_order = fields.Char('Purchase Order', default='Purchase Order')
+
     contributor = fields.Many2one('res.users', 'Contributor', required=True)
+
     address = fields.Char('Address',
                           store=True,
                           readonly=True,
                           compute='_get_street_contributor')
+
     contributor_id = fields.Char('Id',
                                  store=True,
                                  readonly=True,
                                  compute='_get_id_contributor')
+
     contributor_email = fields.Char('Email',
                                     store=True,
                                     readonly=True,
@@ -44,11 +49,13 @@ class MerctransPOs(models.Model):
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
                                  required=True)
+
     volume = fields.Integer(string='Volume*', required=True, default=0)
 
     sale_rate_per_work_unit = fields.Float(string='Rate*',
                                            required=True,
                                            default=0)
+
     payment_status = fields.Selection(string='Payment Status',
                                       selection=payment_status_list,
                                       default='unpaid')
@@ -58,25 +65,34 @@ class MerctransPOs(models.Model):
                             store=True,
                             readonly=True,
                             default=0)
-    po_status = fields.Selection(string='Status', selection=po_status_list, default='in progress')
+
+    po_status = fields.Selection(string='Status',
+                                 selection=po_status_list,
+                                 default='in progress')
+
     service = fields.Many2one('merctrans.services', string='Service')
+
     # NOTE: INHERIT FROM PROJECT
+
     source_language = fields.Char('Source Language',
                                   store=True,
                                   compute='_get_project_source',
                                   readonly=True)
+
     target_language = fields.Char('Target Language',
                                   readonly=True,
                                   compute='_get_project_target')
+
     currency_id = fields.Many2one('res.currency', string='Currency')
+
     valid_date = fields.Char('Valid Date',
                              readonly=True,
                              compute='_get_project_valid_date')
+
     start_date = fields.Date(
         string='Start Date')  #, default="_get_start_date")
-    due_date = fields.Date(string='Due Date')  #, default="_get_due_date")
 
-    #  TODO: code = auto gen code unique
+    due_date = fields.Date(string='Due Date')  #, default="_get_due_date")
 
     # From Projects?
     project_id = fields.Many2one('merctrans.projects',
