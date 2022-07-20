@@ -92,7 +92,7 @@ class MerctransPOs(models.Model):
     start_date = fields.Date(
         string='Start Date')  #, default="_get_start_date")
 
-    due_date = fields.Date(string='Due Date')  #, default="_get_due_date")
+    due_date = fields.Date(string='Due Date')  # default="_get_due_date")
 
     # From Projects?
     project_id = fields.Many2one('merctrans.projects',

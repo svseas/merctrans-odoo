@@ -13,6 +13,8 @@ services:
     environment:
       - USER=odoo
       - PASSWORD=odoo
+    networks:
+      - postgres
     command: >
       -u merctrans_projects
   db:
@@ -24,10 +26,32 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
+    networks:
+      - postgres
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: amdin@merctrans.vn
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - 5433:80
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
 
 
 volumes:
   odoo-web-data:
   odoo-db-data:
+  pgadmin:
 
   

@@ -11,3 +11,9 @@ docker exec -it 02_merctrans_odoo-db-1 bash
 # Sau khi connect duoc vao bash cua odoo service
 psql -U odoo postgres
 ```
+
+connect pgadmin4 - port 5433
+**Create new server** 
+hostname/address : db 
+username: odoo
+password: odoo
