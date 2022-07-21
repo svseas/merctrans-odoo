@@ -92,15 +92,24 @@ class MerctransPOs(models.Model):
                              readonly=True,
                              compute='_get_project_valid_date')
 
-    start_date = fields.Date(
-        string='Start Date')  #, default="_get_start_date")
+    start_date = fields.Date(string='Start Date', default=fields.Date.today())
 
-    due_date = fields.Date(string='Due Date')  # default="_get_due_date")
+    due_date = fields.Date(string='Due Date',
+                           default=lambda self: self._get_default_date())
 
     # From Projects?
     project_id = fields.Many2one('merctrans.projects',
                                  string="Project",
                                  store=True)
+
+    @api.model
+    def _get_default_date(self):
+        for p in self:
+            if p.project_id:
+                p.due_date = p.project_id.due_date
+                return p.project_id.due_date
+            else:
+                return fields.Date.today()
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')

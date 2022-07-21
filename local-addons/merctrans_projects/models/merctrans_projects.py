@@ -123,9 +123,13 @@ class MercTransProjects(models.Model):
 
     current_time = datetime.now().strftime("%Y%m%d-%H%M%s")
 
-    start_date = fields.Date(string='Start Date*', required=True)
+    start_date = fields.Date(string='Start Date*',
+                             required=True,
+                             default=fields.Date.today())
 
-    due_date = fields.Date(string='Due Date*', required=True)
+    due_date = fields.Date(string='Due Date*',
+                           required=True,
+                           default=fields.Datetime.today())
 
     # NOTE: SALE, VOLUME, UNIT, RATE, MARGIN
 
