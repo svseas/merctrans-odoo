@@ -27,7 +27,10 @@ class MerctransPOs(models.Model):
     """
     # NOTE: NON-inherit from project page
 
-    purchase_order = fields.Char('Purchase Order', default='Purchase Order')
+    purchase_order = fields.Char('Purchase Order',
+                                 store=True,
+                                 readonly=True,
+                                 compute="_get_purchase_order")
 
     contributor = fields.Many2one('res.users', 'Contributor', required=True)
 
@@ -100,6 +103,21 @@ class MerctransPOs(models.Model):
                                  store=True)
 
     # Get contributor address
+    @api.onchange('project_id', 'contributor')
+    @api.depends('project_id', 'contributor')
+    def _get_purchase_order(self):
+        for po in self:
+            if po.project_id:
+                pj = po.project_id.project_id.split("-")
+                ctrb = po.contributor.name if po.contributor else "ctrb"
+                # ids = self.env['merctrans.pos'].sudo().search_count([
+                #     ('project_id', "=", po.project_id.id)
+                # ])
+                ids = len(po.project_id.po_details)
+                po.purchase_order = f"PO{ids}-{ctrb[:3].upper()}|{pj[0]}{pj[1][2:]}"
+            else:
+                po.purchase_order = "Select Project"
+
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_street_contributor(self):
