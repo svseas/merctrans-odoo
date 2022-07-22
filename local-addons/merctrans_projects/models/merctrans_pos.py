@@ -116,10 +116,10 @@ class MerctransPOs(models.Model):
     def _get_purchase_order(self):
         for po in self:
             if po.project_id:
-                pj = po.project_id.project_id.split("-")
+                pj = po.project_id.project_id
                 ctrb = po.contributor.name if po.contributor else "ctrb"
                 ids = len(po.project_id.po_details)
-                po.purchase_order = f"PO{ids}-{ctrb[:3].upper()}|{pj[0]}{pj[1][2:]}"
+                po.purchase_order = f"PO{ids}-{ctrb[:3].upper()}|{pj}"
             else:
                 po.purchase_order = "Select Project"
 

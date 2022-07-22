@@ -170,13 +170,14 @@ class MercTransProjects(models.Model):
 
     project_instruction = fields.Html('Project Instruction')
 
-    project_status = fields.Selection(string='Project Status',
+    project_status = fields.Selection(string='Project Status*',
                                       selection=project_status_list,
                                       required=True,
                                       default='in progress')
 
-    payment_status = fields.Selection(string='Payment Status',
+    payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
+                                      required=True,
                                       default='unpaid')
 
     po_details = fields.One2many("merctrans.pos",
@@ -211,14 +212,14 @@ class MercTransProjects(models.Model):
     @api.onchange('client')
     @api.depends('client')
     def _get_project_id(self):
-        create_time = datetime.today().strftime('%Y%m%d')
+        create_time = datetime.today().strftime('%y%m%d')
         for project in self:
             if project.client:
                 # client is many2many nen can chinh sua lai 1 chut, chi lay ten cua thang dau tien, should be change with project.client
                 client_name = project.client[0].name if len(
                     project.client) > 1 else project.client.name
-                short_name = client_name[:4].upper()
-                project.project_id = f"{short_name}-{create_time}-{project.number_id}"
+                short_name = "".join(client_name.split()).upper()
+                project.project_id = f"{short_name[:4]}-{create_time}-{project.number_id:05d}"
             else:
                 project.project_id = "on change"
 
@@ -250,59 +251,3 @@ class MercTransProjects(models.Model):
                 project.project_margin = (
                     project.project_value -
                     project.total_po_value) / project.project_value
-
-
-class MercTransInvoices(models.Model):
-    _name = 'merctrans.invoices'
-    _rec_name = 'invoice_name'
-    _description = 'MercTrans Invoices for Project Managers'
-
-    status_list = [('invoiced', 'Invoiced'), ('paid', 'Paid'),
-                   ('unpaid', 'Unpaid')]
-
-    invoice_id = fields.Integer('Invoice ID')
-    invoice_name = fields.Char('Invoice name')
-    invoice_date = fields.Date(string='Invoice Date')
-    invoice_client = fields.Many2one('merctrans.clients',
-                                     string='Client',
-                                     required='True')
-    invoice_details_ids = fields.Many2many('merctrans.projects',
-                                           string='Invoice Lines')
-    currency_id = fields.Many2one('res.currency', string='Currency')
-    invoice_value = fields.Float("Invoice Value",
-                                 compute="_compute_invoice_value")
-    invoice_status = fields.Selection(string="Invoice Status",
-                                      selection=status_list,
-                                      default='Unpaid')
-
-    @api.depends('invoice_details_ids')
-    def _compute_invoice_value(self):
-        for item in self:
-            item.invoice_value = sum(line.project_value  # x??? rename plz
-                                     for line in item.invoice_details_ids)
-
-    @api.constrains('invoice_details_ids', 'currency_id')
-    def currency_constrains(self):
-        for job in self:
-            for x in job.invoice_details_ids:
-                if job.currency_id != x.currency_id:
-                    raise ValidationError(
-                        'Job currency must be the same as invoice currency!')
-
-    # @api.model
-    # def create(self, vals):
-    #     print("Invoices Create Vals ", vals)
-    #     return super(MercTransInvoices, self).create(vals)
-    #
-    # def write(self, vals):
-    #     print("Invoices Write Vals ", vals)
-    #     return super(MercTransInvoices, self).write(vals)
-
-    @api.onchange('invoice_status')
-    def sync_status(self):
-
-        for project in self.invoice_details_ids:
-            if self.invoice_status == 'paid':
-                project.write({'payment_status': 'paid'})
-            if self.invoice_status == 'invoiced':
-                project.write({'payment_status': 'invoiced'})
