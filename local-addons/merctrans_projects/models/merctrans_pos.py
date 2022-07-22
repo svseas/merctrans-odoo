@@ -102,12 +102,11 @@ class MerctransPOs(models.Model):
                              required=True,
                              default=fields.Date.today())
 
-    due_date = fields.Date(
-        string='Due Date*',
-        required=True,
-        default=fields.Date.today())
-        # default=lambda self: self.env['merctrans.projects'].search([(
-        #     'project_id', '=', self.project_id.project_id)]).due_date)
+    due_date = fields.Date(string='Due Date*',
+                           required=True,
+                           default=fields.Date.today())
+    # default=lambda self: self.env['merctrans.projects'].search([(
+    #     'project_id', '=', self.project_id.project_id)]).due_date)
 
     # From Projects?
 
@@ -120,7 +119,7 @@ class MerctransPOs(models.Model):
                 pj = po.project_id.project_id
                 ctrb = po.contributor.name if po.contributor else "ctrb"
                 ids = len(po.project_id.po_details)
-                po.purchase_order = f"PO{ids}-{ctrb[:3].upper()}|{pj}"
+                po.purchase_order = f"PO{ids:03d}-{ctrb[:3].upper()}|{pj}"
             else:
                 po.purchase_order = "Select Project"
 
