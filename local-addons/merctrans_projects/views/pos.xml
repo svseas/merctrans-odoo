@@ -12,7 +12,7 @@
         <field name="name">Purchase Order Form</field>
         <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false" edit="false">
                 <group>
                     <group>
                         <field name="purchase_order"/>
