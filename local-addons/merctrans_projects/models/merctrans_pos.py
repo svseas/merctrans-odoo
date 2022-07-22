@@ -168,17 +168,17 @@ class MerctransPOs(models.Model):
     @api.depends('project_id')
     def _get_project_valid_date(self):
         for project in self:
-            if project.project_id.start_date:
+            if project.project_id:
                 project.valid_date = f"{project.project_id.start_date} >> {project.project_id.due_date}"
             else:
                 project.valid_date = "Choose Project"
-            return project.valid_date
 
     @api.onchange('project_id')
     @api.depends('project_id')
     def _get_project_target(self):
-        for project in self:
-            project.target_language = project.project_id.target_language
+        for po in self:
+            if po.project_id:
+                po.target_language = po.project_id.target_language
 
     # po start date must greater than project start date
     @api.depends('project_id')
