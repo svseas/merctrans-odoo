@@ -152,7 +152,7 @@
                     <field name="work_unit" />
                     <field name="volume" />
                     <field name="sale_rate_per_work_unit" />
-                    <field name="due_date" />
+                    <field name="due_date" require="True"/>
                     <field name="currency_id" />
                     <field name="po_value"/>
                     <field name="po_status" />
@@ -167,8 +167,8 @@
                         <field name="source_language" />
                         <field name="service" />
                         <field name="valid_date" />
-                        <field name="start_date" />
-                        <field name="due_date" />
+                        <field name="start_date" require="True" />
+                        <field name="due_date"  />
                       </group>
                       <group>
                         <field name="work_unit" />

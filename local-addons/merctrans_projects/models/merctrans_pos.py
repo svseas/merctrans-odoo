@@ -32,7 +32,7 @@ class MerctransPOs(models.Model):
                                  readonly=True,
                                  compute="_get_purchase_order")
 
-    contributor = fields.Many2one('res.users', 'Contributor', required=True)
+    contributor = fields.Many2one('res.users', 'Contributor*', required=True)
 
     address = fields.Char('Address',
                           store=True,
@@ -51,6 +51,7 @@ class MerctransPOs(models.Model):
 
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
+                                 default="hour",
                                  required=True)
 
     volume = fields.Integer(string='Volume*', required=True, default=0)
@@ -59,18 +60,20 @@ class MerctransPOs(models.Model):
                                            required=True,
                                            default=0)
 
-    payment_status = fields.Selection(string='Payment Status',
+    payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
+                                      required=True,
                                       default='unpaid')
 
-    po_value = fields.Float("Project Value",
+    po_value = fields.Float("Value",
                             compute="_compute_po_value",
                             store=True,
                             readonly=True,
                             default=0)
 
-    po_status = fields.Selection(string='Status',
+    po_status = fields.Selection(string='Status*',
                                  selection=po_status_list,
+                                 required=True,
                                  default='in progress')
 
     service = fields.Many2one('merctrans.services', string='Service')
@@ -92,24 +95,20 @@ class MerctransPOs(models.Model):
                              readonly=True,
                              compute='_get_project_valid_date')
 
-    start_date = fields.Date(string='Start Date', default=fields.Date.today())
+    start_date = fields.Date(string='Start Date*',
+                             required=True,
+                             default=fields.Date.today())
 
-    due_date = fields.Date(string='Due Date',
-                           default=lambda self: self._get_default_date())
+    due_date = fields.Date(
+        string='Due Date*',
+        required=True,
+        default=lambda self: self.env['merctrans.projects'].search([(
+            'project_id', '=', 'project_id.project_id')]).due_date)
 
     # From Projects?
     project_id = fields.Many2one('merctrans.projects',
                                  string="Project",
                                  store=True)
-
-    @api.model
-    def _get_default_date(self):
-        for p in self:
-            if p.project_id:
-                p.due_date = p.project_id.due_date
-                return p.project_id.due_date
-            else:
-                return fields.Date.today()
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')
@@ -119,9 +118,6 @@ class MerctransPOs(models.Model):
             if po.project_id:
                 pj = po.project_id.project_id.split("-")
                 ctrb = po.contributor.name if po.contributor else "ctrb"
-                # ids = self.env['merctrans.pos'].sudo().search_count([
-                #     ('project_id', "=", po.project_id.id)
-                # ])
                 ids = len(po.project_id.po_details)
                 po.purchase_order = f"PO{ids}-{ctrb[:3].upper()}|{pj[0]}{pj[1][2:]}"
             else:
@@ -213,7 +209,7 @@ class MerctransPOs(models.Model):
                     'Due date must be greater than Start date!')
 
     # workunit
-    @api.onchange('volume', 'rate_per_work_unit')
+    @api.onchange('volume', 'sale_rate_per_work_unit')
     @api.depends('volume', 'sale_rate_per_work_unit')
     def _compute_po_value(self):
         for project in self:
