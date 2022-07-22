@@ -39,6 +39,9 @@ class MerctransPOs(models.Model):
                           readonly=True,
                           compute='_get_street_contributor')
 
+    project_id = fields.Many2one('merctrans.projects',
+                                 string="Project",
+                                 store=True)
     contributor_id = fields.Char('Id',
                                  store=True,
                                  readonly=True,
@@ -103,12 +106,9 @@ class MerctransPOs(models.Model):
         string='Due Date*',
         required=True,
         default=lambda self: self.env['merctrans.projects'].search([(
-            'project_id', '=', 'project_id.project_id')]).due_date)
+            'project_id', '=', project_id.project_id)]).due_date)
 
     # From Projects?
-    project_id = fields.Many2one('merctrans.projects',
-                                 string="Project",
-                                 store=True)
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')
@@ -148,7 +148,11 @@ class MerctransPOs(models.Model):
     @api.onchange('project_id')
     @api.depends('project_id')
     def _get_project_source(self):
-        self.source_language = self.project_id.source_language
+        for po in self:
+            if po.project_id.source_language:
+                po.source_language = po.project_id.source_language
+            else:
+                po.source_language = "Choose Project"
 
     # @api.onchange('project_id')
     # @api.depends('project_id')
@@ -177,8 +181,10 @@ class MerctransPOs(models.Model):
     @api.depends('project_id')
     def _get_project_target(self):
         for po in self:
-            if po.project_id:
+            if po.project_id.target_language:
                 po.target_language = po.project_id.target_language
+            else:
+                po.target_language = 'Choose Project'
 
     # po start date must greater than project start date
     @api.depends('project_id')
