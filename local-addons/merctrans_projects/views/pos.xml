@@ -48,7 +48,7 @@
         <field name="name">Purchase Order Tree</field>
         <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false" edit="false">
                 <field name="purchase_order"/>
                 <field name="project_id"/>
                 <field name="contributor"/>
