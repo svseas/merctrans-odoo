@@ -105,8 +105,9 @@ class MerctransPOs(models.Model):
     due_date = fields.Date(
         string='Due Date*',
         required=True,
-        default=lambda self: self.env['merctrans.projects'].search([(
-            'project_id', '=', self.project_id.project_id)]).due_date)
+        default=fields.Date.today())
+        # default=lambda self: self.env['merctrans.projects'].search([(
+        #     'project_id', '=', self.project_id.project_id)]).due_date)
 
     # From Projects?
 
