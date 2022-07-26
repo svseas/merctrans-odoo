@@ -32,7 +32,9 @@ class MerctransPOs(models.Model):
                                  readonly=True,
                                  compute="_get_purchase_order")
 
-    contributor = fields.Many2one('res.users', 'Contributor*', required=True)
+    contributor = fields.Many2one('merctrans.contributors',
+                                  'Contributor*',
+                                  required=True)
 
     address = fields.Char('Address',
                           store=True,
