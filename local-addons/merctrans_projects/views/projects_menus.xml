@@ -26,7 +26,8 @@
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
     <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
     <menuitem name="Client" id="client_menu" parent="project_base_menu" action="merctrans_clients_actions" sequence="3" />
-    <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="4" />
+    <menuitem name="Contributors" id="contributors_menu" parent="project_base_menu" action="merctrans_contributors_actions" sequence="4" />
+    <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="5" />
 
     <!-- invoices tree view -->
     <!-- Auto increase invoice_id-->
