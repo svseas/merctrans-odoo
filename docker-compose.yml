@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   web_prod:
-    build: .
+    image: hglong16/odoo:latest
     depends_on:
       - db
     ports:
