@@ -44,10 +44,10 @@ class MerctransPOs(models.Model):
     project_id = fields.Many2one('merctrans.projects',
                                  string="Project",
                                  store=True)
-    contributor_id = fields.Char('Id',
-                                 store=True,
-                                 readonly=True,
-                                 compute='_get_id_contributor')
+    contributor_id = fields.Integer('Id',
+                                    store=True,
+                                    readonly=True,
+                                    compute='_get_id_contributor')
 
     contributor_email = fields.Char('Email',
                                     store=True,
@@ -145,7 +145,7 @@ class MerctransPOs(models.Model):
     def _get_id_contributor(self):
         for project in self:
             print(project.contributor.id)
-            project.contributor_id = project.contributor.id
+            project.contributor_id = project.contributor.user_id
 
     @api.onchange('project_id')
     @api.depends('project_id')
