@@ -50,6 +50,7 @@
         <field name="email" />
         <field name="country" />
         <field name="currency" />
+        <field name="total_po" />
         <field name="phone_number" />
         <field name="email" />
       </tree>
