@@ -7,7 +7,7 @@
   </record>
   <!-- client form view -->
   <record id="client_view_form" model="ir.ui.view">
-    <field name="name">Client Form</field>
+    <field name="name">Account Form View</field>
     <field name="model">merctrans.clients</field>
     <field name="arch" type="xml">
       <form>
@@ -45,7 +45,7 @@
 
   <!-- client tree view -->
   <record id="client_view_tree" model="ir.ui.view">
-    <field name="name">Client Tree</field>
+    <field name="name">Account Tree View</field>
     <field name="model">merctrans.clients</field>
     <field name="arch" type="xml">
       <tree>

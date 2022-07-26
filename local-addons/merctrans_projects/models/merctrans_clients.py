@@ -33,6 +33,7 @@ class MerctransClient(models.Model):
                                       'invoice_client',
                                       domain=[('invoice_status', '=', 'unpaid')
                                               ])
+    client_contact_list = fields.Many2many('res.partner', required=True)
 
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
@@ -52,5 +53,5 @@ class MerctransClient(models.Model):
             match = re.match(
                 '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
                 self.email)
-        if match == None:
+        if match is None:
             raise ValidationError('Not a valid email')
