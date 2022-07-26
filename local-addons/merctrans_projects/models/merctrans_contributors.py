@@ -10,13 +10,11 @@ class MerctransClient(models.Model):
     _rec_name = 'name'
 
     _description = "Merctrans's Contributors"
-    _inherits = {'res.partner': 'partner_id'}
+    _inherits = {'res.users': 'user_id'}
 
     # partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict', auto_join=True,
     #                              string='Related Partner', help='Partner-related data of the user')
-    partner_id = fields.Many2one('res.partner',
-                                 required=True,
-                                 ondelete='cascade')
+    user_id = fields.Many2one('res.users', required=True, ondelete='cascade')
 
     country = fields.Many2one('res.country', string='Country')
     currency = fields.Many2one('res.currency', 'Currency')
@@ -28,6 +26,9 @@ class MerctransClient(models.Model):
     pos_history = fields.One2many('merctrans.pos',
                                   'contributor',
                                   readonly=True)
+    total_po = fields.Integer('Total PO',
+                              readonly=True,
+                              compute="_get_total_po")
 
     # invoice_history = fields.One2many('merctrans.invoices',
     #                                   'invoice_client',
@@ -36,6 +37,13 @@ class MerctransClient(models.Model):
 
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
+
+    def _get_total_po(self):
+        for contributor in self:
+            if contributor.pos_history:
+                contributor.total_po = len(contributor.pos_history)
+            else:
+                contributor.total_po = 0
 
     @api.constrains('name')
     def check_duplicate_name(self):
