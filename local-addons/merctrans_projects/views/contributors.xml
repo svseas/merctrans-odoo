@@ -16,11 +16,7 @@
         <group>
           <group>
             <!-- <field name="name" /> -->
-<<<<<<< HEAD
             <field name="user_id" />
-=======
-	<field name="user_id" />
->>>>>>> 37a21c0b9ccef2098ef98d76aa45bb8beb01adac
             <field name="email" />
             <field name="country" />
             <field name="currency" />
@@ -28,15 +24,9 @@
             <field name="email" />
             <!-- <field name="source_language" readonly="1"/> -->
           </group>
-<<<<<<< HEAD
           <group>
             <field name="total_po" />
           </group>
-=======
-	  <group>
-		  <field name="total_po" />
-	  </group>
->>>>>>> 37a21c0b9ccef2098ef98d76aa45bb8beb01adac
         </group>
         <notebook>
           <page string="Contributor Note" name="contributor_note">
@@ -57,10 +47,7 @@
     <field name="arch" type="xml">
       <tree>
         <field name="user_id" />
-<<<<<<< HEAD
         <field name="total_po" />
-=======
->>>>>>> 37a21c0b9ccef2098ef98d76aa45bb8beb01adac
         <field name="email" />
         <field name="country" />
         <field name="currency" />
