@@ -28,15 +28,10 @@
             <field name="email" />
             <!-- <field name="source_language" readonly="1"/> -->
           </group>
-<<<<<<< HEAD
           <group>
             <field name="total_po" />
           </group>
-=======
-	  <group>
-		  <field name="total_po" />
-	  </group>
->>>>>>> 37a21c0b9ccef2098ef98d76aa45bb8beb01adac
+
         </group>
         <notebook>
           <page string="Contributor Note" name="contributor_note">
