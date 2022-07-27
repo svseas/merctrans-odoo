@@ -27,7 +27,6 @@
           <group>
             <field name="total_po" />
           </group>
-
         </group>
         <notebook>
           <page string="Contributor Note" name="contributor_note">
