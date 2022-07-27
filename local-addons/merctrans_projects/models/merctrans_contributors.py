@@ -26,17 +26,11 @@ class MerctransClient(models.Model):
     pos_history = fields.One2many('merctrans.pos',
                                   'contributor',
                                   readonly=True)
+
     total_po = fields.Integer('Total PO',
                               readonly=True,
                               compute="_get_total_po")
 
-    # invoice_history = fields.One2many('merctrans.invoices',
-    #                                   'invoice_client',
-    #                                   domain=[('invoice_status', '=', 'unpaid')
-    #                                           ])
-
-    # client_currency = fields.Many2one('res.currency',
-    #                                   string="Currency",)
 
     def _get_total_po(self):
         for contributor in self:
@@ -52,7 +46,7 @@ class MerctransClient(models.Model):
                 ('name', '=', self.name), ('id', '!=', self.id)
             ])
             if contributor:
-                raise ValidationError('Company name cannot be duplicated!')
+                raise ValidationError('Contributor name cannot be duplicated!')
 
     @api.constrains('email')
     def validate_email(self):
