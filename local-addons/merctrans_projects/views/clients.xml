@@ -8,7 +8,7 @@
 
     <!--  contact menu -->
   <record id="account_contacts_actions" model="ir.actions.act_window">
-    <field name="name">Account Contacts</field>
+    <field name="name">Contacts</field>
     <field name="res_model">account.contacts</field>
     <field name="view_mode">tree,form</field>
   </record>
