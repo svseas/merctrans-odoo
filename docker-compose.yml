@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   web_prod:
-    build: .
+    images: odoo:15
     depends_on:
       - db
     ports:
