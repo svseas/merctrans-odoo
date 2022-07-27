@@ -112,12 +112,10 @@ class MercTransProjects(models.Model):
     # NOTE: TARGET AND SOURCE LANGUAGE
 
     source_language = fields.Selection(string="Source Languages",
-                                       selection=language_list,
-                                       default="Select a language")
+                                       selection=language_list)
 
     target_language = fields.Selection(string="Target Language",
-                                       selection=language_list,
-                                       default="Select a language")
+                                       selection=language_list)
 
     # NOTE: TIME, START AND DUE DATE
 

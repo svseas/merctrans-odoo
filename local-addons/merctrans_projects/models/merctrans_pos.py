@@ -21,6 +21,19 @@ class MerctransPOs(models.Model):
 
     payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
                            ('paid', 'Paid')]
+
+    language_list = [('zh-CN', 'Chinese (Simplified)'),
+                     ('zh-TW', 'Chinese (Traditional)'),
+                     ('en-US', 'English   (US)'), ('en-GB', 'English (UK)'),
+                     ('fr-FR', 'French'), ('it-IT', 'Italian'),
+                     ('es-ES', 'Spanish (Spain)'),
+                     ('es-AR', 'Spanish (Argentina)'),
+                     ('es-LA', 'Spanish (Latin America)'), ('th-TH', 'Thai'),
+                     ('tr-TR', 'Turkish'), ('vi-VN', 'Vietnamese'),
+                     ('ko-KR', 'Korean'), ('ja-JP', 'Japanese'),
+                     ('ru-RU', 'Russian'), ('de-DE', 'German (Germany)'),
+                     ('de-AT', 'German (Austria)'),
+                     ('de-CH', 'German (Switzerland)')]
     # Detail po
     """
         Field and API Decorate
@@ -85,14 +98,11 @@ class MerctransPOs(models.Model):
 
     # NOTE: INHERIT FROM PROJECT
 
-    source_language = fields.Char('Source Language',
-                                  store=True,
-                                  compute='_get_project_source',
-                                  readonly=True)
+    source_language = fields.Selection(string="Source Languages",
+                                      selection=language_list)
 
-    target_language = fields.Char('Target Language',
-                                  readonly=True,
-                                  compute='_get_project_target')
+    target_language = fields.Selection(string="Target Language",
+                                       selection=language_list)
 
     currency_id = fields.Many2one('res.currency', string='Currency')
 
