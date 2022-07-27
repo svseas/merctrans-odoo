@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <record id="merctrans_clients_actions" model="ir.actions.act_window">
-    <field name="name">Merctrans Clients List</field>
+    <field name="name">Merctrans Account List</field>
     <field name="res_model">merctrans.clients</field>
     <field name="view_mode">tree,form</field>
   </record>
+
+    <!--  contact menu -->
+  <record id="account_contacts_actions" model="ir.actions.act_window">
+    <field name="name">Account Contacts</field>
+    <field name="res_model">account.contacts</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="Account Contacts" id="contact_menu" parent="client_menu" action="account_contacts_actions" sequence="0" />
+  <menuitem name="Accounts" id="account_menu" parent="client_menu" action="merctrans_clients_actions"/>
   <!-- client form view -->
   <record id="client_view_form" model="ir.ui.view">
     <field name="name">Account Form View</field>
@@ -22,7 +32,17 @@
 
         </group>
         <notebook>
-          <page string="Client Note" name="client_note">
+          <page string="Contacts">
+            <field name="client_contact_list">
+              <tree>
+                <field name="contact_name"/>
+                <field name="contact_position"/>
+                <field name="contact_phone"/>
+                <field name="contact_note"/>
+              </tree>
+            </field>
+          </page>
+          <page string="Account Note" name="client_note">
             <field name="client_note" />
           </page>
           <page string="Project History" name="client_project_history">
@@ -58,6 +78,44 @@
       </tree>
     </field>
 
+  </record>
+
+
+<!--  contact tree view-->
+  <record id="account_contact_view_tree" model="ir.ui.view">
+      <field name="name">Account Contact Tree</field>
+      <field name="model">account.contacts</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="contact_account" />
+          <field name="contact_name" />
+          <field name="contact_position" />
+          <field name="contact_email" />
+          <field name="contact_phone" />
+          <field name="contact_note" />
+
+        </tree>
+      </field>
+  </record>
+<!--contact form view-->
+  <record id="account_contact_view_form" model="ir.ui.view">
+      <field name="name">Account Contact Form</field>
+      <field name="model">account.contacts</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="contact_account" />
+              <field name="contact_name" />
+              <field name="contact_position" />
+              <field name="contact_email" />
+              <field name="contact_phone" />
+              <field name="contact_note" />
+
+            </group>
+          </sheet>
+        </form>
+      </field>
   </record>
   <!-- search view -->
 </odoo>

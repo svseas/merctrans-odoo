@@ -52,7 +52,7 @@ class MerctransClient(models.Model):
                 ('name', '=', self.name), ('id', '!=', self.id)
             ])
             if contributor:
-                raise ValidationError('Company name cannot be duplicated!')
+                raise ValidationError('Contributor name cannot be duplicated!')
 
     @api.constrains('email')
     def validate_email(self):
