@@ -1,7 +1,11 @@
 version: "3.1"
 services:
   web_prod:
+<<<<<<< HEAD
     image: hglong16/odoo:latest
+=======
+    images: odoo:15
+>>>>>>> 37a21c0b9ccef2098ef98d76aa45bb8beb01adac
     depends_on:
       - db
     ports:
