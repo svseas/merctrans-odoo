@@ -68,3 +68,12 @@ class AccountContact(models.Model):
     contact_email = fields.Char(string='Email')
     contact_phone = fields.Char(string='Phone Number')
     contact_note = fields.Text(string='Note')
+
+    @api.constrains('contact_email')
+    def validate_email(self):
+        if self.contact_email:
+            match = re.match(
+                '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
+                self.contact_email)
+        if match is None:
+            raise ValidationError('Not a valid email')
