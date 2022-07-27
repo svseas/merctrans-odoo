@@ -35,9 +35,9 @@
         'security/ir.model.access.csv',
         # View <>
         'views/pos.xml',
-        'views/clients.xml',
         'views/contributors.xml',
         'views/projects_menus.xml',
+        'views/clients.xml',
         'views/templates.xml',
         # 'views/sale.xml',
         #data
