@@ -13,7 +13,20 @@ class MerctransClient(models.Model):
 
      # partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict', auto_join=True,
     #                              string='Related Partner', help='Partner-related data of the user')
-    name = fields.Char(string='Account')
+
+    payment_term_list = [('30 days', '30D'),
+                           ('45 days', '45D'),
+                           ('60 days', '60D'),
+                           ('90 days', '90D')]
+
+    payment_method_list = [('paypal', 'PayPal'),
+                           ('wire transfer', 'Wire Transfer'),
+                           ('payoneer', 'Payoneer')]
+
+    name = fields.Char(string='Account Name*')
+
+    client_short_name = fields.Char(string='Account ID*', readonly=True, compute='_get_client_id')
+
     email = fields.Char(string='Email')
 
     country = fields.Many2one('res.country', string='Country')
@@ -23,6 +36,18 @@ class MerctransClient(models.Model):
     phone_number = fields.Char(string='Phone number')
 
     website = fields.Char(string='Website')
+
+    services = fields.Many2many('merctrans.services', string = 'Services')
+
+    sales_person = fields.Many2one('res.users', string='Salesperson')
+
+    payment_term = fields.Selection(selection=payment_term_list, string='Payment Term')
+
+    payment_method = fields.Selection(selection=payment_method_list, string='Payment Method')
+
+    create_date = fields.Date(string='Create Date', readonly=True)
+
+    write_date = fields.Datetime(string='Last Update', readonly=True)
 
     project_history = fields.One2many('merctrans.projects',
                                       'client',
@@ -48,12 +73,25 @@ class MerctransClient(models.Model):
 
     @api.constrains('email')
     def validate_email(self):
-        if self.email:
-            match = re.match(
-                '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
-                self.email)
-        if match is None:
-            raise ValidationError('Not a valid email')
+        for client in self:
+            if client.email:
+                match = re.match(
+                    '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
+                    client.email)
+            else:
+                match = "Not created"
+            if match is None:
+                raise ValidationError('Not a valid email')
+
+    @api.onchange('name')
+    @api.depends('name')
+    def _get_client_id(self):
+        for client in self:
+            if client.name:
+                short_name = "".join(client.name.split()).upper()
+            else:
+                short_name = "DEFA"
+            client.client_short_name = f"{short_name[:4]}"
 
 class AccountContact(models.Model):
 
