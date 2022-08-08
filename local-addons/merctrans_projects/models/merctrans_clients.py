@@ -45,7 +45,7 @@ class MerctransClient(models.Model):
 
     payment_method = fields.Selection(selection=payment_method_list, string='Payment Method')
 
-    create_date = fields.Date(string='Create Date', readonly=True)
+    create_date = fields.Datetime(string='Create Date', readonly=True)
 
     write_date = fields.Datetime(string='Last Update', readonly=True)
 
@@ -57,7 +57,7 @@ class MerctransClient(models.Model):
                                       'invoice_client', readonly=True)
                                       # domain=[('invoice_status', '=', 'unpaid')
                                       #         ])
-    client_contact_list = fields.One2many('account.contacts','contact_account', readonly=True)
+    client_contact_list = fields.One2many('account.contacts','contact_account')
 
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
