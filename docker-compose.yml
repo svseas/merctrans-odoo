@@ -1,6 +1,7 @@
 version: "3.1"
 services:
   web:
+    container_name: odoo_web
     image: hglong16/odoo:latest
     depends_on:
       - db
@@ -11,6 +12,9 @@ services:
     environment:
       - USER=odoo
       - PASSWORD=odoo
+    ports:
+      - "8069:8069"
+      - "8072:8072"
     networks:
       - postgres
     command: >
@@ -34,28 +38,16 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-       - pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     ports:
       - 5433:80
     networks:
       - postgres
     restart: unless-stopped
-  proxy:
-    depends_on:
-            - web
-    container_name: odoo_proxy
-    build:
-        context: .
-        dockerfile: Dockerfile-nginx
-    ports:
-        - "8069:8069"
-    networks:
-      - postgres
 
 networks:
   postgres:
     driver: bridge
-
 
 volumes:
   odoo-web-data:
