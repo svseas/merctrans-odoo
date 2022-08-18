@@ -2,6 +2,13 @@ import re
 from odoo.exceptions import ValidationError
 from odoo import api, fields, models
 
+class PaymentMethod(models.Model):
+    _name = 'merctrans.payments'
+    _rec_name = 'payment_term'
+
+    payment_term = fields.Char(string='Payment Method', required=True)
+
+
 
 class MerctransClient(models.Model):
 
@@ -57,7 +64,7 @@ class MerctransClient(models.Model):
                                       'invoice_client', readonly=True)
                                       # domain=[('invoice_status', '=', 'unpaid')
                                       #         ])
-    client_contact_list = fields.One2many('account.contacts','contact_account')
+    client_contact_list = fields.One2many('account.contacts','contact_id')
 
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
@@ -93,6 +100,9 @@ class MerctransClient(models.Model):
                 short_name = "DEFA"
             client.client_short_name = f"{short_name[:4]}"
 
+
+
+
 class AccountContact(models.Model):
 
     _name = 'account.contacts'
@@ -100,7 +110,7 @@ class AccountContact(models.Model):
     _description = 'MercTrans Account Contact list'
 
 
-    contact_account = fields.Many2one('merctrans.clients', required=True)
+    contact_id = fields.Many2one('merctrans.clients', string='Account', required=True)
     contact_name = fields.Char(string='Name')
     contact_position = fields.Char(string='Position')
     contact_email = fields.Char(string='Email')
@@ -109,9 +119,12 @@ class AccountContact(models.Model):
 
     @api.constrains('contact_email')
     def validate_email(self):
-        if self.contact_email:
-            match = re.match(
-                '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
-                self.contact_email)
-        if match is None:
-            raise ValidationError('Not a valid email')
+        for contact in self:
+            if contact.contact_email:
+                match = re.match(
+                    '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
+                    contact.contact_email)
+            else:
+                contact.contact_email = "N/A"
+            if match is None:
+                raise ValidationError('Not a valid email')

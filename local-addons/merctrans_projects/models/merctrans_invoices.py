@@ -20,15 +20,16 @@ class MercTransInvoices(models.Model):
                                 readonly=True,
                                 default=lambda self: self.env['ir.sequence'].
                                 next_by_code('increment_invoice_id'))
-    invoice_name = fields.Char('Invoice name', compute="_get_invoice_name")
-    invoice_date = fields.Date(string='Invoice Date')
+    invoice_name = fields.Char('Invoice #', compute="_get_invoice_name")
+    invoice_date = fields.Date(string='Issue Date*', default=datetime.today(), required=True)
+    invoice_due_date = fields.Date(string='Due Date*', required=True)
     invoice_client = fields.Many2one('merctrans.clients',
                                      string='Client',
                                      required='True')
     invoice_details_ids = fields.Many2many('merctrans.projects',
                                            string='Invoice Lines')
     currency_id = fields.Many2one('res.currency', string='Currency')
-    invoice_value = fields.Float("Invoice Value",
+    invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list,
