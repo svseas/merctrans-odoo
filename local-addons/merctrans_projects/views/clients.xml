@@ -44,6 +44,7 @@
             <field name="client_contact_list">
               <tree>
                 <field name="contact_name"/>
+                <field name="contact_id"/>
                 <field name="contact_position"/>
                 <field name="contact_phone"/>
                 <field name="contact_note"/>
@@ -95,7 +96,7 @@
       <field name="model">account.contacts</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="contact_account" />
+          <field name="contact_id" />
           <field name="contact_name" />
           <field name="contact_position" />
           <field name="contact_email" />
@@ -113,7 +114,7 @@
         <form>
           <sheet>
             <group>
-              <field name="contact_account" />
+              <field name="contact_id"/>
               <field name="contact_name" />
               <field name="contact_position" />
               <field name="contact_email" />
