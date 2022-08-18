@@ -76,3 +76,5 @@ class MercTransInvoices(models.Model):
                 project.write({'payment_status': 'paid'})
             if self.invoice_status == 'invoiced':
                 project.write({'payment_status': 'invoiced'})
+            if self.invoice_status == 'unpaid':
+                project.write({'payment_status': 'unpaid'})
