@@ -20,20 +20,35 @@ class MercTransInvoices(models.Model):
                                 readonly=True,
                                 default=lambda self: self.env['ir.sequence'].
                                 next_by_code('increment_invoice_id'))
-    invoice_name = fields.Char('Invoice #', compute="_get_invoice_name")
+    invoice_name = fields.Char(string='Invoice #', compute="_get_invoice_name")
     invoice_date = fields.Date(string='Issue Date*', default=datetime.today(), required=True)
     invoice_due_date = fields.Date(string='Due Date*', required=True)
     invoice_client = fields.Many2one('merctrans.clients',
                                      string='Client',
                                      required='True')
+    client_name = fields.Char(compute="_get_invoice_client")
+
     invoice_details_ids = fields.Many2many('merctrans.projects',
-                                           string='Invoice Lines')
+                                           string='Invoice Lines', domain=[('payment_status','=', 'unpaid')])
     currency_id = fields.Many2one('res.currency', string='Currency')
     invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list,
-                                      default='Unpaid')
+                                      default='unpaid')
+
+
+
+    @api.depends('invoice_client')
+    @api.onchange('invoice_client')
+    def _get_invoice_client(self):
+        self.client_name = ''
+        for inv in self:
+            if inv.invoice_client:
+                inv.client_name += inv.invoice_client.name
+            else:
+                inv.client_name = 'default'
+
 
     @api.depends('invoice_client', 'invoice_id')
     @api.onchange('invoice_client', 'invoice_id')
@@ -59,6 +74,13 @@ class MercTransInvoices(models.Model):
                     raise ValidationError(
                         'Job currency must be the same as invoice currency!')
 
+    @api.constrains('invoice_details_ids', 'invoice_client')
+    def client_constrains(self):
+        for inv in self:
+            for job in inv.invoice_details_ids:
+                if inv.client_name != job.client_name:
+                    raise ValidationError('You can only include jobs from the same client!')
+
     # @api.model
     # def create(self, vals):
     #     print("Invoices Create Vals ", vals)
@@ -78,3 +100,11 @@ class MercTransInvoices(models.Model):
                 project.write({'payment_status': 'invoiced'})
             if self.invoice_status == 'unpaid':
                 project.write({'payment_status': 'unpaid'})
+            if not self.invoice_status:
+                project.write({'payment_status': 'unpaid'})
+
+    @api.ondelete(at_uninstall=False)
+    def _check_invoice_status(self):
+        for rec in self:
+            if rec.invoice_status:
+                raise ValidationError("You cannot delete an invoice with invoice status set!")
