@@ -131,7 +131,7 @@ class MercTransProjects(models.Model):
 
     # NOTE: SALE, VOLUME, UNIT, RATE, MARGIN
 
-    discount = fields.Integer(string='Discount', default=0)
+    discount = fields.Integer(string='Discount (%)', default=0)
     # add discount field
     # fixed job
 
@@ -172,6 +172,8 @@ class MercTransProjects(models.Model):
                                       selection=project_status_list,
                                       required=True,
                                       default='in progress')
+
+    client_po_number = fields.Char(string='Client PO Number')
 
     payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,

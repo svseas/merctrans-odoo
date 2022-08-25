@@ -20,6 +20,7 @@ class MercTransInvoices(models.Model):
                                 readonly=True,
                                 default=lambda self: self.env['ir.sequence'].
                                 next_by_code('increment_invoice_id'))
+    sender_info = fields.Text(string='Sender Info*')
     invoice_name = fields.Char(string='Invoice #', compute="_get_invoice_name")
     invoice_date = fields.Date(string='Issue Date*', default=datetime.today(), required=True)
     invoice_due_date = fields.Date(string='Due Date*', required=True)
@@ -36,7 +37,14 @@ class MercTransInvoices(models.Model):
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list,
                                       default='unpaid')
+    discount = fields.Integer(string='Discount (%)', default=0)
+    invoice_total = fields.Float('Total', compute="_compute_invoice_total", store=True, readonly=True, default=0)
 
+    @api.onchange('invoice_total')
+    @api.depends('invoice_value', 'invoice_total', 'discount')
+    def _compute_invoice_total(self):
+        for invoice in self:
+            invoice.invoice_total = (100 - invoice.discount) / 100 * invoice.invoice_value
 
 
     @api.depends('invoice_client')
