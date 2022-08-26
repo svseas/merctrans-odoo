@@ -90,7 +90,7 @@
                     <field name="sale_rate" />
 <!--                    <field name="discount" />-->
                     <field name="project_value" />
-<!--                    <field name="currency_id" />-->
+                    <field name="currency_id" />
                     <field name="payment_status" />
                   </tree>
                 </field>
@@ -98,6 +98,7 @@
                 <field name="discount"/>
                 <field name="invoice_total"/>
                 <field name="invoice_status" />
+                <field name="invoice_paid_date"/>
               </group>
             </group>
           </sheet>

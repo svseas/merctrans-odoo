@@ -30,7 +30,7 @@ class MercTransInvoices(models.Model):
     client_name = fields.Char(compute="_get_invoice_client")
 
     invoice_details_ids = fields.Many2many('merctrans.projects',
-                                           string='Invoice Lines', domain=[('payment_status','=', 'unpaid')])
+                                           string='Invoice Lines')
     currency_id = fields.Many2one('res.currency', string='Currency')
     invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
@@ -39,6 +39,8 @@ class MercTransInvoices(models.Model):
                                       default='unpaid')
     discount = fields.Integer(string='Discount (%)', default=0)
     invoice_total = fields.Float('Total', compute="_compute_invoice_total", store=True, readonly=True, default=0)
+    invoice_paid_date = fields.Date(string='Paid Date', default=datetime.today())
+
 
     @api.onchange('invoice_total')
     @api.depends('invoice_value', 'invoice_total', 'discount')
@@ -88,6 +90,27 @@ class MercTransInvoices(models.Model):
             for job in inv.invoice_details_ids:
                 if inv.client_name != job.client_name:
                     raise ValidationError('You can only include jobs from the same client!')
+
+
+    @api.constrains('invoice_paid_date','invoice_date', 'invoice_status')
+    def paid_date_constrains(self):
+        for inv in self:
+            if inv.invoice_paid_date and inv.invoice_paid_date < inv.invoice_date:
+                raise ValidationError('Invoice paid date cannot be before invoice due date')
+            if inv.invoice_status != 'paid' and inv.invoice_paid_date:
+                raise ValidationError('Cannot have paid date when status is not Paid')
+
+    @api.constrains('invoice_details_ids')
+    def invoice_detail_constrains(self):
+        for inv in self:
+            if not inv.invoice_details_ids:
+                raise ValidationError('Invoice must have at least one project!')
+
+    @api.constrains('invoice_details_ids', 'invoice_status')
+    def invoice_status_constrains(self):
+        for inv in self:
+            if not inv.invoice_details_ids and inv.invoice_status:
+                raise ValidationError('Cannot set invoice status when there is no job!')
 
     # @api.model
     # def create(self, vals):
