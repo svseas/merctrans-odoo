@@ -178,6 +178,7 @@ class MercTransProjects(models.Model):
     payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
                                       required=True,
+                                      readonly=True,
                                       default='unpaid')
 
     po_details = fields.One2many("merctrans.pos",
