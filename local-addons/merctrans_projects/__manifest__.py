@@ -39,7 +39,7 @@
         'views/projects_menus.xml',
         'views/clients.xml',
         'views/templates.xml',
-        # 'views/sale.xml',
+        'views/sale.xml',
         #data
         'data/currencies.xml'
     ],

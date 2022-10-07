@@ -142,7 +142,7 @@
                 <field name="project_id" />
                 <field name="project_name" />
                 <field name="client" options="{'no_create': True, 'no_create_edit':True}" />
-                <field name="client_name"/>
+<!--                <field name="client_name"/>-->
                 <field name="source_language" />
                 <field name="target_language" />
                 <field name="services_ids" widget="many2many_tags" />
@@ -211,6 +211,11 @@
                 <field name="so_details">
                   <tree>
                     <field name="sale_order_name"/>
+                    <field name="client" />
+                    <field name="client_po_number"/>
+                    <field name="sale_order_volume"/>
+                    <field name="sale_rate"/>
+                    <field name="currency_id"/>
                   </tree>
                 </field>
               </page>

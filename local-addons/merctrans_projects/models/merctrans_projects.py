@@ -252,3 +252,13 @@ class MercTransProjects(models.Model):
                 project.project_margin = (
                     project.project_value -
                     project.total_po_value) / project.project_value
+
+    # @api.onchange('client')
+    # def sync_client(self):
+    #     for sale_order in self.so_details:
+    #         if sale_order:
+    #             sale_order.write({'client' : self.client_name},
+    #                              {'client_po_number': self.client_po_number},
+    #                              {'sale_rate': self.sale_rate})
+
+            # project.write({'payment_status': 'unpaid'})
