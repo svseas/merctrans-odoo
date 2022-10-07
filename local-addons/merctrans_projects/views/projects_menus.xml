@@ -207,6 +207,13 @@
               <page string="Project Instruction" name="project_instruction">
                 <field name="project_instruction" />
               </page>
+              <page string="Sale Order" name="so_details">
+                <field name="so_details">
+                  <tree>
+                    <field name="sale_order_name"/>
+                  </tree>
+                </field>
+              </page>
             </notebook>
           </sheet>
         </form>

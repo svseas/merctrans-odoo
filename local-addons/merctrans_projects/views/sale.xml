@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="merctrans_sale_order_actions" model="ir.actions.act_window">
+        <field name="name">Merctrans Sale Order List</field>
+        <field name="res_model">merctrans.sale_order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Cách để user chỉ nhìn được một menu-item -> Tách nó ra làm một Menu list riêng. Sau đó thêm tree, form view cho nó trên file Menu tổng. -> Tắt nó đi ở menu tổng. =)) Hide nó đi. Nó không hiện trong list menu tổng nữa. -->
+
+    <!-- po form view -->
+    <record id="sale_order_view_form" model="ir.ui.view">
+        <field name="name">Sale Order Form</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <group>
+                    <group>
+                        <field name="project_id"/>
+                        <field name="sale_order_name" />
+
+                        <!-- <field name="source_language" readonly="1"/> -->
+                    </group>
+<!--                    <group>-->
+<!--                     -->
+<!--                    </group>-->
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- po view tree -->
+    <record id="sale_order_view_tree" model="ir.ui.view">
+        <field name="name">Purchase Order Tree</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="project_id"/>
+                <field name="sale_order_name"/>
+
+
+            </tree>
+        </field>
+
+    </record>
+    <!-- search view -->
+    <record id="merctrans_sale_order_view_search" model="ir.ui.view">
+        <field name="name">Purchase Order Search</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <search></search>
+        </field>
+
+    </record>
+</odoo>

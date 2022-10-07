@@ -184,7 +184,7 @@ class MercTransProjects(models.Model):
     po_details = fields.One2many("merctrans.pos",
                                  "project_id",
                                  string="Purchase Orders in this Project")
-
+    so_details = fields.One2many("merctrans.sale","project_id", string="Sale Orders in this Project")
     # NOTE: FUNCTION AND API DECORATE
 
     def _get_client_name(self):
