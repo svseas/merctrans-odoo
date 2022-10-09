@@ -84,10 +84,15 @@ class MercTransInvoices(models.Model):
             inv.invoice_name = f"INV{inv.invoice_id:05d}-{cl_name[:4]}-{fields.Date.today().strftime('%y%m%d')}"
 
     @api.depends('invoice_details_ids')
+    @api.onchange('invoice_details_ids')
     def _compute_invoice_value(self):
         for item in self:
-            item.invoice_value = sum(line.project_value  # x??? rename plz
-                                     for line in item.invoice_details_ids)
+            item.invoice_value = 0
+            for line in item.invoice_details_ids:
+                if line.value:
+                    item.invoice_value += line.value
+                else:
+                    item.invoice_value = 0
 
     @api.constrains('invoice_details_ids', 'currency_id')
     def currency_constrains(self):
@@ -100,8 +105,8 @@ class MercTransInvoices(models.Model):
     @api.constrains('invoice_details_ids', 'invoice_client')
     def client_constrains(self):
         for inv in self:
-            for job in inv.invoice_details_ids:
-                if inv.client_name != job.client_name:
+            for sale_order in inv.invoice_details_ids:
+                if inv.client_name != sale_order.client:
                     raise ValidationError('You can only include jobs from the same client!')
 
 
@@ -134,21 +139,16 @@ class MercTransInvoices(models.Model):
     #     print("Invoices Write Vals ", vals)
     #     return super(MercTransInvoices, self).write(vals)
 
-    # @api.onchange('invoice_status')
-    # def sync_status(self):
-    #
-    #     for project in self.invoice_details_ids:
-    #         if self.invoice_status == 'paid':
-    #             project.write({'payment_status': 'paid'})
-    #         if self.invoice_status == 'invoiced':
-    #             project.write({'payment_status': 'invoiced'})
-    #         if self.invoice_status == 'unpaid':
-    #             project.write({'payment_status': 'unpaid'})
-    #         if not self.invoice_status:
-    #             project.write({'payment_status': 'unpaid'})
-    #
-    # @api.ondelete(at_uninstall=False)
-    # def _check_invoice_status(self):
-    #     for rec in self:
-    #         if rec.invoice_status:
-    #             raise ValidationError("You cannot delete an invoice with invoice status set!")
+    @api.onchange('invoice_status')
+    def sync_status(self):
+
+        for sale_order in self.invoice_details_ids:
+            if self.invoice_status == 'paid':
+                sale_order.write({'status': 'paid'})
+            if self.invoice_status == 'invoiced':
+                sale_order.write({'status': 'invoiced'})
+            if self.invoice_status == 'unpaid':
+                sale_order.write({'status': 'unpaid'})
+            if not self.invoice_status:
+                sale_order.write({'status': 'unpaid'})
+

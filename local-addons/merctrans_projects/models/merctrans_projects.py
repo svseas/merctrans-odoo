@@ -185,7 +185,7 @@ class MercTransProjects(models.Model):
     payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
                                       default='unpaid',
-                                      required=True,
+                                      # required=True,
                                       readonly=True,
                                       store=True)
 
@@ -267,15 +267,16 @@ class MercTransProjects(models.Model):
             if sale_order.currency_id != self.currency_id:
                 raise ValidationError('Currency must be the same!')
 
-    @api.constrains('currency_id', 'so_details')
+    @api.onchange('so_details')
     def total_value_constrains(self):
         total = 0
         for sale_oder in self.so_details:
             total = total + sale_oder.value
             if total > self.project_value:
-                raise ValidationError('Total Sale Orer Value must be smaller or equal to Project Value!')
+                raise ValidationError('Total Sale Order Value must be smaller or equal to Project Value!')
 
     @api.depends('so_details')
+    @api.onchange('so_details')
     def _compute_paid(self):
         for project in self:
             project.project_paid = 0
@@ -283,15 +284,21 @@ class MercTransProjects(models.Model):
                 if sale_order.status == 'paid':
                     project.project_paid += sale_order.value
 
+    @api.depends('project_paid', 'project_value')
     @api.onchange('project_paid', 'project_value')
     def change_status(self):
         for project in self:
-            if project.project_paid == 0 and project.project_value == 0:
+            if project.project_paid == 0 and project.project_value:
                 project.write({'payment_status': 'unpaid'})
-            if 0 < project.project_paid < project.project_value:
+            elif project.project_paid == 0 and project.project_value != 0:
+                project.write({'payment_status': 'unpaid'})
+            elif 0 < project.project_paid < project.project_value:
                 project.write({'payment_status': 'partly paid'})
-            if project.project_paid == project.project_value and project.project_value != 0:
+            elif project.project_paid == project.project_value and project.project_value != 0:
                 project.write({'payment_status': 'paid'})
+            else:
+                project.write({'payment_status': 'unpaid'})
+
 
 
     # @api.onchange('client')

@@ -28,12 +28,14 @@ class MercTransInvoices(models.Model):
     sale_order_name = fields.Char(string="Sale Order Name")
 
     status = fields.Selection(string="Sale Order Status",
-                                      selection=status_list,
-                                      default='unpaid')
+                              selection=status_list,
+                              default='unpaid',
+                              readonly=True,
+                              store=True)
 
     client = fields.Char(string='Client',
                          readonly=True,
-                         compute = "_get_client_name")
+                         compute="_get_client_name")
 
     client_po_number = fields.Char(string='Client PO number',
                                    readonly=True,
@@ -116,3 +118,9 @@ class MercTransInvoices(models.Model):
     def _compute_sale_order_value(self):
         for sale_order in self:
             sale_order.value = (100 - sale_order.discount) / 100 * sale_order.volume * sale_order.sale_rate
+
+    @api.ondelete(at_uninstall=False)
+    def _check_status(self):
+        for sale_order in self:
+            if sale_order.status == "paid":
+                raise ValidationError("You cannot delete a sale order with invoice status set to Paid!")

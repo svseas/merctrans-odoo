@@ -24,7 +24,8 @@
     <menuitem name="Merctrans Projects" id="project_base_menu" />
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
-    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
+    <menuitem name="Payments" id="invoices_menu" parent="project_base_menu" sequence="2" />
+    <menuitem name="Invoices" id="invoices_sub_menu" parent="invoices_menu" action="merctrans_invoices_action"/>
     <menuitem name="Account Management" id="client_menu" parent="project_base_menu" sequence="3" />
     <menuitem name="Contributors" id="contributors_menu" parent="project_base_menu" action="merctrans_contributors_actions" sequence="4" />
     <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="5" />
@@ -91,7 +92,7 @@
                     <field name="discount" />
                     <field name="value" />
                     <field name="currency_id" />
-                    <field name="status" />
+                    <field name="status" force_save="1"/>
                   </tree>
                 </field>
                 <field name="invoice_value" />
@@ -156,12 +157,12 @@
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
-                <field name="project_value" />
-                <field name="total_po_value" />
+                <field name="project_value" force_save="1"/>
+                <field name="total_po_value" force_save="1"/>
                 <field name="project_margin" widget="percentage" />
                 <field name="project_status" />
                 <field name="client_po_number"/>
-                <field name="project_paid"/>
+                <field name="project_paid" force_save="1"/>
                 <field name="payment_status"  force_save="1"/>
               </group>
             </group>
