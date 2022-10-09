@@ -30,7 +30,7 @@ class MercTransInvoices(models.Model):
     status = fields.Selection(string="Sale Order Status",
                               selection=status_list,
                               default='unpaid',
-                              readonly=True,
+                              # readonly=True,
                               store=True)
 
     client = fields.Char(string='Client',

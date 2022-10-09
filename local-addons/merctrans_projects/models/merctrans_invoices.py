@@ -152,3 +152,8 @@ class MercTransInvoices(models.Model):
             if not self.invoice_status:
                 sale_order.write({'status': 'unpaid'})
 
+    @api.ondelete(at_uninstall=False)
+    def _check_status(self):
+        for invoice in self:
+            if invoice.invoice_status == "paid":
+                raise ValidationError("You cannot delete an invoice with status set to Paid!")

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <record id="action_sync_status" model="ir.actions.server">
+    <field name="name">Sync Payment Status</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_merctrans_projects"/>
+    <field name="binding_model_id" ref="model_merctrans_projects"/>
+    <field name="state">code</field>
+    <field name="code">records.sync_status()</field>
+  </record>
   <data>
     <record id="merctrans_projects_action" model='ir.actions.act_window'>
       <field name="name">Merctrans Project lists</field>
@@ -269,6 +277,7 @@
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />
+          <field name="project_paid"/>
           <field name="project_margin" widget="percentage" />
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->

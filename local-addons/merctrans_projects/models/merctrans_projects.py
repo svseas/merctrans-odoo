@@ -185,15 +185,38 @@ class MercTransProjects(models.Model):
     payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
                                       default='unpaid',
-                                      # required=True,
-                                      readonly=True,
-                                      store=True)
+                                      required=True,
+                                      # readonly=True,
+                                      store=True,
+                                      compute="_change_status")
 
     po_details = fields.One2many("merctrans.pos",
                                  "project_id",
                                  string="Purchase Orders in this Project")
     so_details = fields.One2many("merctrans.sale","project_id", string="Sale Orders in this Project")
     # NOTE: FUNCTION AND API DECORATE
+
+    def sync_status(self):
+        for project in self:
+            project.project_paid = 0
+            for sale_order in self.so_details:
+                if sale_order.status == 'paid':
+                    project.project_paid += sale_order.value
+            if project.project_paid == 0 and project.project_value:
+                project.payment_status = 'unpaid'
+            elif project.project_paid == 0 and project.project_value != 0:
+                project.payment_status = 'unpaid'
+            elif 0 < project.project_paid < project.project_value:
+                project.payment_status = 'partly paid'
+            elif project.project_paid == project.project_value and project.project_value != 0:
+                project.payment_status = 'paid'
+
+    # def compute_sale(self):
+    #     for project in self:
+    #         project.project_paid = 0
+    #         for sale_order in self.so_details:
+    #             if sale_order.status == 'paid':
+    #                 project.project_paid += sale_order.value
 
     def _get_client_name(self):
         self.client_name = ''
@@ -253,7 +276,6 @@ class MercTransProjects(models.Model):
             job.total_po_value = sum(po.po_value for po in job.po_details)
 
     @api.onchange('project_value', 'total_po_value')
-    @api.depends('project_value', 'total_po_value')
     def _compute_margin(self):
         for project in self:
             if project.project_value > 0:
@@ -276,7 +298,6 @@ class MercTransProjects(models.Model):
                 raise ValidationError('Total Sale Order Value must be smaller or equal to Project Value!')
 
     @api.depends('so_details')
-    @api.onchange('so_details')
     def _compute_paid(self):
         for project in self:
             project.project_paid = 0
@@ -284,7 +305,6 @@ class MercTransProjects(models.Model):
                 if sale_order.status == 'paid':
                     project.project_paid += sale_order.value
 
-    @api.depends('project_paid', 'project_value')
     @api.onchange('project_paid', 'project_value')
     def change_status(self):
         for project in self:
