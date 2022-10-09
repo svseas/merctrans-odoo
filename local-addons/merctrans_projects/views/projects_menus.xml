@@ -84,14 +84,14 @@
                 <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
                   <tree>
                     <field name="project_id" />
-                    <field name="project_name" />
+                    <field name="sale_order_name" />
                     <field name="client_po_number"/>
                     <field name="volume" />
                     <field name="sale_rate" />
-<!--                    <field name="discount" />-->
-                    <field name="project_value" />
+                    <field name="discount" />
+                    <field name="value" />
                     <field name="currency_id" />
-                    <field name="payment_status" />
+                    <field name="status" />
                   </tree>
                 </field>
                 <field name="invoice_value" />
@@ -161,7 +161,8 @@
                 <field name="project_margin" widget="percentage" />
                 <field name="project_status" />
                 <field name="client_po_number"/>
-                <field name="payment_status" />
+                <field name="project_paid"/>
+                <field name="payment_status"  force_save="1"/>
               </group>
             </group>
             <notebook>
@@ -213,10 +214,32 @@
                     <field name="sale_order_name"/>
                     <field name="client" />
                     <field name="client_po_number"/>
-                    <field name="sale_order_volume"/>
+                    <field name="volume"/>
                     <field name="sale_rate"/>
                     <field name="currency_id"/>
+                    <field name="discount"/>
+                    <field name="value"/>
+                    <field name="status"/>
                   </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="sale_order_name" />
+                        <field name="client" />
+                        <field name="client_po_number" />
+                        <field name="volume" />
+
+                      </group>
+                      <group>
+                        <field name="sale_rate" />
+                        <field name="currency_id" />
+                        <field name="discount"/>
+                        <field name="value" />
+                        <field name="status"/>
+
+                      </group>
+                    </group>
+                  </form>
                 </field>
               </page>
             </notebook>

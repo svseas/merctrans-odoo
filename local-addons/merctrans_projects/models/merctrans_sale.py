@@ -27,6 +27,10 @@ class MercTransInvoices(models.Model):
                                  store=True)
     sale_order_name = fields.Char(string="Sale Order Name")
 
+    status = fields.Selection(string="Sale Order Status",
+                                      selection=status_list,
+                                      default='unpaid')
+
     client = fields.Char(string='Client',
                          readonly=True,
                          compute = "_get_client_name")
@@ -35,18 +39,27 @@ class MercTransInvoices(models.Model):
                                    readonly=True,
                                    compute="_get_client_po_number")
 
-    sale_order_volume = fields.Integer(string='Volume*',
-                                       required=True,
-                                       default=0)
+    volume = fields.Integer(string='Volume*',
+                            required=True,
+                            compute="_get_volume",
+                            inverse="_inverse_get_volume",
+                            store=True)
 
     sale_rate = fields.Float(string='Rate*',
                              readonly=True,
                              compute="_get_sale_rate")
 
-    currency_id = fields.Char(string='Currency',
-                              readonly=True,
-                              compute="_get_currency_id")
+    currency_id = fields.Many2one('res.currency',
+                                  string='Currency*',
+                                  required=True)
 
+    discount = fields.Integer(string='Discount (%)',
+                              compute="_get_discount",
+                              inverse="_inverse_get_discount")
+
+    value = fields.Float(string="Sale Order Value",
+                         readonly=True,
+                         compute="_compute_sale_order_value")
 
     # The next section is to automatically populate field when a project is selected.
     @api.onchange('project_id')
@@ -55,6 +68,8 @@ class MercTransInvoices(models.Model):
         for sale_order in self:
             if sale_order.project_id.client_name:
                 sale_order.client = sale_order.project_id.client_name
+            else:
+                sale_order.client = " "
 
     @api.onchange('project_id')
     @api.depends('project_id')
@@ -67,14 +82,37 @@ class MercTransInvoices(models.Model):
 
     @api.onchange('project_id')
     @api.depends('project_id')
-    def _get_currency_id(self):
-        for sale_order in self:
-            if sale_order.project_id.currency_id:
-                sale_order.currency_id = sale_order.project_id.currency_id
-
-    @api.onchange('project_id')
-    @api.depends('project_id')
     def _get_sale_rate(self):
         for sale_order in self:
             if sale_order.project_id.sale_rate:
                 sale_order.sale_rate = sale_order.project_id.sale_rate
+            else:
+                sale_order.sale_rate = 0
+
+    @api.onchange('project_id')
+    @api.depends('project_id')
+    def _get_volume(self):
+        for sale_order in self:
+            if sale_order.project_id.volume:
+                sale_order.volume = sale_order.project_id.volume
+            else:
+                sale_order.volume = 0
+
+    def _inverse_get_volume(self):
+        return
+
+    @api.onchange('project_id')
+    @api.depends('project_id')
+    def _get_discount(self):
+        for sale_order in self:
+            if sale_order.project_id.discount:
+                sale_order.discount = sale_order.project_id.discount
+
+    def _inverse_get_discount(self):
+        return
+
+    @api.onchange('volume', 'sale_rate')
+    @api.depends('volume', 'sale_rate', 'discount')
+    def _compute_sale_order_value(self):
+        for sale_order in self:
+            sale_order.value = (100 - sale_order.discount) / 100 * sale_order.volume * sale_order.sale_rate

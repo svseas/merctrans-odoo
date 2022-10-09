@@ -61,7 +61,9 @@ class MercTransProjects(models.Model):
                            ('delivered', 'Delivered'),
                            ('canceled', 'Canceled')]
 
-    payment_status_list = [('unpaid', 'Unpaid'), ('invoiced', 'Invoiced'),
+    payment_status_list = [('unpaid', 'Unpaid'),
+                           ('invoiced', 'Invoiced'),
+                           ('partly paid', 'Partly Paid'),
                            ('paid', 'Paid')]
 
     # number_id = fields.Integer(string="Stt",
@@ -151,6 +153,11 @@ class MercTransProjects(models.Model):
                                  store=True,
                                  readonly=True,
                                  default=0)
+    project_paid = fields.Float("Amount Paid",
+                                compute="_compute_paid",
+                                readonly=True,
+                                store=True,
+                                default=0)
 
     total_po_value = fields.Float("Total PO value",
                                   compute="_compute_po_value",
@@ -177,9 +184,10 @@ class MercTransProjects(models.Model):
 
     payment_status = fields.Selection(string='Payment Status*',
                                       selection=payment_status_list,
+                                      default='unpaid',
                                       required=True,
                                       readonly=True,
-                                      default='unpaid')
+                                      store=True)
 
     po_details = fields.One2many("merctrans.pos",
                                  "project_id",
@@ -252,6 +260,39 @@ class MercTransProjects(models.Model):
                 project.project_margin = (
                     project.project_value -
                     project.total_po_value) / project.project_value
+
+    @api.constrains('currency_id', 'so_details')
+    def currency_constrains(self):
+        for sale_order in self.so_details:
+            if sale_order.currency_id != self.currency_id:
+                raise ValidationError('Currency must be the same!')
+
+    @api.constrains('currency_id', 'so_details')
+    def total_value_constrains(self):
+        total = 0
+        for sale_oder in self.so_details:
+            total = total + sale_oder.value
+            if total > self.project_value:
+                raise ValidationError('Total Sale Orer Value must be smaller or equal to Project Value!')
+
+    @api.depends('so_details')
+    def _compute_paid(self):
+        for project in self:
+            project.project_paid = 0
+            for sale_order in self.so_details:
+                if sale_order.status == 'paid':
+                    project.project_paid += sale_order.value
+
+    @api.onchange('project_paid', 'project_value')
+    def change_status(self):
+        for project in self:
+            if project.project_paid == 0 and project.project_value == 0:
+                project.write({'payment_status': 'unpaid'})
+            if 0 < project.project_paid < project.project_value:
+                project.write({'payment_status': 'partly paid'})
+            if project.project_paid == project.project_value and project.project_value != 0:
+                project.write({'payment_status': 'paid'})
+
 
     # @api.onchange('client')
     # def sync_client(self):

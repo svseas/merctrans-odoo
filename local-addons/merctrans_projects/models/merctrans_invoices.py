@@ -20,25 +20,38 @@ class MercTransInvoices(models.Model):
                                 readonly=True,
                                 default=lambda self: self.env['ir.sequence'].
                                 next_by_code('increment_invoice_id'))
+
     sender_info = fields.Text(string='Sender Info*')
+
     invoice_name = fields.Char(string='Invoice #', compute="_get_invoice_name")
+
     invoice_date = fields.Date(string='Issue Date*', default=datetime.today(), required=True)
+
     invoice_due_date = fields.Date(string='Due Date*', required=True)
+
     invoice_client = fields.Many2one('merctrans.clients',
                                      string='Client',
                                      required='True')
+
     client_name = fields.Char(compute="_get_invoice_client")
 
-    invoice_details_ids = fields.Many2many('merctrans.projects',
+
+    invoice_details_ids = fields.Many2many('merctrans.sale',
                                            string='Invoice Lines')
+
     currency_id = fields.Many2one('res.currency', string='Currency')
+
     invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
+
     invoice_status = fields.Selection(string="Invoice Status",
                                       selection=status_list,
                                       default='unpaid')
+
     discount = fields.Integer(string='Discount (%)', default=0)
+
     invoice_total = fields.Float('Total', compute="_compute_invoice_total", store=True, readonly=True, default=0)
+
     invoice_paid_date = fields.Date(string='Paid Date', default=datetime.today())
 
 
@@ -121,21 +134,21 @@ class MercTransInvoices(models.Model):
     #     print("Invoices Write Vals ", vals)
     #     return super(MercTransInvoices, self).write(vals)
 
-    @api.onchange('invoice_status')
-    def sync_status(self):
-
-        for project in self.invoice_details_ids:
-            if self.invoice_status == 'paid':
-                project.write({'payment_status': 'paid'})
-            if self.invoice_status == 'invoiced':
-                project.write({'payment_status': 'invoiced'})
-            if self.invoice_status == 'unpaid':
-                project.write({'payment_status': 'unpaid'})
-            if not self.invoice_status:
-                project.write({'payment_status': 'unpaid'})
-
-    @api.ondelete(at_uninstall=False)
-    def _check_invoice_status(self):
-        for rec in self:
-            if rec.invoice_status:
-                raise ValidationError("You cannot delete an invoice with invoice status set!")
+    # @api.onchange('invoice_status')
+    # def sync_status(self):
+    #
+    #     for project in self.invoice_details_ids:
+    #         if self.invoice_status == 'paid':
+    #             project.write({'payment_status': 'paid'})
+    #         if self.invoice_status == 'invoiced':
+    #             project.write({'payment_status': 'invoiced'})
+    #         if self.invoice_status == 'unpaid':
+    #             project.write({'payment_status': 'unpaid'})
+    #         if not self.invoice_status:
+    #             project.write({'payment_status': 'unpaid'})
+    #
+    # @api.ondelete(at_uninstall=False)
+    # def _check_invoice_status(self):
+    #     for rec in self:
+    #         if rec.invoice_status:
+    #             raise ValidationError("You cannot delete an invoice with invoice status set!")
