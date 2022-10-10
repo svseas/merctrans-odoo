@@ -140,17 +140,21 @@ class MercTransInvoices(models.Model):
     #     return super(MercTransInvoices, self).write(vals)
 
     @api.onchange('invoice_status')
-    def sync_status(self):
+    def sync_payment_status(self):
 
         for sale_order in self.invoice_details_ids:
             if self.invoice_status == 'paid':
                 sale_order.write({'status': 'paid'})
+
             if self.invoice_status == 'invoiced':
                 sale_order.write({'status': 'invoiced'})
+
             if self.invoice_status == 'unpaid':
                 sale_order.write({'status': 'unpaid'})
+
             if not self.invoice_status:
                 sale_order.write({'status': 'unpaid'})
+
 
     @api.ondelete(at_uninstall=False)
     def _check_status(self):

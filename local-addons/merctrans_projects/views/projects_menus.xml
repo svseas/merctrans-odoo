@@ -92,8 +92,8 @@
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
                 <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
                   <tree>
-                    <field name="project_id" />
                     <field name="sale_order_name" />
+                    <field name="project_id" />
                     <field name="client_po_number"/>
                     <field name="volume" />
                     <field name="sale_rate" />
