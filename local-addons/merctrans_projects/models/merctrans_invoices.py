@@ -21,7 +21,8 @@ class MercTransInvoices(models.Model):
                                 default=lambda self: self.env['ir.sequence'].
                                 next_by_code('increment_invoice_id'))
 
-    sender_info = fields.Text(string='Sender Info*')
+    sender_info = fields.Text(string='Sender Info*',
+                              required=True)
 
     invoice_name = fields.Char(string='Invoice #', compute="_get_invoice_name")
 
@@ -37,9 +38,13 @@ class MercTransInvoices(models.Model):
 
 
     invoice_details_ids = fields.Many2many('merctrans.sale',
-                                           string='Invoice Lines')
+                                           string='Invoice Lines',
+                                           domain=[('client', '=', client_name)])
 
     currency_id = fields.Many2one('res.currency', string='Currency')
+
+    currency_string = fields.Char(string='Currency String',
+                                  compute="_get_currency_string")
 
     invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
@@ -61,6 +66,12 @@ class MercTransInvoices(models.Model):
         for invoice in self:
             invoice.invoice_total = (100 - invoice.discount) / 100 * invoice.invoice_value
 
+    @api.onchange('currency_id')
+    def _get_currency_string(self):
+        self.currency_string = ''
+        for project in self:
+            if project.currency_id:
+                project.currency_string += project.currency_id.name
 
     @api.depends('invoice_client')
     @api.onchange('invoice_client')
@@ -98,7 +109,7 @@ class MercTransInvoices(models.Model):
     def currency_constrains(self):
         for job in self:
             for x in job.invoice_details_ids:
-                if job.currency_id != x.currency_id:
+                if job.currency_string != x.currency_id:
                     raise ValidationError(
                         'Job currency must be the same as invoice currency!')
 

@@ -14,7 +14,8 @@ from odoo import api, fields, models
 #                     <field name="currency_id" />
 #                     <field name="payment_status" />
 
-class MercTransInvoices(models.Model):
+
+class MercTransSale(models.Model):
     _name = 'merctrans.sale'
     _rec_name = 'sale_order_name'
     _description = 'MercTrans Sale Orders for Project Managers'
@@ -22,10 +23,19 @@ class MercTransInvoices(models.Model):
     status_list = [('invoiced', 'Invoiced'), ('paid', 'Paid'),
                    ('unpaid', 'Unpaid')]
 
+    sale_id = fields.Integer('No number',
+                               index=True,
+                            store=True,
+                               readonly=True,
+                             default=lambda self: self.env['ir.sequence'].
+                             next_by_code('increment_invoice_id')
+    )
+
     project_id = fields.Many2one('merctrans.projects',
                                  string="Project",
                                  store=True)
-    sale_order_name = fields.Char(string="Sale Order Name")
+    sale_order_name = fields.Char(string="Sale Order Name",
+                                  compute="_get_project_name")
 
     status = fields.Selection(string="Sale Order Status",
                               selection=status_list,
@@ -51,9 +61,9 @@ class MercTransInvoices(models.Model):
                              readonly=True,
                              compute="_get_sale_rate")
 
-    currency_id = fields.Many2one('res.currency',
-                                  string='Currency*',
-                                  required=True)
+    currency_id = fields.Char(string='Currency*',
+                              required=True,
+                              compute="_get_currency")
 
     discount = fields.Integer(string='Discount (%)',
                               compute="_get_discount",
@@ -64,6 +74,21 @@ class MercTransInvoices(models.Model):
                          compute="_compute_sale_order_value")
 
     # The next section is to automatically populate field when a project is selected.
+    # @api.model
+    # def create(self, vals):
+    #     print("Sale Create Vals ", vals)
+    #     vals['number_id'] = self.env['ir.sequence'].next_by_code(
+    #         'merctrans.sale') or _('New')
+    #     return super(MercTransSale, self).create(vals)
+
+    @api.depends('project_id')
+    @api.onchange('project_id')
+    def _get_project_name(self):
+        for sale_order in self:
+            if sale_order.project_id.project_id:
+                sale_order.sale_order_name = f"SO{sale_order.sale_id:05d}-{sale_order.project_id.project_id}"
+
+
     @api.onchange('project_id')
     @api.depends('project_id')
     def _get_client_name(self):
@@ -82,6 +107,14 @@ class MercTransInvoices(models.Model):
             else:
                 sale_order.client_po_number = " "
 
+    @api.onchange('project_id')
+    @api.depends('project_id')
+    def _get_currency(self):
+        for sale_order in self:
+            if sale_order.project_id.currency_string:
+                sale_order.currency_id = sale_order.project_id.currency_string
+            else:
+                sale_order.currency_id = " "
     @api.onchange('project_id')
     @api.depends('project_id')
     def _get_sale_rate(self):
@@ -124,3 +157,4 @@ class MercTransInvoices(models.Model):
         for sale_order in self:
             if sale_order.status == "paid":
                 raise ValidationError("You cannot delete a sale order with invoice status set to Paid!")
+

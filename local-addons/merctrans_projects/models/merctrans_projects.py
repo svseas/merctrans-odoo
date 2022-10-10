@@ -145,6 +145,8 @@ class MercTransProjects(models.Model):
     currency_id = fields.Many2one('res.currency',
                                   string='Currency*',
                                   required=True)
+    currency_string = fields.Char(string='Currency String',
+                                  comput='_get_currency_string')
 
     sale_rate = fields.Float(string='Rate*', required=True, default=0)
 
@@ -196,12 +198,15 @@ class MercTransProjects(models.Model):
     so_details = fields.One2many("merctrans.sale","project_id", string="Sale Orders in this Project")
     # NOTE: FUNCTION AND API DECORATE
 
-    def sync_status(self):
+    def get_amount_paid(self):
         for project in self:
             project.project_paid = 0
             for sale_order in self.so_details:
                 if sale_order.status == 'paid':
                     project.project_paid += sale_order.value
+
+    def change_status(self):
+        for project in self:
             if project.project_paid == 0 and project.project_value:
                 project.payment_status = 'unpaid'
             elif project.project_paid == 0 and project.project_value != 0:
@@ -210,6 +215,10 @@ class MercTransProjects(models.Model):
                 project.payment_status = 'partly paid'
             elif project.project_paid == project.project_value and project.project_value != 0:
                 project.payment_status = 'paid'
+
+    def sync_status(self):
+        self.get_amount_paid()
+        self.change_status()
 
     # def compute_sale(self):
     #     for project in self:
@@ -225,6 +234,13 @@ class MercTransProjects(models.Model):
                 record.client_name += record.client.name
             else:
                 record.client_name = 'default bug'
+
+    @api.onchange('currency_id')
+    def _get_currency_string(self):
+        self.currency_string = ''
+        for project in self:
+            if project.currency_id:
+                project.currency_string += project.currency_id.name
 
     @api.model
     def create(self, vals):
@@ -283,11 +299,11 @@ class MercTransProjects(models.Model):
                     project.project_value -
                     project.total_po_value) / project.project_value
 
-    @api.constrains('currency_id', 'so_details')
-    def currency_constrains(self):
-        for sale_order in self.so_details:
-            if sale_order.currency_id != self.currency_id:
-                raise ValidationError('Currency must be the same!')
+    # @api.constrains('currency_id', 'so_details')
+    # def currency_constrains(self):
+    #     for sale_order in self.so_details:
+    #         if sale_order.currency_id != self.currency_id:
+    #             raise ValidationError('Currency must be the same!')
 
     @api.onchange('so_details')
     def total_value_constrains(self):
