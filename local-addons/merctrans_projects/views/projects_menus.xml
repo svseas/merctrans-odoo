@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <record id="action_sync_status" model="ir.actions.server">
+    <field name="name">Sync Payment Status</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_merctrans_projects"/>
+    <field name="binding_model_id" ref="model_merctrans_projects"/>
+    <field name="state">code</field>
+    <field name="code">records.sync_status()</field>
+  </record>
   <data>
     <record id="merctrans_projects_action" model='ir.actions.act_window'>
       <field name="name">Merctrans Project lists</field>
@@ -24,7 +32,8 @@
     <menuitem name="Merctrans Projects" id="project_base_menu" />
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
-    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
+    <menuitem name="Payments" id="invoices_menu" parent="project_base_menu" sequence="2" />
+    <menuitem name="Invoices" id="invoices_sub_menu" parent="invoices_menu" action="merctrans_invoices_action"/>
     <menuitem name="Account Management" id="client_menu" parent="project_base_menu" sequence="3" />
     <menuitem name="Contributors" id="contributors_menu" parent="project_base_menu" action="merctrans_contributors_actions" sequence="4" />
     <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="5" />
@@ -83,15 +92,15 @@
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
                 <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
                   <tree>
+                    <field name="sale_order_name" />
                     <field name="project_id" />
-                    <field name="project_name" />
                     <field name="client_po_number"/>
                     <field name="volume" />
                     <field name="sale_rate" />
-<!--                    <field name="discount" />-->
-                    <field name="project_value" />
+                    <field name="discount" />
+                    <field name="value" />
                     <field name="currency_id" />
-                    <field name="payment_status" />
+                    <field name="status" force_save="1"/>
                   </tree>
                 </field>
                 <field name="invoice_value" />
@@ -142,7 +151,7 @@
                 <field name="project_id" />
                 <field name="project_name" />
                 <field name="client" options="{'no_create': True, 'no_create_edit':True}" />
-                <field name="client_name"/>
+<!--                <field name="currency_string"/>-->
                 <field name="source_language" />
                 <field name="target_language" />
                 <field name="services_ids" widget="many2many_tags" />
@@ -156,12 +165,13 @@
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
-                <field name="project_value" />
-                <field name="total_po_value" />
+                <field name="project_value" force_save="1"/>
+                <field name="total_po_value" force_save="1"/>
                 <field name="project_margin" widget="percentage" />
                 <field name="project_status" />
                 <field name="client_po_number"/>
-                <field name="payment_status" />
+                <field name="project_paid" force_save="1"/>
+                <field name="payment_status"  force_save="1"/>
               </group>
             </group>
             <notebook>
@@ -207,6 +217,40 @@
               <page string="Project Instruction" name="project_instruction">
                 <field name="project_instruction" />
               </page>
+              <page string="Sale Order" name="so_details">
+                <field name="so_details">
+                  <tree>
+                    <field name="sale_order_name"/>
+                    <field name="client" />
+                    <field name="client_po_number"/>
+                    <field name="volume"/>
+                    <field name="sale_rate"/>
+                    <field name="currency_id"/>
+                    <field name="discount"/>
+                    <field name="value"/>
+                    <field name="status"/>
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="sale_order_name" />
+                        <field name="client" />
+                        <field name="client_po_number" />
+                        <field name="volume" />
+
+                      </group>
+                      <group>
+                        <field name="sale_rate" />
+                        <field name="currency_id" />
+                        <field name="discount"/>
+                        <field name="value" />
+                        <field name="status"/>
+
+                      </group>
+                    </group>
+                  </form>
+                </field>
+              </page>
             </notebook>
           </sheet>
         </form>
@@ -233,6 +277,7 @@
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />
+          <field name="project_paid"/>
           <field name="project_margin" widget="percentage" />
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
