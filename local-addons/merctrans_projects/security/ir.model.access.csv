@@ -3,7 +3,9 @@ acl_project,merctransproject.project_default,model_merctrans_projects,group_merc
 acl_pm_services,merctransproject.service_default,model_merctrans_services,group_merctrans_pm,1,1,1,1
 acl_pm_invoices,merctransproject.invoices_default,model_merctrans_invoices,group_merctrans_pm,1,1,1,1
 acl_pm_pos,merctransproject.pos_default,model_merctrans_pos,group_merctrans_pm,1,1,1,1
+acl_pm_tags,merctransproject.tags_default,model_merctrans_tags,group_merctrans_pm,1,1,1,1
 acl_pm_clients,merctransproject.clients_default,model_merctrans_clients,group_merctrans_pm,1,1,1,1
 acl_pm_accounts,merctransproject.accounts_default,model_account_contacts,group_merctrans_pm,1,1,1,1
 acl_pm_contributors,merctransproject.contributors_default,model_merctrans_contributors,group_merctrans_pm,1,1,1,1
+acl_pm_sale,merctransproject.sale_default,model_merctrans_sale,group_merctrans_pm,1,1,1,1
 acl_contributor_pos,merctransproject.pos_default,model_merctrans_pos,group_merctrans_contributor,1,0,0,0
