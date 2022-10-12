@@ -146,7 +146,7 @@ class MercTransProjects(models.Model):
                                   string='Currency*',
                                   required=True)
     currency_string = fields.Char(string='Currency String',
-                                  comput='_get_currency_string')
+                                  compute='_get_currency_string')
 
     sale_rate = fields.Float(string='Rate*', required=True, default=0)
 
