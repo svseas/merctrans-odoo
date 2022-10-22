@@ -45,7 +45,8 @@ class MercTransSale(models.Model):
 
     client = fields.Char(string='Client',
                          readonly=True,
-                         compute="_get_client_name")
+                         compute="_get_client_name",
+                         store=True)
 
     client_po_number = fields.Char(string='Client PO number',
                                    readonly=True,

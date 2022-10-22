@@ -200,10 +200,8 @@ class MercTransProjects(models.Model):
 
     def get_amount_paid(self):
         for project in self:
-            project.project_paid = 0
-            for sale_order in self.so_details:
-                if sale_order.status == 'paid':
-                    project.project_paid += sale_order.value
+            project.project_paid = sum(sale.value for sale in project.so_details)
+            
 
     def change_status(self):
         for project in self:
@@ -219,6 +217,9 @@ class MercTransProjects(models.Model):
     def sync_status(self):
         self.get_amount_paid()
         self.change_status()
+        print("Check Status")
+
+
 
     # def compute_sale(self):
     #     for project in self:
@@ -248,7 +249,12 @@ class MercTransProjects(models.Model):
         vals['number_id'] = self.env['ir.sequence'].next_by_code(
             'merctrans.project') or _('New')
         return super(MercTransProjects, self).create(vals)
-
+    @api.model
+    def auto_crete_sale(self, vals):
+        for project in self:
+            if not project.so_details:
+                res = self.env['merctrans.sale'].create(vals)
+                return res
     # @api.model
     # @api.model # đoạn code bên dưới gây bug khi chỉnh sửa project
     # def write(self, vals):

@@ -40,6 +40,7 @@
         'views/clients.xml',
         'views/templates.xml',
         'views/sale.xml',
+        'data/automation.xml',
         #data
         'data/currencies.xml'
     ],
