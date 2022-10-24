@@ -69,7 +69,7 @@ class MerctransPOs(models.Model):
 
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
-                                 default="hour",
+                                 default=lambda self: self.env['merctrans.projects'].search([( 'project_id', '=', self.project_id.project_id)]).work_unit,
                                  required=True)
 
     volume = fields.Integer(string='Volume*', required=True, default=0)
@@ -104,7 +104,7 @@ class MerctransPOs(models.Model):
     target_language = fields.Selection(string="Target Language",
                                        selection=language_list)
 
-    currency_id = fields.Many2one('res.currency', string='Currency')
+    currency_id = fields.Char('Currency', compute='_get_contributor_currency')
 
     valid_date = fields.Char('Valid Date',
                              readonly=True,
@@ -121,6 +121,14 @@ class MerctransPOs(models.Model):
     #     'project_id', '=', self.project_id.project_id)]).due_date)
 
     # From Projects?
+
+    # Get contributor currency
+    @api.onchange('contributor')
+    @api.depends('contributor')
+    def _get_contributor_currency(self):
+        self.ensure_one()
+        print(self.contributor.currency)
+        self.currency_id = self.contributor.currency.name
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')
@@ -198,33 +206,41 @@ class MerctransPOs(models.Model):
             else:
                 po.target_language = 'Choose Project'
 
+    @api.constrains('volume')
+    def _volume_contrains(self):
+        for po in self:
+            print(type(po.volume))
+            if int(po.volume) == 0:
+                raise ValidationError(f"{po.purchase_order} FAIL!!! \n Volume must greater than 0")
+
+
     # po start date must greater than project start date
-    @api.depends('project_id')
-    @api.constrains('start_date', 'project_id')
-    def _start_date_contrains(self):
-        for project in self:
-            if project.start_date < project.project_id.start_date:
-                raise ValidationError(
-                    f'Start date must be greater than project start date: {project.project_id.start_date}'
-                )
+    # @api.depends('project_id')
+    # @api.constrains('start_date', 'project_id')
+    # def _start_date_contrains(self):
+    #     for project in self:
+    #         if project.start_date < project.project_id.start_date:
+    #             raise ValidationError(
+    #                 f'Start date must be greater than project start date: {project.project_id.start_date}'
+    #             )
 
     # po due date must lesser project due date
-    @api.depends('project_id')
-    @api.constrains('due_date', 'project_id')
-    def _due_date_contrains(self):
-        for project in self:
-            print(project.due_date, project.project_id.due_date)
-            if project.due_date > project.project_id.due_date:
-                raise ValidationError(
-                    f'Start date must be lesser than project start date: {project.project_id.due_date}'
-                )
+    # @api.depends('project_id')
+    # @api.constrains('due_date', 'project_id')
+    # def _due_date_contrains(self):
+    #     for project in self:
+    #         print(project.due_date, project.project_id.due_date)
+    #         if project.due_date > project.project_id.due_date:
+    #             raise ValidationError(
+    #                 f'Start date must be lesser than project start date: {project.project_id.due_date}'
+    #             )
 
     @api.constrains('start_date', 'due_date')
     def _constraint_date(self):
         for project in self:
             if project.start_date > project.due_date:
                 raise ValidationError(
-                    'Due date must be greater than Start date!')
+                    f'{project.purchase_order} FAIL!!\n Due date must be after Start date!')
 
     # workunit
     @api.onchange('volume', 'sale_rate_per_work_unit')

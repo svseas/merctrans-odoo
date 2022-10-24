@@ -279,6 +279,8 @@ class MercTransProjects(models.Model):
             else:
                 project.project_id = "on change"
 
+    # Volume
+
     @api.onchange('volume', 'sale_rate')
     @api.depends('volume', 'sale_rate', 'discount')
     def _compute_project_value(self):
