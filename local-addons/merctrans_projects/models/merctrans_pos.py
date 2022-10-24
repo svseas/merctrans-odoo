@@ -104,7 +104,7 @@ class MerctransPOs(models.Model):
     target_language = fields.Selection(string="Target Language",
                                        selection=language_list)
 
-    currency_id = fields.Many2one('res.currency', string='Currency')
+    currency_id = fields.Char('Currency', compute='_get_contributor_currency')
 
     valid_date = fields.Char('Valid Date',
                              readonly=True,
@@ -121,6 +121,14 @@ class MerctransPOs(models.Model):
     #     'project_id', '=', self.project_id.project_id)]).due_date)
 
     # From Projects?
+
+    # Get contributor currency
+    @api.onchange('contributor')
+    @api.depends('contributor')
+    def _get_contributor_currency(self):
+        self.ensure_one()
+        print(self.contributor.currency)
+        self.currency_id = self.contributor.currency.name
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')

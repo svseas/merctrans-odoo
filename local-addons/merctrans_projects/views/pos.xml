@@ -15,27 +15,27 @@
             <form create="false" edit="false">
                 <group>
                     <group>
-                        <field name="purchase_order"/>
+                        <field name="purchase_order" />
                         <field name="project_id" />
-                        <field name="po_status"/>
-                        <field name="service"/>
-                        <field name="source_language" readonly='1'/>
-                        <field name="target_language" readonly='1'/>
-                        <field name="valid_date" readonly='1'/>
-                        <field name="start_date"/>
-                        <field name="due_date"/>
+                        <field name="po_status" />
+                        <field name="service" />
+                        <field name="source_language" readonly='1' />
+                        <field name="target_language" readonly='1' />
+                        <!-- <field name="valid_date" readonly='1'/> -->
+                        <field name="start_date" />
+                        <field name="due_date" />
                         <!-- <field name="source_language" readonly="1"/> -->
                     </group>
                     <group>
-                        <field name="contributor"/>
-                        <field name="address" readonly='1'/>
-                        <field name="contributor_email" readonly='1'/>
-                        <field name="work_unit"/>
-                        <field name="volume"/>
-                        <field name="sale_rate_per_work_unit"/>
-                        <field name="po_value"/>
-                        <field name="currency_id"/>
-                        <field name="payment_status"/>
+                        <field name="contributor" />
+                        <field name="address" readonly='1' />
+                        <field name="contributor_email" readonly='1' />
+                        <field name="work_unit" />
+                        <field name="volume" />
+                        <field name="sale_rate_per_work_unit" />
+                        <field name="po_value" />
+                        <field name="currency_id" />
+                        <field name="payment_status" />
 
                     </group>
                 </group>
@@ -49,15 +49,15 @@
         <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
             <tree create="false" edit="false">
-                <field name="purchase_order"/>
-                <field name="project_id"/>
-                <field name="contributor"/>
-                <field name="po_status"/>
-                <field name="due_date"/>
-                <field name="source_language" readonly='1'/>
-                <field name="target_language" readonly='1'/>
-                <field name="address"/>
-                <field name="contributor_email"/>
+                <field name="purchase_order" />
+                <field name="project_id" />
+                <field name="contributor" />
+                <field name="po_status" />
+                <field name="due_date" />
+                <field name="source_language" readonly='1' />
+                <field name="target_language" readonly='1' />
+                <field name="address" />
+                <field name="contributor_email" />
 
             </tree>
         </field>
