@@ -6,6 +6,8 @@ from odoo.exceptions import ValidationError
 from odoo import api, fields, models
 
 
+
+
 class MercTransInvoices(models.Model):
     _name = 'merctrans.invoices'
     _rec_name = 'invoice_name'
@@ -36,14 +38,12 @@ class MercTransInvoices(models.Model):
 
     client_name = fields.Char(compute="_get_invoice_client")
 
-
     invoice_details_ids = fields.Many2many('merctrans.sale',
                                            string='Invoice Lines')
     # Currency computed from sale orders (sale order restrains same currency)
-    currency_id = fields.Many2one('res.currency', string='Currency', required=True)
-
-    currency_string = fields.Char(string='Currency String',
-                                  compute="_get_currency_string")
+    currency_id = fields.Char(string='Currency*',
+                              required=True,
+                              compute="_get_currency")
 
     invoice_value = fields.Float("Sub Total",
                                  compute="_compute_invoice_value")
@@ -59,12 +59,19 @@ class MercTransInvoices(models.Model):
     invoice_paid_date = fields.Date(string='Paid Date')
 
     # Functions and Decorators below
+    @api.constrains('invoice_details_ids')
+    def _constrains_currency(self):
+        for rec in self:
+            for sale in rec.invoice_details_ids:
+                if sale.currency_id != rec.currency_id:
+                    raise ValidationError("Sale Order Currencies must be the same")
 
-    @api.onchange(client_name)
+                # if check_rep == False:
+                #     raise ValidationError("Sale Orders' Currencies must be the same")
+    @api.onchange('client_name')
     def _onchange_client_name(self):
         for rec in self:
             search = {'domain': {'invoice_details_ids': [('client', '=', rec.client_name)]}}
-            print(search)
             return search
 
     @api.onchange('invoice_total')
@@ -73,12 +80,7 @@ class MercTransInvoices(models.Model):
         for invoice in self:
             invoice.invoice_total = (100 - invoice.discount) / 100 * invoice.invoice_value
 
-    @api.onchange('currency_id')
-    def _get_currency_string(self):
-        self.currency_string = ''
-        for project in self:
-            if project.currency_id:
-                project.currency_string += project.currency_id.name
+
 
     @api.depends('invoice_client')
     @api.onchange('invoice_client')
@@ -105,19 +107,11 @@ class MercTransInvoices(models.Model):
     def _compute_invoice_value(self):
         for item in self:
             item.invoice_value = 0
-            for line in item.invoice_details_ids:
-                if line.value:
-                    item.invoice_value += line.value
+            for sale in item.invoice_details_ids:
+                if item.invoice_details_ids:
+                    item.invoice_value += sale.value
                 else:
                     item.invoice_value = 0
-
-    @api.constrains('invoice_details_ids', 'currency_id')
-    def currency_constrains(self):
-        for job in self:
-            for x in job.invoice_details_ids:
-                if job.currency_string != x.currency_id:
-                    raise ValidationError(
-                        'Job currency must be the same as invoice currency!')
 
     @api.constrains('invoice_details_ids', 'invoice_client')
     def client_constrains(self):
@@ -126,6 +120,13 @@ class MercTransInvoices(models.Model):
                 if inv.client_name != sale_order.client:
                     raise ValidationError('You can only include jobs from the same client!')
 
+    @api.onchange('invoice_details_ids')
+    def _get_currency(self):
+        for rec in self:
+            if rec.invoice_details_ids:
+                rec.currency_id = rec.invoice_details_ids[0].currency_id
+            else:
+                rec.currency_id = "USD"
 
     @api.constrains('invoice_paid_date','invoice_date', 'invoice_status')
     def paid_date_constrains(self):
@@ -145,16 +146,7 @@ class MercTransInvoices(models.Model):
     def invoice_status_constrains(self):
         for inv in self:
             if not inv.invoice_details_ids and inv.invoice_status:
-                raise ValidationError('Cannot set invoice status when there is no job!')
-
-    # @api.model
-    # def create(self, vals):
-    #     print("Invoices Create Vals ", vals)
-    #     return super(MercTransInvoices, self).create(vals)
-    #
-    # def write(self, vals):
-    #     print("Invoices Write Vals ", vals)
-    #     return super(MercTransInvoices, self).write(vals)
+                raise ValidationError('Cannot set invoice status when there is no job!')\
 
     @api.onchange('invoice_status')
     def sync_payment_status(self):
