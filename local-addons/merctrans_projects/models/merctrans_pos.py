@@ -206,6 +206,14 @@ class MerctransPOs(models.Model):
             else:
                 po.target_language = 'Choose Project'
 
+    @api.constrains('volume')
+    def _volume_contrains(self):
+        for po in self:
+            print(type(po.volume))
+            if int(po.volume) == 0:
+                raise ValidationError(f"{po.purchase_order} FAIL!!! \n Volume must greater than 0")
+
+
     # po start date must greater than project start date
     # @api.depends('project_id')
     # @api.constrains('start_date', 'project_id')

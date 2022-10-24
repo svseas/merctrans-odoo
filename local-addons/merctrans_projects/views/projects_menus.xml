@@ -198,7 +198,7 @@
                         <field name="target_language" />
                         <field name="source_language" />
                         <field name="service" />
-                        <field name="valid_date" />
+                        <!-- <field name="valid_date" /> -->
                         <field name="start_date" require="True" />
                         <field name="due_date" />
                       </group>
