@@ -3,8 +3,8 @@
   <record id="action_sync_status" model="ir.actions.server">
     <field name="name">Sync Payment Status</field>
     <field name="type">ir.actions.server</field>
-    <field name="model_id" ref="model_merctrans_projects"/>
-    <field name="binding_model_id" ref="model_merctrans_projects"/>
+    <field name="model_id" ref="model_merctrans_projects" />
+    <field name="binding_model_id" ref="model_merctrans_projects" />
     <field name="state">code</field>
     <field name="code">records.sync_status()</field>
   </record>
@@ -33,7 +33,7 @@
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
     <menuitem name="Payments" id="invoices_menu" parent="project_base_menu" sequence="2" />
-    <menuitem name="Invoices" id="invoices_sub_menu" parent="invoices_menu" action="merctrans_invoices_action"/>
+    <menuitem name="Invoices" id="invoices_sub_menu" parent="invoices_menu" action="merctrans_invoices_action" />
     <menuitem name="Account Management" id="client_menu" parent="project_base_menu" sequence="3" />
     <menuitem name="Contributors" id="contributors_menu" parent="project_base_menu" action="merctrans_contributors_actions" sequence="4" />
     <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="5" />
@@ -57,10 +57,10 @@
           <field name="invoice_name" />
           <field name="invoice_date" />
           <field name="invoice_client" />
-          <field name="invoice_due_date"/>
+          <field name="invoice_due_date" />
           <field name="invoice_value" />
-          <field name="discount" widget="percentage"/>
-          <field name="invoice_total"/>
+          <field name="discount" widget="percentage" />
+          <field name="invoice_total" />
           <field name="currency_id" />
           <field name="invoice_status" />
         </tree>
@@ -81,33 +81,33 @@
           <sheet>
             <group>
               <group>
-                <field name="sender_info"/>
+                <field name="sender_info" />
                 <field name="invoice_id" />
                 <field name="invoice_name" />
                 <field name="invoice_date" />
-                <field name="invoice_due_date"/>
+                <field name="invoice_due_date" />
                 <field name="invoice_client" />
-<!--                <field name="client_name"/>-->
+                <!--                <field name="client_name"/>-->
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
                 <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
                   <tree>
                     <field name="sale_order_name" />
                     <field name="project_id" />
-                    <field name="client_po_number"/>
+                    <field name="client_po_number" />
                     <field name="volume" />
                     <field name="sale_rate" />
                     <field name="discount" />
                     <field name="value" />
                     <field name="currency_id" />
-                    <field name="status" force_save="1"/>
+                    <field name="status" force_save="1" />
                   </tree>
                 </field>
                 <field name="invoice_value" />
-                <field name="discount"/>
-                <field name="invoice_total"/>
+                <field name="discount" />
+                <field name="invoice_total" />
                 <field name="invoice_status" />
-                <field name="invoice_paid_date"/>
+                <field name="invoice_paid_date" />
               </group>
             </group>
           </sheet>
@@ -147,11 +147,11 @@
           <sheet>
             <group>
               <group>
-                <field name="project_manager" />
+                <field name="project_manager" options="{'no_create': True, 'no_create_edit':True}" />
                 <field name="project_id" />
                 <field name="project_name" />
                 <field name="client" options="{'no_create': True, 'no_create_edit':True}" />
-<!--                <field name="currency_string"/>-->
+                <!--                <field name="currency_string"/>-->
                 <field name="source_language" />
                 <field name="target_language" />
                 <field name="services_ids" widget="many2many_tags" />
@@ -161,17 +161,17 @@
               </group>
               <group>
                 <field name="currency_id" />
-                <field name="discount"/>
+                <field name="discount" />
                 <field name="work_unit" />
                 <field name="volume" />
                 <field name="sale_rate" />
-                <field name="project_value" force_save="1"/>
-                <field name="total_po_value" force_save="1"/>
+                <field name="project_value" force_save="1" />
+                <field name="total_po_value" force_save="1" />
                 <field name="project_margin" widget="percentage" />
                 <field name="project_status" />
-                <field name="client_po_number"/>
-                <field name="project_paid" force_save="1"/>
-                <field name="payment_status"  force_save="1"/>
+                <field name="client_po_number" />
+                <field name="project_paid" force_save="1" />
+                <field name="payment_status" force_save="1" />
               </group>
             </group>
             <notebook>
@@ -220,15 +220,15 @@
               <page string="Sale Order" name="so_details">
                 <field name="so_details">
                   <tree>
-                    <field name="sale_order_name"/>
+                    <field name="sale_order_name" />
                     <field name="client" />
-                    <field name="client_po_number"/>
-                    <field name="volume"/>
-                    <field name="sale_rate"/>
-                    <field name="currency_id"/>
-                    <field name="discount"/>
-                    <field name="value"/>
-                    <field name="status"/>
+                    <field name="client_po_number" />
+                    <field name="volume" />
+                    <field name="sale_rate" />
+                    <field name="currency_id" />
+                    <field name="discount" />
+                    <field name="value" />
+                    <field name="status" />
                   </tree>
                   <form>
                     <group>
@@ -242,9 +242,9 @@
                       <group>
                         <field name="sale_rate" />
                         <field name="currency_id" />
-                        <field name="discount"/>
+                        <field name="discount" />
                         <field name="value" />
-                        <field name="status"/>
+                        <field name="status" />
 
                       </group>
                     </group>
@@ -268,7 +268,7 @@
           <field name="project_id" />
           <field name="project_name" />
           <field name="client" />
-<!--          <field name="client_name" />-->
+          <!--          <field name="client_name" />-->
           <field name="services_ids" widget="many2many_tags" />
           <field name="work_unit" />
           <!--          <field name="source_language" />-->
@@ -277,7 +277,7 @@
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />
-          <field name="project_paid"/>
+          <field name="project_paid" />
           <field name="project_margin" widget="percentage" />
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
