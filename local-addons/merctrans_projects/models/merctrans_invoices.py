@@ -80,8 +80,6 @@ class MercTransInvoices(models.Model):
         for invoice in self:
             invoice.invoice_total = (100 - invoice.discount) / 100 * invoice.invoice_value
 
-
-
     @api.depends('invoice_client')
     @api.onchange('invoice_client')
     def _get_invoice_client(self):
@@ -128,13 +126,11 @@ class MercTransInvoices(models.Model):
             else:
                 rec.currency_id = "USD"
 
-    @api.constrains('invoice_paid_date','invoice_date', 'invoice_status')
+    @api.constrains('invoice_paid_date', 'invoice_date', 'invoice_status')
     def paid_date_constrains(self):
         for inv in self:
             if inv.invoice_paid_date and inv.invoice_paid_date < inv.invoice_date:
                 raise ValidationError('Invoice paid date cannot be before invoice due date')
-            # if inv.invoice_status != 'paid' and inv.invoice_paid_date:
-            #     raise ValidationError('Cannot have paid date when status is not Paid')
 
     @api.constrains('invoice_details_ids')
     def invoice_detail_constrains(self):
@@ -147,6 +143,7 @@ class MercTransInvoices(models.Model):
         for inv in self:
             if not inv.invoice_details_ids and inv.invoice_status:
                 raise ValidationError('Cannot set invoice status when there is no job!')\
+
 
     @api.onchange('invoice_status')
     def sync_payment_status(self):
@@ -163,7 +160,6 @@ class MercTransInvoices(models.Model):
 
             if not self.invoice_status:
                 sale_order.write({'status': 'unpaid'})
-
 
     @api.ondelete(at_uninstall=False)
     def _check_status(self):
