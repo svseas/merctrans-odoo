@@ -167,7 +167,6 @@ class MercTransProjects(models.Model):
     project_margin = fields.Float("Project Margin",
                                   compute="_compute_margin",
                                   store=True,
-                                  readonly=True,
                                   default=0)
 
     # NOTE: PROJECT STATUS
@@ -302,6 +301,7 @@ class MercTransProjects(models.Model):
             job.total_po_value = sum(po.po_value for po in job.po_details)
 
     @api.onchange('project_value', 'total_po_value')
+    @api.depends('project_value', 'total_po_value')
     def _compute_margin(self):
         for project in self:
             if project.project_value > 0:
@@ -315,7 +315,7 @@ class MercTransProjects(models.Model):
     #         if sale_order.currency_id != self.currency_id:
     #             raise ValidationError('Currency must be the same!')
 
-    @api.onchange('so_details')
+    @api.constrains('so_details')
     def total_value_constrains(self):
         total = 0
         for sale_oder in self.so_details:
