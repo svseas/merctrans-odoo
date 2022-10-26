@@ -106,6 +106,12 @@ class MerctransClient(models.Model):
             if not rec.name:
                 raise ValidationError("Name field must not be empty!")
 
+    @api.constrains(client_contact_list)
+    def validate_client_name(self):
+        for client in self:
+            for contact in self.client_contact_list:
+                if client.name != contact.contact_id:
+                    raise ValidationError("Can only create contact in the same company!")
 
 
 class AccountContact(models.Model):
@@ -133,3 +139,4 @@ class AccountContact(models.Model):
                 contact.contact_email = "N/A"
             if match is None:
                 raise ValidationError('Not a valid email')
+
