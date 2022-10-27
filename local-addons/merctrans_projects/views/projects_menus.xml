@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <record id="action_sync_status" model="ir.actions.server">
+    <field name="name">Sync Payment Status</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_merctrans_projects"/>
+    <field name="binding_model_id" ref="model_merctrans_projects"/>
+    <field name="state">code</field>
+    <field name="code">records.sync_status()</field>
+  </record>
   <data>
     <record id="merctrans_projects_action" model='ir.actions.act_window'>
       <field name="name">Merctrans Project lists</field>
@@ -24,10 +32,22 @@
     <menuitem name="Merctrans Projects" id="project_base_menu" />
     <menuitem name="Projects" id="project_menu" parent="project_base_menu" action="merctrans_projects_action" sequence="0" />
     <menuitem name="Services" id="services_menu" parent="project_base_menu" action="merctrans_services_action" sequence="1" />
-    <menuitem name="Invoices" id="invoices_menu" parent="project_base_menu" action="merctrans_invoices_action" sequence="2" />
-    <menuitem name="Jobs" id="job_menu_in_base_menu" parent="project_base_menu" action="merctrans_jobs_actions" sequence="3" />
+    <menuitem name="Payments" id="invoices_menu" parent="project_base_menu" sequence="2" />
+    <menuitem name="Invoices" id="invoices_sub_menu" parent="invoices_menu" action="merctrans_invoices_action"/>
+    <menuitem name="Account Management" id="client_menu" parent="project_base_menu" sequence="3" />
+    <menuitem name="Contributors" id="contributors_menu" parent="project_base_menu" action="merctrans_contributors_actions" sequence="4" />
+    <menuitem name="Purchase Order" id="po_menu_in_base_menu" parent="project_base_menu" action="merctrans_pos_actions" sequence="5" />
 
     <!-- invoices tree view -->
+    <!-- Auto increase invoice_id-->
+    <record id="increment_invoices_id" model="ir.sequence">
+      <field name="name">ID Incrementation</field>
+      <field name="code">increment_invoice_id</field>
+      <field name="prefix"></field>
+      <field name="padding">3</field>
+      <field name="company_id" eval="False" />
+    </record>
+
     <record id="invoices_view_tree" model="ir.ui.view">
       <field name="name">invoices tree</field>
       <field name="model">merctrans.invoices</field>
@@ -37,8 +57,12 @@
           <field name="invoice_name" />
           <field name="invoice_date" />
           <field name="invoice_client" />
+          <field name="invoice_due_date"/>
           <field name="invoice_value" />
+          <field name="discount" widget="percentage"/>
+          <field name="invoice_total"/>
           <field name="currency_id" />
+          <field name="invoice_status" />
         </tree>
 
 
@@ -57,27 +81,42 @@
           <sheet>
             <group>
               <group>
+                <field name="sender_info"/>
                 <field name="invoice_id" />
                 <field name="invoice_name" />
                 <field name="invoice_date" />
+                <field name="invoice_due_date"/>
                 <field name="invoice_client" />
+<!--                <field name="client_name"/>-->
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
-                <field name="invoice_details_ids" widget="many2many">
-                  <tree>
-                    <field name="job_id" />
-                    <field name="job_name" />
-                    <field name="volume" />
-                    <field name="sale_rate_per_work_unit" />
-                    <field name="discount" />
-                    <field name="job_value" />
-                    <field name="payment_status" />
-                  </tree>
-                </field>
+
                 <field name="invoice_value" />
+                <field name="discount"/>
+                <field name="invoice_total"/>
                 <field name="invoice_status" />
+                <field name="invoice_paid_date"/>
+
               </group>
             </group>
+            <notebook>
+                  <page string="Sale Orders">
+                    <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
+                      <tree>
+                        <field name="sale_order_name" />
+                        <field name="client"/>
+                        <field name="project_id" />
+                        <field name="client_po_number"/>
+                        <field name="volume" />
+                        <field name="sale_rate" />
+                        <field name="discount" />
+                        <field name="value" />
+                        <field name="currency_id" />
+                        <field name="status" force_save="1"/>
+                      </tree>
+                    </field>
+                  </page>
+                </notebook>
           </sheet>
         </form>
       </field>
@@ -97,7 +136,14 @@
         </tree>
       </field>
     </record>
-
+    <!-- Sequence auto incement -->
+    <record id="increment_number_id" model="ir.sequence">
+      <field name="name">Filed increment </field>
+      <field name="code">merctrans.project</field>
+      <field name='prefix'></field>
+      <field name='padding'>0001</field>
+      <field name="company_id" eval="False" />
+    </record>
 
     <!-- project form view-->
     <record id="project_view_form" model="ir.ui.view">
@@ -109,29 +155,110 @@
             <group>
               <group>
                 <field name="project_manager" />
-                <field name="job_id" />
-                <field name="job_name" />
-                <field name="job_instruction" />
-                <field name="work_unit" />
-                <field name="discount" />
-                <field name="currency_id" />
-                <field name="start_date" />
-                <field name="due_date" />
-                <!-- <field name="child_jobs_id" /> -->
-
-              </group>
-              <group>
+                <field name="project_id" />
+                <field name="project_name" />
+                <field name="client" options="{'no_create': True, 'no_create_edit':True}" />
+<!--                <field name="currency_string"/>-->
                 <field name="source_language" />
                 <field name="target_language" />
-                <field name="client" widget="many2many_tags" />
                 <field name="services_ids" widget="many2many_tags" />
+                <field name="start_date" />
+                <field name="due_date" />
+                <field name="tags" widget="many2many_tags" />
+              </group>
+              <group>
+                <field name="currency_id" />
+                <field name="discount"/>
+                <field name="work_unit" />
                 <field name="volume" />
-                <field name="sale_rate_per_work_unit" />
-                <field name="job_value" />
+                <field name="sale_rate" />
+                <field name="project_value" force_save="1"/>
+                <field name="total_po_value" force_save="1"/>
+                <field name="project_margin" widget="percentage" />
                 <field name="project_status" />
-                <field name="payment_status" />
+                <field name="client_po_number"/>
+                <field name="project_paid" force_save="1"/>
+                <field name="payment_status"  force_save="1"/>
               </group>
             </group>
+            <notebook>
+              <page string="Purchase Order">
+                <field name="po_details">
+                  <tree>
+                    <field name="purchase_order" />
+                    <field name="contributor" />
+                    <field name="service" />
+                    <field name="work_unit" />
+                    <field name="volume" />
+                    <field name="sale_rate_per_work_unit" />
+                    <field name="due_date" require="True" />
+                    <field name="currency_id" />
+                    <field name="po_value" />
+                    <field name="po_status" />
+                    <field name="payment_status" />
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="purchase_order" />
+                        <field name="contributor" />
+                        <field name="target_language" />
+                        <field name="source_language" />
+                        <field name="service" />
+                        <field name="valid_date" />
+                        <field name="start_date" require="True" />
+                        <field name="due_date" />
+                      </group>
+                      <group>
+                        <field name="work_unit" />
+                        <field name="volume" />
+                        <field name="sale_rate_per_work_unit" />
+                        <field name="po_value" />
+                        <field name="po_status" />
+                        <field name="payment_status" />
+                      </group>
+                    </group>
+                  </form>
+                </field>
+              </page>
+              <page string="Project Instruction" name="project_instruction">
+                <field name="project_instruction" />
+              </page>
+              <page string="Sale Order" name="so_details">
+                <field name="so_details">
+                  <tree>
+                    <field name="sale_order_name"/>
+                    <field name="client" />
+                    <field name="client_po_number"/>
+                    <field name="volume"/>
+                    <field name="sale_rate"/>
+                    <field name="currency_id"/>
+                    <field name="discount" />
+                    <field name="value"/>
+                    <field name="status"/>
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="sale_order_name" />
+                        <field name="client" />
+                        <field name="client_po_number" />
+                        <field name="volume" />
+
+                      </group>
+                      <group>
+                        <field name="sale_rate" />
+                        <field name="currency_id" />
+                        <field name="discount"/>
+                        <field name="value" />
+                        <field name="status"/>
+
+                      </group>
+                    </group>
+                  </form>
+                </field>
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>
@@ -145,82 +272,82 @@
       <field name="model">merctrans.projects</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="job_id" />
-          <field name="job_name" />
-          <field name="project_manager" />
-          <field name="work_unit" />
-          <field name="source_language" />
-          <field name="target_language" />
-          <field name="client" widget="many2many_tags" />
+          <field name="project_id" />
+          <field name="project_name" />
+          <field name="client" />
+<!--          <field name="client_name" />-->
           <field name="services_ids" widget="many2many_tags" />
+          <field name="work_unit" />
+          <!--          <field name="source_language" />-->
+          <!--          <field name="target_language" />-->
           <field name="volume" />
-          <field name="sale_rate_per_work_unit" />
+          <field name="sale_rate" />
           <field name="currency_id" />
-          <field name="discount" />
-          <field name="job_value" />
-          <field name="start_date" />
+          <field name="project_value" />
+          <field name="project_paid"/>
+          <field name="project_margin" widget="percentage"/>
+          <!--          <field name="total_po_value"/>-->
+          <!--          <field name="discount" />-->
+          <!--          <field name="start_date" />-->
           <field name="due_date" />
+          <field name="project_manager" />
           <field name="project_status" />
           <field name="payment_status" />
 
         </tree>
       </field>
     </record>
-      <!-- job form view -->
-  <record id="job_view_form_in_base_menu" model="ir.ui.view">
-    <field name="name">Job Form</field>
-    <field name="model">merctrans.jobs</field>
-    <field name="arch" type="xml">
-      <form>
-        <group>
-          <group>
-            <field name="title" />
-            <field name="project_id" />
-            <field name="job_status" />
-            <field name="source_language" readonly='1' />
-            <field name="target_language" readonly='1' />
-            <field name="start_date" />
-            <field name="due_date" />
-            <!-- <field name="source_language" readonly="1"/> -->
-          </group>
-          <group>
-            <field name="pic" />
-            <field name="address" readonly='1' />
-            <field name="pic_email" readonly='1' />
-            <field name="currency_id"/>
-          </group>
-        </group>
-      </form>
-    </field>
-  </record>
-
-  <!-- job view tree -->
-  <record id="job_view_tree_in_base_menu" model="ir.ui.view">
-    <field name="name">Job Tree</field>
-    <field name="model">merctrans.jobs</field>
-    <field name="arch" type="xml">
-      <tree>
-        <field name="title" />
-        <field name="project_id" />
-        <field name="pic" />
-        <field name="job_status" />
-        <field name="due_date" />
-        <field name="source_language" readonly='1' />
-        <field name="target_language" readonly='1' />
-        <field name="address" />
-        <field name="pic_email" />
-
-      </tree>
-    </field>
-
-  </record>
-
-
-  </data>
-
-
-  <!-- explicit list view definition -->
-  <!--
+    <!-- po form view -->
+    <!--   <record id="po_view_form_in_base_menu" model="ir.ui.view"> -->
+    <!--     <field name="name">Purchase Order Form</field> -->
+    <!--     <field name="model">merctrans.pos</field> -->
+    <!--     <field name="arch" type="xml"> -->
+    <!--       <form> -->
+    <!--         <group> -->
+    <!--           <group> -->
+    <!--             <field name="purchase_order" /> -->
+    <!--             <field name="project_id" /> -->
+    <!--             <field name="po_status" /> -->
+    <!--             <field name="source_language" readonly='1' /> -->
+    <!--             <field name="target_language" readonly='1' /> -->
+    <!--             <field name="start_date" /> -->
+    <!--             <field name="due_date" /> -->
+    <!-- <field name="source_language" readonly="1"/> -->
+    <!--           </group> -->
+    <!--           <group> -->
+    <!--             <field name="contributor" /> -->
+    <!--             <field name="address" readonly='1' /> -->
+    <!--             <field name="contributor_email" readonly='1' /> -->
+    <!--             <field name="currency_id" /> -->
+    <!--           </group> -->
+    <!--         </group> -->
+    <!--       </form> -->
+    <!--     </field> -->
+    <!--   </record> -->
+    <!---->
+    <!-- po view tree -->
+    <!--   <record id="po_view_tree_in_base_menu" model="ir.ui.view"> -->
+    <!--     <field name="name">Purchase Order Tree</field> -->
+    <!--     <field name="model">merctrans.pos</field> -->
+    <!--     <field name="arch" type="xml"> -->
+    <!--       <tree> -->
+    <!--         <field name="purchase_order" /> -->
+    <!--         <field name="project_id" /> -->
+    <!--         <field name="contributor" /> -->
+    <!--         <field name="po_status" /> -->
+    <!--         <field name="due_date" /> -->
+    <!--         <field name="source_language" readonly='1' /> -->
+    <!--         <field name="target_language" readonly='1' /> -->
+    <!--         <field name="address" /> -->
+    <!--         <field name="contributor_email" /> -->
+    <!--       </tree> -->
+    <!--     </field> -->
+    <!--   </record> -->
+    <!-- </data> -->
+    <!---->
+    <!---->
+    <!-- explicit list view definition -->
+    <!--
     <record model="ir.ui.view" id="merctrans_projects.list">
       <field name="name">merctrans_projects list</field>
       <field name="model">merctrans_projects.merctrans_projects</field>
@@ -234,8 +361,8 @@
     </record>
 -->
 
-  <!-- actions opening views on models -->
-  <!--
+    <!-- actions opening views on models -->
+    <!--
     <record model="ir.actions.act_window" id="merctrans_projects.action_window">
       <field name="name">merctrans_projects window</field>
       <field name="res_model">merctrans_projects.merctrans_projects</field>
@@ -243,8 +370,8 @@
     </record>
 -->
 
-  <!-- server action to the one above -->
-  <!--
+    <!-- server action to the one above -->
+    <!--
     <record model="ir.actions.server" id="merctrans_projects.action_server">
       <field name="name">merctrans_projects server</field>
       <field name="model_id" ref="model_merctrans_projects_merctrans_projects"/>
@@ -259,21 +386,21 @@
     </record>
 -->
 
-  <!-- Top menu item -->
-  <!--
+    <!-- Top menu item -->
+    <!--
     <menuitem name="merctrans_projects" id="merctrans_projects.menu_root"/>
 -->
-  <!-- menu categories -->
-  <!--
+    <!-- menu categories -->
+    <!--
     <menuitem name="Menu 1" id="merctrans_projects.menu_1" parent="merctrans_projects.menu_root"/>
     <menuitem name="Menu 2" id="merctrans_projects.menu_2" parent="merctrans_projects.menu_root"/>
 -->
-  <!-- actions -->
-  <!--
+    <!-- actions -->
+    <!--
     <menuitem name="List" id="merctrans_projects.menu_1_list" parent="merctrans_projects.menu_1"
               action="merctrans_projects.action_window"/>
     <menuitem name="Server to list" id="merctrans_projects" parent="merctrans_projects.menu_2"
               action="merctrans_projects.action_server"/>
 -->
-
+  </data>
 </odoo>

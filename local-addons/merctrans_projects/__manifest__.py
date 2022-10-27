@@ -25,7 +25,7 @@
     '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
@@ -34,10 +34,15 @@
         'security/security_rules.xml',
         'security/ir.model.access.csv',
         # View <>
+        'views/pos.xml',
+        'views/contributors.xml',
         'views/projects_menus.xml',
+        'views/clients.xml',
         'views/templates.xml',
-        # 'views/sale.xml',
-        'views/jobs.xml'
+        'views/sale.xml',
+        'data/automation.xml',
+        #data
+        'data/currencies.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
