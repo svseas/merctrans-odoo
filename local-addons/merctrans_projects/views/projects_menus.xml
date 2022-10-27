@@ -285,7 +285,7 @@
           <field name="currency_id" />
           <field name="project_value" />
           <field name="project_paid"/>
-          <field name="project_margin" widget="percentage" />
+          <field name="project_margin" widget="percentage"/>
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
