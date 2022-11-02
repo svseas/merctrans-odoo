@@ -277,8 +277,10 @@
           <field name="sale_rate" />
           <field name="currency_id" />
           <field name="project_value" />
-          <field name="project_paid" />
-          <field name="project_margin" widget="percentage" />
+
+          <field name="project_paid"/>
+          <field name="project_margin" widget="percentage"/>
+>>>>>>> 39c3590 (fix po readonly)
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
