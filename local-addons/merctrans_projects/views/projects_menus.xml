@@ -280,7 +280,6 @@
 
           <field name="project_paid"/>
           <field name="project_margin" widget="percentage"/>
->>>>>>> 39c3590 (fix po readonly)
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->
