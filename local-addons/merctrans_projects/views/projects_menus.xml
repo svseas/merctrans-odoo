@@ -94,20 +94,20 @@
                   <tree>
                     <field name="sale_order_name" />
                     <field name="project_id" />
-                    <field name="client_po_number"/>
+                    <field name="client_po_number" />
                     <field name="volume" />
                     <field name="sale_rate" />
                     <field name="discount" />
                     <field name="value" />
                     <field name="currency_id" />
-                    <field name="status" force_save="1"/>
+                    <field name="status" force_save="1" />
                   </tree>
                 </field>
                 <field name="invoice_value" />
-                <field name="discount"/>
-                <field name="invoice_total"/>
+                <field name="discount" />
+                <field name="invoice_total" />
                 <field name="invoice_status" />
-                <field name="invoice_paid_date"/>
+                <field name="invoice_paid_date" />
               </group>
             </group>
           </sheet>
@@ -144,6 +144,9 @@
       <field name="model">merctrans.projects</field>
       <field name="arch" type="xml">
         <form>
+          <header>
+            <button name="action_send_email" type="object" string="Send mail 2 PM" class="oe_highlight"></button>
+          </header>
           <sheet>
             <group>
               <group>
@@ -222,13 +225,13 @@
                   <tree>
                     <field name="sale_order_name" />
                     <field name="client" />
-                    <field name="client_po_number"/>
-                    <field name="volume"/>
-                    <field name="sale_rate"/>
-                    <field name="currency_id"/>
-                    <field name="discount"/>
-                    <field name="value"/>
-                    <field name="status"/>
+                    <field name="client_po_number" />
+                    <field name="volume" />
+                    <field name="sale_rate" />
+                    <field name="currency_id" />
+                    <field name="discount" />
+                    <field name="value" />
+                    <field name="status" />
                   </tree>
                   <form>
                     <group>
@@ -278,8 +281,8 @@
           <field name="currency_id" />
           <field name="project_value" />
 
-          <field name="project_paid"/>
-          <field name="project_margin" widget="percentage"/>
+          <field name="project_paid" />
+          <field name="project_margin" widget="percentage" />
           <!--          <field name="total_po_value"/>-->
           <!--          <field name="discount" />-->
           <!--          <field name="start_date" />-->

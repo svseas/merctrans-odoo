@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="projects_confirm_email" model="mail.template">
+      <field name="name">Email | Nofti Project</field>
+      <!-- <field name="model_id" ref="module_name.model_sample.mail" /> -->
+      <field name="model_id" ref="merctrans_projects.model_merctrans_projects" />
+      <field name="auto_delete" eval="True" />
+      <field name="email_from">hoanglong@spiderum.com</field>
+      <field name="email_to">${object.email_formatted}</field>
+      <field name="subject">${object.project_manager.name} New PM</field>
+      <field name="body_html">
+        <![CDATA[
+This is a test emial
+             ]]>
+      </field>
+    </record>
+  </data>
+</odoo>
