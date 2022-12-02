@@ -250,3 +250,9 @@ class MerctransPOs(models.Model):
             project.po_value = (
                 100 -
                 0) / 100 * project.volume * project.sale_rate_per_work_unit
+
+
+    def action_send_email(self):
+        mail_template_id = self.env.ref("merctrans_projects.pos_confirm_email").id
+        template = self.env["mail.template"].browse(mail_template_id)
+        template.send_mail(self.id, force_send=True)

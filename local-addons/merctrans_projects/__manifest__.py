@@ -23,6 +23,7 @@
         "security/security_rules.xml",
         "security/ir.model.access.csv",
         "data/email_template.xml",
+        "data/email_template_pos.xml",
         # View <>
         "views/pos.xml",
         "views/contributors.xml",

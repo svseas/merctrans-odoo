@@ -195,7 +195,9 @@
                   </tree>
                   <form>
                     <group>
+                                 
                       <group>
+                
                         <field name="purchase_order" />
                         <field name="contributor" />
                         <field name="target_language" />
@@ -212,6 +214,8 @@
                         <field name="po_value" />
                         <field name="po_status" />
                         <field name="payment_status" />
+
+                                 <button name="action_send_email" type="object" string="Send mail 2 Contributor" class="oe_highlight"></button>
                       </group>
                     </group>
                   </form>
