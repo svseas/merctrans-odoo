@@ -393,5 +393,7 @@ class MercTransProjects(models.Model):
         print("template id", mail_template_id)
         template = self.env["mail.template"].browse(mail_template_id)
         print("template", template)
+        for project in self:
+            print(project.project_manager.email_formatted)
 
         template.send_mail(self.id, force_send=True)

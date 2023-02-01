@@ -12,6 +12,9 @@
         <field name="name">Purchase Order Form</field>
         <field name="model">merctrans.pos</field>
         <field name="arch" type="xml">
+            <header>
+                <button name="action_send_email" type="object" string="Send mail 2 Contributor" class="oe_highlight"></button>
+            </header>
             <form create="false" edit="false">
                 <group>
                     <group>
