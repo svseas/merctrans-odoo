@@ -118,7 +118,8 @@ class MercTransProjects(models.Model):
     tags = fields.Many2many("merctrans.tags", string="Tags")
 
     project_manager = fields.Many2one(
-        "res.users", string="Project Manager*", required=True
+        "res.users", string="Project Manager*", required=True,
+        domain=lambda self: [('groups_id', 'in', self.env.ref('merctrans_projects.group_merctrans_pm').id)]
     )
 
     # NOTE: TARGET AND SOURCE LANGUAGE
