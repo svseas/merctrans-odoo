@@ -69,7 +69,6 @@ class MerctransPOs(models.Model):
 
     work_unit = fields.Selection(string='Work Unit*',
                                  selection=work_unit_list,
-                                 default=lambda self: self.env['merctrans.projects'].search([( 'project_id', '=', self.project_id.project_id)]).work_unit,
                                  required=True)
 
     volume = fields.Integer(string='Volume*', required=True, default=0)

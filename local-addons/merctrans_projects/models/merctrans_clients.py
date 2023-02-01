@@ -13,62 +13,40 @@ class PaymentMethod(models.Model):
 class MerctransClient(models.Model):
 
     _name = 'merctrans.clients'
-
     _rec_name = 'name'
-
     _description = "Merctrans's Clients"
-
      # partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict', auto_join=True,
     #                              string='Related Partner', help='Partner-related data of the user')
-
     payment_term_list = [('30 days', '30D'),
                            ('45 days', '45D'),
                            ('60 days', '60D'),
                            ('90 days', '90D')]
-
     payment_method_list = [('paypal', 'PayPal'),
                            ('wire transfer', 'Wire Transfer'),
                            ('payoneer', 'Payoneer')]
-
     name = fields.Char(string='Account Name*', required=True)
-
     client_short_name = fields.Char(string='Account ID*', readonly=True, compute='_get_client_id')
-
     email = fields.Char(string='Email', required=True)
-
     country = fields.Many2one('res.country', string='Country')
-
     client_note = fields.Html('Account note')
-
     phone_number = fields.Char(string='Phone number')
-
     website = fields.Char(string='Website')
-
-    services = fields.Many2many('merctrans.services', string = 'Services')
-
+    services = fields.Many2many('merctrans.services', string='Services')
     sales_person = fields.Many2one('res.users', string='Salesperson')
-
     payment_term = fields.Selection(selection=payment_term_list, string='Payment Term')
-
     payment_method = fields.Selection(selection=payment_method_list, string='Payment Method')
-
     create_date = fields.Datetime(string='Create Date', readonly=True)
-
     write_date = fields.Datetime(string='Last Update', readonly=True)
-
     project_history = fields.One2many('merctrans.projects',
                                       'client',
                                       readonly=True)
-
     invoice_history = fields.One2many('merctrans.invoices',
                                       'invoice_client', readonly=True)
                                       # domain=[('invoice_status', '=', 'unpaid')
                                       #         ])
     client_contact_list = fields.One2many('account.contacts','contact_id')
-
     # client_currency = fields.Many2one('res.currency',
     #                                   string="Currency",)
-
     @api.constrains('name')
     def check_duplicate_name(self):
         for company_rec in self:

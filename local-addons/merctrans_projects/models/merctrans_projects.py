@@ -18,7 +18,6 @@ class MercTransTags(models.Model):
     _name = "merctrans.tags"
     _rec_name = "tag"
     _description = "Project Tags"
-
     tag = fields.Char(string="Tag", required=True)
 
 
