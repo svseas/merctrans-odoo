@@ -69,6 +69,7 @@
             <search>
                 <field name="client" string="Sale Order by Client" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
                 <field name="project_id"/>
+                <filter string="Project Id" name="project_id" domain="[]"/>
             </search>
         </field>
 
