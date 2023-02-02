@@ -89,12 +89,10 @@
                 <!--                <field name="client_name"/>-->
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
-                <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
+                <field name="invoice_details_ids" widget="many2many" style="width:80%" options="{'no_create': True}">
                   <tree>
                     <field name="sale_order_name" />
-                    <field name="client">[('client_name','=','client_name')]</field>
                     <field name="project_id" />
-                    <field name="client_po_number" />
                     <field name="volume" />
                     <field name="sale_rate" />
                     <field name="discount" />
