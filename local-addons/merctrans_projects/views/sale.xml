@@ -66,7 +66,9 @@
         <field name="name">Purchase Order Search</field>
         <field name="model">merctrans.sale</field>
         <field name="arch" type="xml">
-            <search></search>
+            <searchpanel>
+                <field name="client" string="Client Name"/>
+            </searchpanel>
         </field>
 
     </record>
