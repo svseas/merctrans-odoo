@@ -92,6 +92,7 @@
                 <field name="invoice_details_ids" widget="many2many" options="{'no_create': True}">
                   <tree>
                     <field name="sale_order_name" />
+                    <field name="client">[('client_name','=','client_name')]</field>
                     <field name="project_id" />
                     <field name="client_po_number" />
                     <field name="volume" />
@@ -100,10 +101,6 @@
                     <field name="value" />
                     <field name="currency_id" />
                     <field name="status" force_save="1" />
-                  <searchpanel>
-                    <field name="client_name" string="Client"/>
-
-                  </searchpanel>
                   </tree>
                 </field>
                 <field name="invoice_value" />
