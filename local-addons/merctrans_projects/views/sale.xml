@@ -68,7 +68,7 @@
         <field name="model">merctrans.sale</field>
         <field name="arch" type="xml">
             <search>
-                <field name="client" string="Sale Order by Client" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
+                <field name="client" string="Sale Order by Client" filter_domain="['|', ('name', 'ilike', self), ('project_id', 'ilike', self)]"/>
                 <field name="project_id"/>
                 <filter name="client" string="Client" />
                 <group expand="1" string="Group By">
