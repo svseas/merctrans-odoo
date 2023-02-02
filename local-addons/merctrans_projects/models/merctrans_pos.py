@@ -156,24 +156,25 @@ class MerctransPOs(models.Model):
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_street_contributor(self):
-        self.ensure_one()
-        print(self.contributor.street)
-        self.address = self.contributor.street
+        for po in self:
+            po.ensure_one()
+            print(po.contributor.street)
+            po.address = po.contributor.street
 
     # Get api email
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_email_contributor(self):
-        for project in self:
-            print(project.contributor.email)
-            project.contributor_email = project.contributor.email
+        for po in self:
+            print(po.contributor.email)
+            po.contributor_email = po.contributor.email
 
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_id_contributor(self):
-        for project in self:
-            print(project.contributor.id)
-            project.contributor_id = project.contributor.user_id
+        for po in self:
+            print(po.contributor.id)
+            po.contributor_id = po.contributor.user_id
 
     @api.onchange('project_id')
     @api.depends('project_id')
