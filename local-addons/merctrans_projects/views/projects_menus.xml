@@ -102,7 +102,7 @@
                     <field name="status" force_save="1" />
                   </tree>
                   <search>
-                    <field name="client_name" string="Client" filter_domain="['name', 'ilike', self]"] />
+                    <field name="client_name" string="Client" filter_domain="['name', 'ilike', self]" />
 
                   </search>
                 </field>
