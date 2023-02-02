@@ -86,6 +86,7 @@
                 <field name="invoice_date" />
                 <field name="invoice_due_date" />
                 <field name="invoice_client" />
+                <field name="client_name" invisible="1" />
                 <!--                <field name="client_name"/>-->
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
