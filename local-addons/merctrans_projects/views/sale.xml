@@ -66,9 +66,11 @@
         <field name="name">Purchase Order Search</field>
         <field name="model">merctrans.sale</field>
         <field name="arch" type="xml">
-            <searchpanel>
-                <field name="client" string="Client Name"/>
-            </searchpanel>
+            <search>
+                <field name="name" string="Class Wolf" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
+                <field name="client" />
+                <field name="project_id"/>
+            </search>
         </field>
 
     </record>
