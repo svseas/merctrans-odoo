@@ -125,9 +125,20 @@ class MerctransPOs(models.Model):
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_contributor_currency(self):
-        self.ensure_one()
-        print(self.contributor.currency)
-        self.currency_id = self.contributor.currency.name
+        # TODO: Test this, why currency always fail
+        # print(self.contributor)
+        # print(self.contributor.currency)
+        # self.ensure_one()
+        # print(self.contributor.currency)
+        # self.currency_id = self.contributor.currency.name
+
+        for po in self:
+            if po.contributor:
+                po.currency_id = po.contributor.currency.name
+            else:
+                po.currency_id = "Select Contributor"
+
+
 
     # Get contributor address
     @api.onchange('project_id', 'contributor')
