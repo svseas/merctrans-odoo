@@ -220,7 +220,7 @@ class MerctransPOs(models.Model):
     def _volume_contrains(self):
         for po in self:
             if int(po.volume) == 0:
-                raise ValidationError(f"{po.purchase_order} - {po.contributor.name} FAIL!!! \n Volume must greater than 0")
+                raise ValidationError(f"PO: {po.purchase_order} \nContributor: {po.contributor.name}\n FAIL!!! \n Volume must greater than 0")
 
 
     # po start date must greater than project start date
@@ -249,14 +249,14 @@ class MerctransPOs(models.Model):
         for po in self:
             if po.start_date > po.due_date:
                 raise ValidationError(
-                    f'{po.purchase_order} - {po.contributor.name} FAIL!!\n Due date must be after Start date!')
+                    f'PO: {po.purchase_order} \nContributor: {po.contributor.name}\n FAIL!!\n Due date must be after Start date!')
 
     @api.constrains("sale_rate_per_work_unit")
     def _constraint_sale_rate(self):
         for po in self:
             if po.sale_rate_per_work_unit == 0:
                 raise ValidationError(
-                    f'{po.purchase_order} - {po.contributor.name} FAIL!!\n Sale rate must be greater than 0!'
+                    f'PO: {po.purchase_order} \nContributor: {po.contributor.name}\n FAIL!!\n Sale rate must be greater than 0!'
                 )
 
     # workunit
