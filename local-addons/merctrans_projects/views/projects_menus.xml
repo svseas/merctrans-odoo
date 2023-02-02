@@ -89,7 +89,7 @@
                 <!--                <field name="client_name"/>-->
                 <field name="currency_id" />
                 <!-- <field name="invoice_details_ids" options= "{'no_create': True}" widget="many2many"> -->
-                <field name="invoice_details_ids" widget="many2many" style="width:92%" options="{'no_create': True}" domain="[('client', '=', 'invoice_client.name')]">
+                <field name="invoice_details_ids" widget="many2many" style="width:92%" options="{'no_create': True}" domain="[('client', 'ilike', 'Welocalize')]">
                   <tree>
                     <field name="sale_order_name" />
                     <field name="project_id" />
