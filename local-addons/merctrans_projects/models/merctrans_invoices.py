@@ -39,7 +39,7 @@ class MercTransInvoices(models.Model):
     client_name = fields.Char(compute="_get_invoice_client")
 
     invoice_details_ids = fields.Many2many('merctrans.sale',
-                                           string='Sale Orders')
+                                           string='Sale Orders', domain="[('client', '=', 'Welocalize')]")
     # Currency computed from sale orders (sale order restrains same currency)
     currency_id = fields.Char(string='Currency*',
                               required=True,
