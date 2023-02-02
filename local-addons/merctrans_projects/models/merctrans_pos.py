@@ -156,24 +156,25 @@ class MerctransPOs(models.Model):
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_street_contributor(self):
-        self.ensure_one()
-        print(self.contributor.street)
-        self.address = self.contributor.street
+        for po in self:
+            po.ensure_one()
+            print(po.contributor.street)
+            po.address = po.contributor.street
 
     # Get api email
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_email_contributor(self):
-        for project in self:
-            print(project.contributor.email)
-            project.contributor_email = project.contributor.email
+        for po in self:
+            print(po.contributor.email)
+            po.contributor_email = po.contributor.email
 
     @api.onchange('contributor')
     @api.depends('contributor')
     def _get_id_contributor(self):
-        for project in self:
-            print(project.contributor.id)
-            project.contributor_id = project.contributor.user_id
+        for po in self:
+            print(po.contributor.id)
+            po.contributor_id = po.contributor.user_id
 
     @api.onchange('project_id')
     @api.depends('project_id')
@@ -219,9 +220,8 @@ class MerctransPOs(models.Model):
     @api.constrains('volume')
     def _volume_contrains(self):
         for po in self:
-            print(type(po.volume))
             if int(po.volume) == 0:
-                raise ValidationError(f"{po.purchase_order} FAIL!!! \n Volume must greater than 0")
+                raise ValidationError(f"PO: {po.purchase_order} \nContributor: {po.contributor.name}\nFAIL!!! \nVolume must greater than 0")
 
 
     # po start date must greater than project start date
@@ -247,10 +247,18 @@ class MerctransPOs(models.Model):
 
     @api.constrains('start_date', 'due_date')
     def _constraint_date(self):
-        for project in self:
-            if project.start_date > project.due_date:
+        for po in self:
+            if po.start_date > po.due_date:
                 raise ValidationError(
-                    f'{project.purchase_order} FAIL!!\n Due date must be after Start date!')
+                    f'PO: {po.purchase_order} \nContributor: {po.contributor.name}\nFAIL!!\nDue date must be after Start date!')
+
+    @api.constrains("sale_rate_per_work_unit")
+    def _constraint_sale_rate(self):
+        for po in self:
+            if po.sale_rate_per_work_unit == 0:
+                raise ValidationError(
+                    f'PO: {po.purchase_order} \nContributor: {po.contributor.name}\nFAIL!!\nSale rate must be greater than 0!'
+                )
 
     # workunit
     @api.onchange('volume', 'sale_rate_per_work_unit')
