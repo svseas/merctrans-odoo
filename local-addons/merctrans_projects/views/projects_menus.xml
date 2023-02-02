@@ -100,11 +100,11 @@
                     <field name="value" />
                     <field name="currency_id" />
                     <field name="status" force_save="1" />
-                  </tree>
-                  <search>
-                    <field name="client_name" string="Client" filter_domain="['name', 'ilike', self]" />
+                  <searchpanel>
+                    <field name="client_name" string="Client"/>
 
-                  </search>
+                  </searchpanel>
+                  </tree>
                 </field>
                 <field name="invoice_value" />
                 <field name="discount" />
