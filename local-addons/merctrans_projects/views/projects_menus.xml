@@ -101,6 +101,10 @@
                     <field name="currency_id" />
                     <field name="status" force_save="1" />
                   </tree>
+                  <search>
+                    <field name="client" string="Client" />
+
+                  </search>
                 </field>
                 <field name="invoice_value" />
                 <field name="discount" />
