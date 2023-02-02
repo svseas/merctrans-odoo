@@ -79,7 +79,6 @@
       <field name="arch" type="xml">
         <form>
           <sheet>
-            <group>
               <group>
                 <field name="sender_info" />
                 <field name="invoice_id" />
@@ -109,7 +108,6 @@
                 <field name="invoice_status" />
                 <field name="invoice_paid_date" />
               </group>
-            </group>
           </sheet>
         </form>
       </field>
