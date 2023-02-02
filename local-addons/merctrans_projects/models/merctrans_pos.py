@@ -251,12 +251,12 @@ class MerctransPOs(models.Model):
                 raise ValidationError(
                     f'{project.purchase_order} FAIL!!\n Due date must be after Start date!')
 
-    @api.contrains("sale_rate_per_work_unit")
+    @api.constrains("sale_rate_per_work_unit")
     def _constraint_sale_rate(self):
-        for project in self:
-            if project.sale_rate_per_work_unit == 0:
+        for po in self:
+            if po.sale_rate_per_work_unit == 0:
                 raise ValidationError(
-                    f'{project.purchase_order} FAIL!!\n Sale rate must be greater than 0!'
+                    f'{po.purchase_order} FAIL!!\n Sale rate must be greater than 0!'
                 )
 
     # workunit
