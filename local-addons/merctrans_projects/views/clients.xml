@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="merctrans_clients_actions" model="ir.actions.act_window">
+    <field name="name">Merctrans Account List</field>
+    <field name="res_model">merctrans.clients</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+    <!--  contact menu -->
+  <record id="account_contacts_actions" model="ir.actions.act_window">
+    <field name="name">Clients</field>
+    <field name="res_model">account.contacts</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="Account Contacts" id="contact_menu" parent="client_menu" action="account_contacts_actions" sequence="0" />
+  <menuitem name="Clients" id="account_menu" parent="client_menu" action="merctrans_clients_actions"/>
+  <!-- client form view -->
+  <record id="client_view_form" model="ir.ui.view">
+    <field name="name">Account Form View</field>
+    <field name="model">merctrans.clients</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="name" />
+            <field name="client_short_name"/>
+            <field name="email" />
+            <field name="website" widget="url"/>
+            <field name="country"/>
+            <field name="services" widget="many2many_tags"/>
+          </group>
+          <group>
+            <field name="sales_person"/>
+            <field name="payment_term"/>
+            <field name="payment_method"/>
+            <field name="create_date"/>
+            <field name="write_date"/>
+          </group>
+
+        </group>
+        <notebook>
+          <page string="Contacts">
+            <field name="client_contact_list">
+              <tree>
+                <field name="contact_name"/>
+                <field name="contact_id"/>
+                <field name="contact_position"/>
+                <field name="contact_phone"/>
+                <field name="contact_note"/>
+              </tree>
+            </field>
+          </page>
+          <page string="Account Note" name="client_note">
+            <field name="client_note" />
+          </page>
+          <page string="Project History" name="client_project_history">
+            <field name="project_history"/>
+          </page>
+          <page string="Invoice History" name="client_invoice_history">
+            <field name="invoice_history">
+              <tree>
+                <field name="invoice_id"/>
+                <field name="invoice_name"/>
+                <field name="invoice_status" />
+              </tree>
+            </field>
+          </page>
+        </notebook>
+
+      </form>
+    </field>
+  </record>
+
+  <!-- client tree view -->
+  <record id="client_view_tree" model="ir.ui.view">
+    <field name="name">Account Tree View</field>
+    <field name="model">merctrans.clients</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name" />
+        <field name="email" />
+        <field name="phone_number"/>
+        <field name="website" widget="url"/>
+<!--        <field name="client_currency" />-->
+
+      </tree>
+    </field>
+
+  </record>
+
+
+<!--  contact tree view-->
+  <record id="account_contact_view_tree" model="ir.ui.view">
+      <field name="name">Account Contact Tree</field>
+      <field name="model">account.contacts</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="contact_id" />
+          <field name="contact_name" />
+          <field name="contact_position" />
+          <field name="contact_email" />
+          <field name="contact_phone" />
+          <field name="contact_note" />
+
+        </tree>
+      </field>
+  </record>
+<!--contact form view-->
+  <record id="account_contact_view_form" model="ir.ui.view">
+      <field name="name">Account Contact Form</field>
+      <field name="model">account.contacts</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="contact_id"/>
+              <field name="contact_name" />
+              <field name="contact_position" />
+              <field name="contact_email" />
+              <field name="contact_phone" />
+              <field name="contact_note" />
+
+            </group>
+          </sheet>
+        </form>
+      </field>
+  </record>
+  <!-- search view -->
+</odoo>

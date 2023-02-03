@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Currencies -->
+        <!-- Add currencies.xml to data to override base currency       -->
+        <record id="base.USD" model="res.currency">
+            <field name="name">USD</field>
+            <field name="symbol">$</field>
+            <field name="rounding">0.01</field>
+            <field name="active" eval="True"/>
+            <field name="position">before</field>
+            <field name="currency_unit_label">Dollars</field>
+            <field name="currency_subunit_label">Cents</field>
+        </record>
+
+        <record id="base.EUR" model="res.currency">
+            <field name="name">EUR</field>
+            <field name="symbol">€</field>
+            <field name="rounding">0.01</field>
+            <field name="active" eval="True"/>
+            <field name="currency_unit_label">Euros</field>
+            <field name="currency_subunit_label">Cents</field>
+        </record>
+
+        <record id="base.VND" model="res.currency">
+            <field name="name">VND</field>
+            <field name="symbol">₫</field>
+            <field name="rounding">1.00</field>
+            <field name="active" eval="True"/>
+            <field name="currency_unit_label">Dong</field>
+            <field name="currency_subunit_label">Xu</field>
+        </record>
+    </data>
+</odoo>

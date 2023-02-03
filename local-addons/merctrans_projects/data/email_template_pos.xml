@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="pos_confirm_email" model="mail.template">
+      <field name="name">Email | Nofti Project</field>
+      <!-- <field name="model_id" ref="module_name.model_sample.mail" /> -->
+      <field name="model_id" ref="merctrans_projects.model_merctrans_pos" />
+      <field name="auto_delete" eval="True" />
+      <field name="email_from">hoanglong@merctrans.vn</field>
+      <field name="email_to">{{object.contributor.email_formatted}}</field>
+      <field name="subject">New Task for Contributor</field>
+      <field name="body_html" type="html">
+        <div>
+          <p>Dear <t t-out="object.contributor.name"></t>
+          </p>
+
+          <br/>
+          <p>We are pleased to inform you that you have been assigned a new task. Please review the details provided below.
+          </p>
+
+          <p>
+
+            Task Name: <t t-out="object.source_language"></t> to <t t-out="object.target_language"></t>
+            <br />
+            Description: <t t-out="object.volume"></t>
+            <t t-out="object.work_unit"></t> with <t t-out="object.sale_rate_per_work_unit"></t> per <t t-out="object.work_unit"></t>
+            <br />
+            Deadline: <t t-out="object.due_date"></t>
+            <br />
+            We take pride in our contributors and we hope that you will be able to complete this task successfully. If you have any questions or concerns, please do not hesitate to contact us.
+            <br />
+            Thank you for your time and dedication.
+            <br />
+            Sincerely,
+            <br />
+            Merctrans.
+          </p>
+        </div>
+      </field>
+    </record>
+  </data>
+</odoo>
