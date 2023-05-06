@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="merctrans_sale_order_actions" model="ir.actions.act_window">
+        <field name="name">Merctrans Sale Order List</field>
+        <field name="res_model">merctrans.sale</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Sale Orders" id="sale_order_menu" parent="invoices_menu" action="merctrans_sale_order_actions" sequence="0" />
+
+    <record id="increment_sale_id" model="ir.sequence">
+      <field name="name">ID Incrementation</field>
+      <field name="code">increment_sale_id</field>
+      <field name="prefix"></field>
+      <field name="padding">3</field>
+      <field name="company_id" eval="False" />
+    </record>
+
+    <!-- so form view -->
+    <record id="sale_order_view_form" model="ir.ui.view">
+        <field name="name">Sale Order Form</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <group>
+                    <group>
+                        <field name="sale_order_name" />
+                        <field name="project_id"/>
+                        <field name="client" force_save="1"/>
+                        <field name="client_po_number"/>
+                        <!-- <field name="source_language" readonly="1"/> -->
+                    </group>
+                    <group>
+                        <field name="volume"/>
+                        <field name="sale_rate"/>
+                        <field name="currency_id"/>
+                        <field name="discount" widget="percentage"/>
+                        <field name="value"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- po view tree -->
+    <record id="sale_order_view_tree" model="ir.ui.view">
+        <field name="name">Purchase Order Tree</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="sale_order_name"/>
+                <field name="client"/>
+                <field name="project_id"/>
+                <field name="client_po_number"/>
+                <field name="volume"/>
+                <field name="sale_rate"/>
+                <field name="currency_id"/>
+                <field name="value"/>
+
+            </tree>
+        </field>
+
+    </record>
+    <!-- search view -->
+    <record id="merctrans_sale_order_view_search" model="ir.ui.view">
+        <field name="name">Purchase Order Search</field>
+        <field name="model">merctrans.sale</field>
+        <field name="arch" type="xml">
+            <search></search>
+        </field>
+
+    </record>
+</odoo>

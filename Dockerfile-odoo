@@ -1,0 +1,10 @@
+FROM hglong16/odoo:latest
+
+USER root
+
+
+RUN pip3 install psycogreen zeep pstats_print2list simplejson plaid-python xlrd phonenumbers pyOpenSSL asn1crypto bcrypt boto3 botocore     certifi cffi chardet cryptography docutils dropbox gevent greenlet idna jmespath paramiko pyasn1 pycparser pynacl pyocclient pysftp requests s3transfer urllib3 num2words pyldap qrcode vobject watchdog xlwt firebase-admin odoo_import_export_client
+
+USER odoo
+
+EXPOSE 8072
